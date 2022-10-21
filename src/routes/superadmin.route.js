@@ -11,4 +11,8 @@ router
   .route("/MLSADMINBCRGetSuperAdmin")
   .get(auth, superadminController.getSuperAdmin);
 
+router
+  .route("/MLSADMINBCRUpdateSuperAdmin")
+  .put(auth, superadminController.updateSuperAdmin);
+
 module.exports = router;

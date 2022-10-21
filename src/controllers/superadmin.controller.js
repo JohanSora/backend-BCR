@@ -87,7 +87,7 @@ module.exports = {
     }
   },
 
-  async update(req, res) {
+  async updateSuperAdmin(req, res) {
     try {
       const superadminId = req.superadmin;
       const superadmin = await SuperAdmin.findByIdAndUpdate(
@@ -97,9 +97,21 @@ module.exports = {
           new: true,
         }
       );
-      res.status(200).json({ message: "User update" });
+
+      console.log(req.body);
+      res.status(200).json({ message: "User update", superadmin });
     } catch (err) {
       res.status(400).json({ message: "User could not be updated", data: err });
+    }
+  },
+
+  async deleteSuperAdmin(req, res) {
+    try {
+      const superadminId = req.user;
+      const superadmin = await SuperAdmin.findByIdAndDelete(superadminId);
+      res.status(200).json({ message: "User deleted", superadmin });
+    } catch (error) {
+      res.status(200).json({ message: err.message });
     }
   },
 };
