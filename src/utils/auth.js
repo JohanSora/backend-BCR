@@ -3,9 +3,21 @@ require("dotenv").config();
 
 exports.auth = (req, res, next) => {
   try {
-    const obj = req.headers;
+    const { authorization } = req.headers;
 
-    console.log(obj);
+    if (!authorization) {
+      throw new Error("unauthorized user");
+    }
+
+    const [_, token] = authorization.split(" ");
+
+    if (!token) {
+      throw new Error("Token are not valid");
+    }
+
+    const { id } = jwt.verify(token, process.env.pass);
+
+    req.superadmin = id;
 
     next();
   } catch (err) {
