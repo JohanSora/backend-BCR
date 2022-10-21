@@ -14,5 +14,8 @@ router
 router
   .route("/MLSADMINBCRUpdateSuperAdmin")
   .put(auth, superadminController.updateSuperAdmin);
+router
+  .route("/MLSADMINBCRDeleteSuperAdmin")
+  .put(auth, superadminController.deleteSuperAdmin);
 
 module.exports = router;
