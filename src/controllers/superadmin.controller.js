@@ -26,9 +26,10 @@ module.exports = {
         expiresIn: 60 * 60 * 24,
       });
 
-      res
-        .status(201)
-        .json({ token, message: "SuperAdmin created succesfully", admin });
+      res.status(201).json({
+        message: "SuperAdmin created succesfully",
+        data: { token, admin },
+      });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
@@ -39,7 +40,7 @@ module.exports = {
       const { email, password } = req.body;
       const superadmin = await SuperAdmin.findOne({ email });
 
-      if (!user) {
+      if (!superadmin) {
         throw new Error("User not valid!");
       }
 
@@ -55,10 +56,21 @@ module.exports = {
 
       res.status(200).json({
         message: "User logged!",
-        token,
+        data: {
+          token,
+          superadmin,
+        },
       });
     } catch (err) {
       res.status(400).json({ message: `User could not login: error:${err}` });
+    }
+  },
+
+  async getAllSuperAdmins(req, res) {
+    try {
+      const superadmins = await SuperAdmin.find;
+    } catch (err) {
+      res.status(400).json({ message: "Users cannot be brought" });
     }
   },
 };
