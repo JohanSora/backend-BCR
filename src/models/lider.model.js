@@ -1,9 +1,9 @@
 const { Schema, model, models } = require("mongoose");
 
-const SuperadminSchema = new Schema({
+const LiderSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    require: true,
   },
   lastname: {
     type: String,
@@ -15,18 +15,19 @@ const SuperadminSchema = new Schema({
     validate: [
       {
         validator(value) {
-          return models.SuperAdmin.findOne({ email: value })
-            .then((user) => !user)
+          return models.Lider.findOne({ email: value })
+            .then((user = !user))
             .catch(() => false);
         },
-        message: "This email already exists",
       },
     ],
   },
+
   password: {
     type: String,
     required: true,
   },
+
   phone: {
     type: Number,
   },
@@ -41,14 +42,6 @@ const SuperadminSchema = new Schema({
     type: String,
     required: true,
   },
-  lideres: {
-    type: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Lider",
-      },
-    ],
-  },
   agentes: {
     type: [
       {
@@ -57,8 +50,17 @@ const SuperadminSchema = new Schema({
       },
     ],
   },
+  Superadmin: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "SuperAdmin",
+        required: true,
+      },
+    ],
+  },
 });
 
-const SuperAdmin = model("SuperAdmin", SuperadminSchema);
+const Lider = model("Lider", LiderSchema);
 
-module.exports = SuperAdmin;
+module.exports = Lider;
