@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
 
 function connect() {
-  mongoose.connect("mongodb://localhost:27017/trello", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  mongoose.connect(
+    "mongodb+srv://itmarketlogic:10293847Marketlogic@cluster0.dmebfiq.mongodb.net/?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  );
 
   mongoose.connection.once("open", () => {
     console.log("Mongo is alive!");
