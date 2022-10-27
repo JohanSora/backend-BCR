@@ -77,9 +77,8 @@ module.exports = {
 
   async getSuperAdmin(req, res) {
     try {
-      const superadminId = req.superadmin;
+      const superadminId = req.user;
 
-      console.log(superadminId);
       const superadmin = await SuperAdmin.findById(superadminId);
       res.status(200).json({ superadmin });
     } catch (err) {
@@ -89,7 +88,7 @@ module.exports = {
 
   async updateSuperAdmin(req, res) {
     try {
-      const superadminId = req.superadmin;
+      const superadminId = req.user;
       const superadmin = await SuperAdmin.findByIdAndUpdate(
         superadminId,
         req.body,

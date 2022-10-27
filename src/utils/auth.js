@@ -17,7 +17,7 @@ exports.auth = (req, res, next) => {
 
     const { id } = jwt.verify(token, process.env.pass);
 
-    req.superadmin = id;
+    req.user = id;
 
     next();
   } catch (err) {
