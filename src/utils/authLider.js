@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-exports.auth = (req, res, next) => {
+exports.authLider = (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
@@ -15,7 +15,7 @@ exports.auth = (req, res, next) => {
       throw new Error("Token are not valid");
     }
 
-    const { id } = jwt.verify(token, process.env.pass);
+    const { id } = jwt.verify(token, process.env.passLider);
 
     req.user = id;
 

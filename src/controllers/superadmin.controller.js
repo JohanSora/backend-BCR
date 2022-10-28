@@ -22,7 +22,7 @@ module.exports = {
         password: encryptPassword,
       });
 
-      const token = jwt.sign({ id: admin._id }, process.env.pass, {
+      const token = jwt.sign({ id: admin._id }, process.env.passSuperadmin, {
         expiresIn: 60 * 60 * 24,
       });
 
@@ -50,9 +50,13 @@ module.exports = {
         throw new Error("password not valid!");
       }
 
-      const token = jwt.sign({ id: superadmin._id }, process.env.pass, {
-        expiresIn: 60 * 60 * 24,
-      });
+      const token = jwt.sign(
+        { id: superadmin._id },
+        process.env.passSuperadmin,
+        {
+          expiresIn: 60 * 60 * 24,
+        }
+      );
 
       res.status(200).json({
         message: "User logged!",
@@ -69,6 +73,7 @@ module.exports = {
   async getAllSuperAdmins(req, res) {
     try {
       const superadmins = await SuperAdmin.find();
+      console.log(superadmins);
       res.status(200).json({ superadmins });
     } catch (err) {
       res.status(400).json({ message: "Users cannot be brought" });

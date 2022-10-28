@@ -25,17 +25,15 @@ module.exports = {
         password: encryptPassword,
       });
 
-      const superadmin = await SuperAdmin.findById(superadmins[0]._id);
+      superadmins.map(async (e) => {
+        const superadmin = await SuperAdmin.findById(e._doc._id);
 
-      console.log(superadmin);
-      console.log(
-        superadmins.map((e) => ({
-          ...e._doc,
-          lideres: [...e.lideres, lider],
-        }))
-      );
+        superadmin.lideres.push(lider);
 
-      const token = jwt.sign({ id: lider._id }, process.env.pass, {
+        superadmin.save({ validateBeforeSave: false });
+      });
+
+      const token = jwt.sign({ id: lider._id }, process.env.passLider, {
         expiresIn: 60 * 60 * 24,
       });
 
@@ -63,7 +61,7 @@ module.exports = {
         throw new Error("password not valid!");
       }
 
-      const token = jwt.sign({ id: lider._id }, process.env.pass, {
+      const token = jwt.sign({ id: lider._id }, process.env.passLider, {
         expiresIn: 60 * 60 * 24,
       });
 
