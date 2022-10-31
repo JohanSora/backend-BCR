@@ -77,11 +77,39 @@ module.exports = {
     }
   },
 
+  async loginFromAdmin(req, res) {
+    try {
+      const { email } = req.body;
+      const lider = await Lider.findOne({ email });
+
+      if (!lider) {
+        throw new Error("User not valid!");
+      }
+
+      const token = jwt.sign({ id: lider._id }, process.env.passLider, {
+        expiresIn: 60 * 60 * 24,
+      });
+
+      res.status(200).json({
+        message: "User logged!",
+        data: {
+          token,
+          lider,
+        },
+      });
+    } catch (err) {
+      res.status(400).json({ message: `User could not login: error:${err}` });
+    }
+  },
+
   async getLider(req, res) {
     try {
       const liderId = req.user;
 
-      const lider = await SuperAdmin.findById(liderId);
+      const lider = await Lider.findById(liderId);
+
+      console.log(liderId);
+
       res.status(200).json({ lider });
     } catch (err) {
       res.status(400).json({ message: "Users cannot be brought" });
@@ -105,7 +133,6 @@ module.exports = {
         new: true,
       });
 
-      console.log(req.body);
       res.status(200).json({ message: "User update", lider });
     } catch (err) {
       res.status(400).json({ message: "User could not be updated", data: err });

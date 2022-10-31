@@ -66,7 +66,7 @@ const LiderSchema = new Schema(
     sellers: {
       type: [{ type: Schema.Types.ObjectId, ref: "Seller" }],
     },
-    roi: {
+    rol: {
       type: String,
     },
     agentes: {
@@ -77,14 +77,14 @@ const LiderSchema = new Schema(
         },
       ],
     },
-    superadmins: {
-      type: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Agentes",
-        },
-      ],
-    },
+    // superadmins: {
+    //   type: [
+    //     {
+    //       type: Schema.Types.ObjectId,
+    //       ref: "Agentes",
+    //     },
+    //   ],
+    // },
   },
   {
     timestamps: true,
