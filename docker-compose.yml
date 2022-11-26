@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  pgdataBackendBCR:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=backend_data
+      - POSTGRES_USER=asozco
+      - POSTGRES_PASSWORD=admin123
+    ports:
+      - 5435:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
