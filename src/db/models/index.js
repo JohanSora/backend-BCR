@@ -11,6 +11,7 @@ const {  City, CitySchema }                           = require('./catalogs/city
 const {  State, StateSchema }                         = require('./catalogs/state.model');
 const {  Person, PersonSchema }                       = require('./catalogs/person.model');
 const {  Company, CompanySchema }                     = require('./catalogs/company.model');
+const {  FiscalPeriod, FiscalPeriodSchema }                     = require('./catalogs/fiscal-periods.model');
 
 // End Catalog Models
 
@@ -36,11 +37,12 @@ function setupModels(sequelize){
     State.init(StateSchema, State.config(sequelize));
     Person.init(PersonSchema, Person.config(sequelize));
     Company.init(CompanySchema, Company.config(sequelize));
+    FiscalPeriod.init(FiscalPeriodSchema, FiscalPeriod.config(sequelize));
 
 
 
 // Relation Association
- 
+
     Country.associate(sequelize.models);
     City.associate(sequelize.models);
     State.associate(sequelize.models);
@@ -49,6 +51,7 @@ function setupModels(sequelize){
     AcademicDegrees.associate(sequelize.models);
     Person.associate(sequelize.models);
     Company.associate(sequelize.models);
+    FiscalPeriod.associate(sequelize.models);
 
 // -------------------------------------
 

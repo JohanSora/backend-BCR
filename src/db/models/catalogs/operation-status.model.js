@@ -46,6 +46,13 @@ class OperationStatus extends Model{
       foreignKey: 'operationStatusId'
     });
 
+    this.hasMany(models.FiscalPeriod, {
+      as: 'fiscalPeriod',
+      foreignKey: 'operationStatusId'
+    });
+
+
+
 
 
   }

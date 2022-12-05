@@ -8,7 +8,7 @@ const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('
 const app = express();
 
 //Modification create port
-const port = process.env.PORT;
+const port    = process.env.PORT;
 const nodeEnv = process.env.NODE_ENV;
 
 app.use(express.json());

@@ -10,7 +10,8 @@ const countryRouter             = require('./catalogs/country.router');
 const cityRouter                = require('./catalogs/city.router');
 const stateRouter               = require('./catalogs/states.router');
 const peopleRouter              = require('./catalogs/people.router');
-const companyRouter              = require('./catalogs/company.router');
+const companyRouter             = require('./catalogs/company.router');
+const fiscalPeriodRouter        = require('./catalogs/fiscal-period.router');
 
 
 //function routes manager
@@ -34,6 +35,7 @@ function routerApi(app){
     router.use('/states', stateRouter);
     router.use('/people', peopleRouter);
     router.use('/companies', companyRouter);
+    router.use('/fiscal-periods', fiscalPeriodRouter);
 
     // end catalogs
 

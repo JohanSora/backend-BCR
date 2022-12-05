@@ -1,11 +1,12 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
+const { COMPANY_TABLE } = require('./company.model');
 const { OPERATION_STATUS_TABLE } = require('./operation-status.model');
-const { PERSON_TABLE } = require('./person.model');
 
-const COMPANY_TABLE = 'companies';
 
-const CompanySchema = {
+const FISCAL_PERIOD_TABLE = 'fiscal_periods';
+
+const FiscalPeriodSchema = {
   id:{
     allowNull:false,
     autoIncrement: true,
@@ -13,28 +14,25 @@ const CompanySchema = {
     type: DataTypes.INTEGER
   },
 
-  name:{
-    allowNull: false,
-    type:DataTypes.STRING
-  },
-
-  representativeId: {
-    field: 'representative_id',
-    allowNull: false,
-    type: DataTypes.INTEGER,
-    references: {
-      model: PERSON_TABLE,
-      key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
-  },
-
-  phoneNumber:{
+  dateStart:{
     allowNull: true,
-    type:DataTypes.STRING,
-    field:'phone_number'
+    type:DataTypes.DATEONLY,
+    field: "date_start",
+    comment:"date begin quarter"
+  },
 
+  quarterStart: {
+    allowNull: false,
+    field: 'quarter_start',
+    type: DataTypes.INTEGER,
+    comment: "Number quarter begin"
+  },
+
+  dateEnd:{
+    allowNull: true,
+    type:DataTypes.DATEONLY,
+    field: "date_end",
+    comment:"date end quarter"
   },
 
   operationStatusId: {
@@ -49,6 +47,18 @@ const CompanySchema = {
     onDelete: 'SET NULL'
   },
 
+  companyId: {
+    field: 'company_id',
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: COMPANY_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
+
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,
@@ -57,16 +67,12 @@ const CompanySchema = {
   }
 }
 
-class Company extends Model{
+class FiscalPeriod extends Model{
 
   static associate(models) {
 
     this.belongsTo(models.OperationStatus, { as: 'operationStatus' });
-    this.belongsTo(models.Person, { as: 'representative' });
-    this.hasMany(models.FiscalPeriod, {
-      as: 'FiscalPeriod',
-      foreignKey: 'companyId'
-    });
+    this.belongsTo(models.Company, { as: 'company' });
 
 
   }
@@ -74,8 +80,8 @@ class Company extends Model{
   static config(sequelize){
     return {
       sequelize,
-      tableName:COMPANY_TABLE,
-      modelName:'Company',
+      tableName:FISCAL_PERIOD_TABLE,
+      modelName:'FiscalPeriod',
       timestamps:false
     }
   }
@@ -83,4 +89,4 @@ class Company extends Model{
 }
 
 
-module.exports = { Company, CompanySchema, COMPANY_TABLE };
+module.exports = { FiscalPeriod, FiscalPeriodSchema, FISCAL_PERIOD_TABLE };
