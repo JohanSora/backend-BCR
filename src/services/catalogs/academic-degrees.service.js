@@ -1,8 +1,8 @@
 const boom  = require('@hapi/boom');
 
-const { models } = require('./../libs/sequelize');
+const { models } = require('./../../libs/sequelize');
 
-class AcademicDegrees{
+class AcademicDegreeService{
 
   constructor(){
     // construct
@@ -44,4 +44,4 @@ class AcademicDegrees{
 
 }
 
-module.exports =  AcademicDegrees;
+module.exports =  AcademicDegreeService;

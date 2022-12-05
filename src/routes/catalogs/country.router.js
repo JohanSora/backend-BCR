@@ -1,18 +1,18 @@
 const express = require('express');
 
-const LanguageService = require('./../services/language.service');
-const validatorHandler = require('./../middlewares/validator.handler');
-const { getLanguageSchema, createLanguageSchema, updateLanguageSchema } = require('../schemas/language.schema');
+const CountryService = require('../../services/catalogs/country.service');
+const validatorHandler = require('../../middlewares/validator.handler');
+const { getCountrySchema, createCountrySchema, updateCountrySchema } = require('../../schemas/catalogs/country.schema');
 
 const router = express.Router();
-const service = new LanguageService();
+const service = new CountryService();
 
-// List all Languages
+// List all country
 router.get('/', async(req, res, next)=>{
   try{
 
-    const languages = await service.find();
-    res.json(languages);
+    const countries = await service.find();
+    res.json(countries);
 
   }catch(error){
     next(error);
@@ -21,28 +21,28 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
-    validatorHandler(getLanguageSchema, 'params'),
+    validatorHandler(getCountrySchema, 'params'),
   async(req, res, next) =>{
     try{
 
       const { id }  = req.params;
-      const language = await service.findOne(id);
-      res.json(language);
+      const country = await service.findOne(id);
+      res.json(country);
 
     }catch(error){
       next(error);
     }
   });
 
-// Create language
+// Create country
 router.post('/',
-    validatorHandler(createLanguageSchema, 'body'),
+    validatorHandler(createCountrySchema, 'body'),
     async(req, res, next) => {
 
       try{
         const body = req.body;
-        const newLanguage = await service.create(body);
-        res.status(201).json(newLanguage);
+        const newCountry = await service.create(body);
+        res.status(201).json(newCountry);
 
       }catch(error){
         next(error);
@@ -50,26 +50,26 @@ router.post('/',
 
     });
 
-
+// update country
 router.patch('/:id',
-    validatorHandler(getLanguageSchema, 'params'),
-    validatorHandler(updateLanguageSchema, 'body'),
+    validatorHandler(getCountrySchema, 'params'),
+    validatorHandler(updateCountrySchema, 'body'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;
         const body = req.body;
-        const language = await service.update(id, body);
+        const country = await service.update(id, body);
 
-        res.json(language);
+        res.json(country);
 
       }catch(error){
          next(error);
       }
     });
 
-
+// delete country
 router.delete('/:id',
-    validatorHandler(getLanguageSchema, 'params'),
+    validatorHandler(getCountrySchema, 'params'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;

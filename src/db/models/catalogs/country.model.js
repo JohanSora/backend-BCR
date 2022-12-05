@@ -1,8 +1,8 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const ACADEMIC_DEGREES_TABLE = 'academic_degrees';
+const COUNTRY_TABLE = 'countries';
 
-const AcademicSchema = {
+const CountrySchema = {
   id:{
     allowNull:false,
     autoIncrement: true,
@@ -15,28 +15,36 @@ const AcademicSchema = {
     type:DataTypes.STRING
   },
 
+  isoCode:{
+    allowNull: false,
+    type:DataTypes.STRING,
+    field:'iso_code',
+  },
+
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
   }
-
-
-
 }
 
-class AcademicDegrees extends Model{
+class Country extends Model{
 
-  static associate (){
-     // Associate relationships
+  static associate(models) {
+
+    //resolve relationship with products
+    this.hasMany(models.City, {
+      as: 'cities',
+      foreignKey: 'countryId'
+    });
   }
 
   static config(sequelize){
     return {
       sequelize,
-      tableName:ACADEMIC_DEGREES_TABLE,
-      modelName:'AcademicDegrees',
+      tableName:COUNTRY_TABLE,
+      modelName:'Country',
       timestamps:false
     }
   }
@@ -44,4 +52,4 @@ class AcademicDegrees extends Model{
 }
 
 
-module.exports = { AcademicDegrees, AcademicSchema, ACADEMIC_DEGREES_TABLE };
+module.exports = { Country, CountrySchema, COUNTRY_TABLE };

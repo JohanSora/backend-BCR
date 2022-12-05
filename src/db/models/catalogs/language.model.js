@@ -34,8 +34,11 @@ const LanguageSchema = {
 
 class Language extends Model{
 
-  static associate (){
-     // Associate relationships
+  static associate (models){
+    this.hasMany(models.Person, {
+      as: 'person',
+      foreignKey: 'languageId'
+    });
   }
 
   static config(sequelize){

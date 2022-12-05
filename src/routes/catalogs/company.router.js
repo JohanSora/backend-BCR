@@ -1,18 +1,18 @@
 const express = require('express');
 
-const AwardService = require('./../services/award.service');
-const validatorHandler = require('./../middlewares/validator.handler');
-const { getAwardSchema, createAwardSchema, updateAwardSchema } = require('../schemas/award.schema');
+const CompanyService = require('../../services/catalogs/company.service');
+const validatorHandler = require('../../middlewares/validator.handler');
+const { getCompanySchema, createCompanySchema, updateCompanySchema } = require('../../schemas/catalogs/company.schema');
 
 const router = express.Router();
-const service = new AwardService();
+const service = new CompanyService();
 
-// List all Awards
+// List all company
 router.get('/', async(req, res, next)=>{
   try{
 
-    const awards = await service.find();
-    res.json(awards);
+    const companies = await service.find();
+    res.json(companies);
 
   }catch(error){
     next(error);
@@ -21,28 +21,28 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
-    validatorHandler(getAwardSchema, 'params'),
+    validatorHandler(getCompanySchema, 'params'),
   async(req, res, next) =>{
     try{
 
       const { id }  = req.params;
-      const award = await service.findOne(id);
-      res.json(award);
+      const company = await service.findOne(id);
+      res.json(company);
 
     }catch(error){
       next(error);
     }
   });
 
-// Create award
+// Create company
 router.post('/',
-    validatorHandler(createAwardSchema, 'body'),
+    validatorHandler(createCompanySchema, 'body'),
     async(req, res, next) => {
 
       try{
         const body = req.body;
-        const newAward = await service.create(body);
-        res.status(201).json(newAward);
+        const newCompany = await service.create(body);
+        res.status(201).json(newCompany);
 
       }catch(error){
         next(error);
@@ -50,26 +50,26 @@ router.post('/',
 
     });
 
-// update award
+// update company
 router.patch('/:id',
-    validatorHandler(getAwardSchema, 'params'),
-    validatorHandler(updateAwardSchema, 'body'),
+    validatorHandler(getCompanySchema, 'params'),
+    validatorHandler(updateCompanySchema, 'body'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;
         const body = req.body;
-        const award = await service.update(id, body);
+        const company = await service.update(id, body);
 
-        res.json(award);
+        res.json(company);
 
       }catch(error){
          next(error);
       }
     });
 
-// delete award
+// delete company
 router.delete('/:id',
-    validatorHandler(getAwardSchema, 'params'),
+    validatorHandler(getCompanySchema, 'params'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;

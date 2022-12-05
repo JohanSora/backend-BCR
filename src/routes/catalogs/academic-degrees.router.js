@@ -1,11 +1,11 @@
 const express = require('express');
 
-const AcademicDegrees = require('./../services/academic-degrees.service');
-const validatorHandler = require('./../middlewares/validator.handler');
-const { getAcademicDegreeSchema, createAcademicDegreeSchema, updateAcademicDegreeSchema } = require('../schemas/academic-degrees.schemas');
+const AcademicDegreeService = require('../../services/catalogs/academic-degrees.service');
+const validatorHandler = require('../../middlewares/validator.handler');
+const { getAcademicDegreeSchema, createAcademicDegreeSchema, updateAcademicDegreeSchema } = require('../../schemas/catalogs/academic-degrees.schema');
 
 const router = express.Router();
-const service = new AcademicDegrees();
+const service = new AcademicDegreeService();
 
 // List all AcedemicDegree
 router.get('/', async(req, res, next)=>{
