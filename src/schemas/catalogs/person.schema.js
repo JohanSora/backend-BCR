@@ -12,21 +12,21 @@ const languageId        = Joi.number().integer();
 
 
 const createPersonSchema = Joi.object({
-  names              :names.required(),
-  lastName           :lastName.required(),
+  names             :names.required(),
+  lastName          :lastName.required(),
   birthDate         :birthDate.required(),
   position          :position.required(),
   phoneNumber       :phoneNumber.required(),
   operationStatusId :operationStatusId.required(),
-  academicDegreeId :academicDegreeId.required(),
+  academicDegreeId  :academicDegreeId.required(),
   languageId        :languageId.required()
 
 });
 
 
 const updatePersonSchema = Joi.object({
-  names              :names,
-  lastName           :lastName,
+  names             :names,
+  lastName          :lastName,
   birthDate         :birthDate,
   position          :position,
   phoneNumber       :phoneNumber,

@@ -63,6 +63,7 @@ class Company extends Model{
 
     this.belongsTo(models.OperationStatus, { as: 'operationStatus' });
     this.belongsTo(models.Person, { as: 'representative' });
+
     this.hasMany(models.FiscalPeriod, {
       as: 'FiscalPeriod',
       foreignKey: 'companyId'

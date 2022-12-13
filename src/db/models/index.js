@@ -11,9 +11,10 @@ const {  City, CitySchema }                           = require('./catalogs/city
 const {  State, StateSchema }                         = require('./catalogs/state.model');
 const {  Person, PersonSchema }                       = require('./catalogs/person.model');
 const {  Company, CompanySchema }                     = require('./catalogs/company.model');
-const {  FiscalPeriod, FiscalPeriodSchema }                     = require('./catalogs/fiscal-periods.model');
+const {  FiscalPeriod, FiscalPeriodSchema }           = require('./catalogs/fiscal-periods.model');
 
 // End Catalog Models
+
 
 // Begin Operation Models
 

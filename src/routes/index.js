@@ -39,6 +39,13 @@ function routerApi(app){
 
     // end catalogs
 
+    // process
+    // end process
+
+
+    // Auth
+    // end auth
+
 
 }
 
