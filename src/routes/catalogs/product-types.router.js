@@ -3,12 +3,17 @@ const express = require('express');
 const ProductTypeService = require('./../../services/catalogs/product-type.service');
 const validatorHandler = require('./../../middlewares/validator.handler');
 const { getProductTypeSchema, createProductTypeSchema, updateProductTypeSchema } = require('../../schemas/catalogs/product-type.schema');
+const {checkRoles} = require('./../../middlewares/auth.handler');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new ProductTypeService();
 
 // List all product types
-router.get('/', async(req, res, next)=>{
+router.get('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
   try{
 
     const salesGroup = await service.find();
@@ -21,6 +26,8 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(getProductTypeSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -36,6 +43,8 @@ router.get('/:id',
 
 // Create product types
 router.post('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(createProductTypeSchema, 'body'),
     async(req, res, next) => {
 
@@ -52,6 +61,8 @@ router.post('/',
 
 
 router.patch('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getProductTypeSchema, 'params'),
     validatorHandler(updateProductTypeSchema, 'body'),
     async(req, res, next) =>{
@@ -69,6 +80,8 @@ router.patch('/:id',
 
 
 router.delete('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getProductTypeSchema, 'params'),
     async(req, res, next) =>{
       try{

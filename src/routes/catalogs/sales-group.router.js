@@ -3,12 +3,17 @@ const express = require('express');
 const SalesGroupService = require('./../../services/catalogs/sales-group.service');
 const validatorHandler = require('./../../middlewares/validator.handler');
 const { getSalesGroupSchema, createSalesGroupSchema, updateSalesGroupSchema } = require('../../schemas/catalogs/sales-group.schema');
+const {checkRoles} = require('./../../middlewares/auth.handler');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new SalesGroupService();
 
 // List all sales group
-router.get('/', async(req, res, next)=>{
+router.get('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
   try{
 
     const productTypes = await service.find();
@@ -21,6 +26,8 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(getSalesGroupSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -36,6 +43,8 @@ router.get('/:id',
 
 // Create sales group
 router.post('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(createSalesGroupSchema, 'body'),
     async(req, res, next) => {
 
@@ -52,6 +61,8 @@ router.post('/',
 
 
 router.patch('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getSalesGroupSchema, 'params'),
     validatorHandler(updateSalesGroupSchema, 'body'),
     async(req, res, next) =>{
@@ -69,6 +80,8 @@ router.patch('/:id',
 
 
 router.delete('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getSalesGroupSchema, 'params'),
     async(req, res, next) =>{
       try{

@@ -3,12 +3,17 @@ const express = require('express');
 const AwardService = require('./../../services/catalogs/award.service');
 const validatorHandler = require('./../../middlewares/validator.handler');
 const { getAwardSchema, createAwardSchema, updateAwardSchema } = require('../../schemas/catalogs/award.schema');
+const {checkRoles} = require('./../../middlewares/auth.handler');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new AwardService();
 
 // List all Awards
-router.get('/', async(req, res, next)=>{
+router.get('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
   try{
 
     const awards = await service.find();
@@ -21,6 +26,8 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(getAwardSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -36,6 +43,8 @@ router.get('/:id',
 
 // Create award
 router.post('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(createAwardSchema, 'body'),
     async(req, res, next) => {
 
@@ -52,6 +61,8 @@ router.post('/',
 
 // update award
 router.patch('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getAwardSchema, 'params'),
     validatorHandler(updateAwardSchema, 'body'),
     async(req, res, next) =>{
@@ -69,6 +80,8 @@ router.patch('/:id',
 
 // delete award
 router.delete('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getAwardSchema, 'params'),
     async(req, res, next) =>{
       try{

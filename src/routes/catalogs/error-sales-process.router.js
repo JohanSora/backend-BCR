@@ -3,12 +3,17 @@ const express = require('express');
 const ErrorSalesProcessService = require('../../services/catalogs/error-sales-process.service');
 const validatorHandler = require('../../middlewares/validator.handler');
 const { getErrorSalesProcessSchema, createErrorSalesProcessSchema, updateErrorSalesProcessSchema } = require('../../schemas/catalogs/error-sales-process.schema');
+const {checkRoles} = require('./../../middlewares/auth.handler');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new ErrorSalesProcessService();
 
 // List all Error Sales process
-router.get('/', async(req, res, next)=>{
+router.get('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
   try{
 
     const errorSalesProcess = await service.find();
@@ -21,6 +26,8 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(getErrorSalesProcessSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -36,6 +43,8 @@ router.get('/:id',
 
 // Create Error Sales process
 router.post('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(createErrorSalesProcessSchema, 'body'),
     async(req, res, next) => {
 
@@ -52,6 +61,8 @@ router.post('/',
 
 
 router.patch('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getErrorSalesProcessSchema, 'params'),
     validatorHandler(updateErrorSalesProcessSchema, 'body'),
     async(req, res, next) =>{
@@ -69,6 +80,8 @@ router.patch('/:id',
 
 
 router.delete('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getErrorSalesProcessSchema, 'params'),
     async(req, res, next) =>{
       try{

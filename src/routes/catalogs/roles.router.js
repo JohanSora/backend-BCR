@@ -1,23 +1,23 @@
 const express = require('express');
 
-const FiscalPeriodService = require('../../services/catalogs/fiscal-period.service');
-const validatorHandler = require('../../middlewares/validator.handler');
-const { getFiscalPeriodSchema, createFiscalPeriodSchema, updateFiscalPeriodSchema } = require('../../schemas/catalogs/fiscal-period.schema');
+const RoleService = require('./../../services/catalogs/role.service');
+const validatorHandler = require('./../../middlewares/validator.handler');
+const { getRoleSchema, createRoleSchema, updateRoleSchema } = require('../../schemas/catalogs/role.schema');
 const {checkRoles} = require('./../../middlewares/auth.handler');
 const passport = require('passport');
 
 const router = express.Router();
-const service = new FiscalPeriodService();
+const service = new RoleService();
 
-// List all fiscalPeriod
+// List all roles
 router.get('/',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
 async(req, res, next)=>{
   try{
 
-    const fiscalPeriods = await service.find();
-    res.json(fiscalPeriods);
+    const roles = await service.find();
+    res.json(roles);
 
   }catch(error){
     next(error);
@@ -28,30 +28,30 @@ async(req, res, next)=>{
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
-    validatorHandler(getFiscalPeriodSchema, 'params'),
+    validatorHandler(getRoleSchema, 'params'),
   async(req, res, next) =>{
     try{
 
       const { id }  = req.params;
-      const fiscalPeriod = await service.findOne(id);
-      res.json(fiscalPeriod);
+      const role = await service.findOne(id);
+      res.json(role);
 
     }catch(error){
       next(error);
     }
   });
 
-// Create fiscal Period
+// Create roles
 router.post('/',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
-    validatorHandler(createFiscalPeriodSchema, 'body'),
+    validatorHandler(createRoleSchema, 'body'),
     async(req, res, next) => {
 
       try{
         const body = req.body;
-        const newFiscalPeriod = await service.create(body);
-        res.status(201).json(newFiscalPeriod);
+        const newRole = await service.create(body);
+        res.status(201).json(newRole);
 
       }catch(error){
         next(error);
@@ -59,30 +59,30 @@ checkRoles(1,2),
 
     });
 
-// update fiscal Period
+// update roles
 router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getFiscalPeriodSchema, 'params'),
-    validatorHandler(updateFiscalPeriodSchema, 'body'),
+    validatorHandler(getRoleSchema, 'params'),
+    validatorHandler(updateRoleSchema, 'body'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;
         const body = req.body;
-        const fiscalPeriod = await service.update(id, body);
+        const role = await service.update(id, body);
 
-        res.json(fiscalPeriod);
+        res.json(role);
 
       }catch(error){
          next(error);
       }
     });
 
-// delete fiscal Period
+// delete roles
 router.delete('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getFiscalPeriodSchema, 'params'),
+    validatorHandler(getRoleSchema, 'params'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;

@@ -3,12 +3,17 @@ const express = require('express');
 const AcademicDegreeService = require('../../services/catalogs/academic-degrees.service');
 const validatorHandler = require('../../middlewares/validator.handler');
 const { getAcademicDegreeSchema, createAcademicDegreeSchema, updateAcademicDegreeSchema } = require('../../schemas/catalogs/academic-degrees.schema');
+const {checkRoles} = require('./../../middlewares/auth.handler');
 
 const router = express.Router();
 const service = new AcademicDegreeService();
+const passport = require('passport');
 
 // List all AcedemicDegree
-router.get('/', async(req, res, next)=>{
+router.get('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
   try{
 
     const academicDegrees = await service.find();
@@ -21,6 +26,8 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
+  passport.authenticate('jwt', {session:false}),
+    checkRoles(1,2),
     validatorHandler(getAcademicDegreeSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -36,6 +43,8 @@ router.get('/:id',
 
 // Create academicDegree
 router.post('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(createAcademicDegreeSchema, 'body'),
     async(req, res, next) => {
 
@@ -52,6 +61,8 @@ router.post('/',
 
 
 router.patch('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getAcademicDegreeSchema, 'params'),
     validatorHandler(updateAcademicDegreeSchema, 'body'),
     async(req, res, next) =>{
@@ -69,6 +80,8 @@ router.patch('/:id',
 
 
 router.delete('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getAcademicDegreeSchema, 'params'),
     async(req, res, next) =>{
       try{

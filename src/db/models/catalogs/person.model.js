@@ -3,6 +3,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const { OPERATION_STATUS_TABLE } = require('./operation-status.model');
 const { ACADEMIC_DEGREES_TABLE } = require('./academic-degrees.model');
 const { LANGUAGE_TABLE } = require('./language.model');
+const { USER_TABLE } = require('./user.model');
 
 const PERSON_TABLE = 'people';
 
@@ -54,6 +55,21 @@ const PersonSchema = {
     onDelete: 'SET NULL'
   },
 
+
+  userId: {
+    field: 'user_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: USER_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
+
+
+
   academicDegreeId: {
     field: 'academic_degree_id',
     allowNull: false,
@@ -93,6 +109,7 @@ class Person extends Model{
     this.belongsTo(models.OperationStatus, { as: 'operationStatus' });
     this.belongsTo(models.AcademicDegrees, { as: 'academicDegree' });
     this.belongsTo(models.Language, { as: 'language' });
+    this.belongsTo(models.User, { as: 'user' });
 
     this.hasMany(models.Company, {
       as: 'company',

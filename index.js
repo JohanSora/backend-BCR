@@ -28,6 +28,9 @@ const options = {
   }
 app.use(cors(options));
 
+//Implement auth strategies passport athorization
+require('./src/utils/auth');
+
 routerApi(app);
 
 app.use(logErrors);
@@ -39,6 +42,7 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log("port connection: ",port);
   console.log("Enviroment: ",nodeEnv);
+  console.log("My secret Key: "+process.env.JWT_SECRET);
 });
 
 

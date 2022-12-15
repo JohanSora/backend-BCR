@@ -12,6 +12,8 @@ const {  State, StateSchema }                         = require('./catalogs/stat
 const {  Person, PersonSchema }                       = require('./catalogs/person.model');
 const {  Company, CompanySchema }                     = require('./catalogs/company.model');
 const {  FiscalPeriod, FiscalPeriodSchema }           = require('./catalogs/fiscal-periods.model');
+const {  Role, RoleSchema }                           = require('./catalogs/role.model');
+const {  User, UserSchema }                           = require('./catalogs/user.model');
 
 // End Catalog Models
 
@@ -39,6 +41,8 @@ function setupModels(sequelize){
     Person.init(PersonSchema, Person.config(sequelize));
     Company.init(CompanySchema, Company.config(sequelize));
     FiscalPeriod.init(FiscalPeriodSchema, FiscalPeriod.config(sequelize));
+    Role.init(RoleSchema, Role.config(sequelize));
+    User.init(UserSchema, User.config(sequelize));
 
 
 
@@ -53,6 +57,8 @@ function setupModels(sequelize){
     Person.associate(sequelize.models);
     Company.associate(sequelize.models);
     FiscalPeriod.associate(sequelize.models);
+    Role.associate(sequelize.models);
+    User.associate(sequelize.models);
 
 // -------------------------------------
 

@@ -3,12 +3,17 @@ const express = require('express');
 const OperationStatusService = require('./../../services/catalogs/operation-status.service');
 const validatorHandler = require('./../../middlewares/validator.handler');
 const { getOperationStatusSchema, createOperationStatusSchema, updateOperationStatusSchema } = require('../../schemas/catalogs/operation-status.schema');
+const {checkRoles} = require('./../../middlewares/auth.handler');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new OperationStatusService();
 
 // List all Operation Status
-router.get('/', async(req, res, next)=>{
+router.get('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
   try{
 
     const operationStatus = await service.find();
@@ -21,6 +26,8 @@ router.get('/', async(req, res, next)=>{
 
 // find by Id
 router.get('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(getOperationStatusSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -36,6 +43,8 @@ router.get('/:id',
 
 // Create Operation Status
 router.post('/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
     validatorHandler(createOperationStatusSchema, 'body'),
     async(req, res, next) => {
 
@@ -52,6 +61,8 @@ router.post('/',
 
 
 router.patch('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getOperationStatusSchema, 'params'),
     validatorHandler(updateOperationStatusSchema, 'body'),
     async(req, res, next) =>{
@@ -69,6 +80,8 @@ router.patch('/:id',
 
 
 router.delete('/:id',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1),
     validatorHandler(getOperationStatusSchema, 'params'),
     async(req, res, next) =>{
       try{

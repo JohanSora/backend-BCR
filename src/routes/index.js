@@ -12,6 +12,15 @@ const stateRouter               = require('./catalogs/states.router');
 const peopleRouter              = require('./catalogs/people.router');
 const companyRouter             = require('./catalogs/company.router');
 const fiscalPeriodRouter        = require('./catalogs/fiscal-period.router');
+const RoleRouter                = require('./catalogs/roles.router');
+const UserRouter                = require('./catalogs/users.router');
+
+//auth routers
+const AuthRouter                = require('./auth.router');
+
+// Process file router
+
+// end process file router
 
 
 //function routes manager
@@ -36,6 +45,8 @@ function routerApi(app){
     router.use('/people', peopleRouter);
     router.use('/companies', companyRouter);
     router.use('/fiscal-periods', fiscalPeriodRouter);
+    router.use('/roles', RoleRouter);
+    router.use('/users', UserRouter);
 
     // end catalogs
 
@@ -44,6 +55,7 @@ function routerApi(app){
 
 
     // Auth
+    router.use('/auth', AuthRouter);
     // end auth
 
 
