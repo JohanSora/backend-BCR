@@ -23,7 +23,6 @@ checkRoles(1,2),
           res.status(201).json({"Message":"File upload success"});
         }
 
-
       }catch(error){
         next(error);
       }

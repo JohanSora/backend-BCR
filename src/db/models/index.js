@@ -17,8 +17,10 @@ const {  User, UserSchema }                           = require('./catalogs/user
 
 // End Catalog Models
 
+const {  ErrorSalesProcess, ErrorSalesProcessSchema }                           = require('./operations/error-sales-process.model');
 
 // Begin Operation Models
+
 
 //--------
 
@@ -43,6 +45,15 @@ function setupModels(sequelize){
     FiscalPeriod.init(FiscalPeriodSchema, FiscalPeriod.config(sequelize));
     Role.init(RoleSchema, Role.config(sequelize));
     User.init(UserSchema, User.config(sequelize));
+
+
+    // Begbin process
+
+    ErrorSalesProcess.init(ErrorSalesProcessSchema, ErrorSalesProcesss.config(sequelize));
+
+    // End Process
+
+
 
 
 
