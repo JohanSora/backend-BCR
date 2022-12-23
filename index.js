@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./src/routes');
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./src/middlewares/error.handler')
 
@@ -11,7 +12,11 @@ const app = express();
 const port    = process.env.PORT;
 const nodeEnv = process.env.NODE_ENV;
 
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
 app.use(express.json());
+
+
 
 // cors whitelist accept external to server connections
 const whitelist = ['http://localhost:8080', 'https://myapp.com', 'http://localhost:8050'];
@@ -27,6 +32,9 @@ const options = {
       }
   }
 app.use(cors(options));
+
+
+
 
 //Implement auth strategies passport athorization
 require('./src/utils/auth');

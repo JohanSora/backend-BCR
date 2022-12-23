@@ -19,7 +19,7 @@ const UserRouter                = require('./catalogs/users.router');
 const AuthRouter                = require('./auth.router');
 
 // Process file router
-
+const documentUploadRouter                = require('./operations/base64-document-process.router');
 // end process file router
 
 
@@ -51,11 +51,13 @@ function routerApi(app){
     // end catalogs
 
     // process
+    router.use('/uploads', documentUploadRouter);
     // end process
 
 
     // Auth
     router.use('/auth', AuthRouter);
+
     // end auth
 
 
