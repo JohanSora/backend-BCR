@@ -68,8 +68,6 @@ const PersonSchema = {
     onDelete: 'SET NULL'
   },
 
-
-
   academicDegreeId: {
     field: 'academic_degree_id',
     allowNull: false,
@@ -115,6 +113,20 @@ class Person extends Model{
       as: 'company',
       foreignKey: 'representativeId'
     });
+
+    this.hasMany(models.PointsOfSale, {
+      as: 'pointOfSale',
+      foreignKey: 'personId'
+    });
+
+    this.hasMany(models.CompanyEmployee, {
+      as: 'companyEmployee',
+      foreignKey: 'personId'
+    });
+
+
+
+
 
   }
 

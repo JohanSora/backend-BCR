@@ -14,13 +14,17 @@ const {  Company, CompanySchema }                     = require('./catalogs/comp
 const {  FiscalPeriod, FiscalPeriodSchema }           = require('./catalogs/fiscal-periods.model');
 const {  Role, RoleSchema }                           = require('./catalogs/role.model');
 const {  User, UserSchema }                           = require('./catalogs/user.model');
+const {  PointsOfSale, PointsOfSaleSchema }           = require('./catalogs/points_of_sales.model');
+const {  Product, ProductSchema }                     = require('./catalogs/product.model');
 
 // End Catalog Models
 
-const {  ErrorSalesProcess, ErrorSalesProcessSchema }                           = require('./operations/error-sales-process.model');
 
 // Begin Operation Models
-
+const {  CompanyEmployee, CompanyEmployeeSchema }           = require('./operations/company-employees.model');
+const {  CsvFilesProcessed, CsvFilesProcessedSchema }           = require('./operations/csv-files-processed.model');
+const {  EmployeePointsCollect, EmployeePointsCollectSchema }           = require('./operations/employee-points-collect.model');
+const {  Sales, SalesSchema }           = require('./operations/sales.model');
 
 //--------
 
@@ -45,11 +49,17 @@ function setupModels(sequelize){
     FiscalPeriod.init(FiscalPeriodSchema, FiscalPeriod.config(sequelize));
     Role.init(RoleSchema, Role.config(sequelize));
     User.init(UserSchema, User.config(sequelize));
+    PointsOfSale.init(PointsOfSaleSchema, PointsOfSale.config(sequelize));
+    Product.init(ProductSchema, Product.config(sequelize));
 
 
     // Begbin process
 
-    ErrorSalesProcess.init(ErrorSalesProcessSchema, ErrorSalesProcesss.config(sequelize));
+
+    CompanyEmployee.init(CompanyEmployeeSchema, CompanyEmployee.config(sequelize));
+    CsvFilesProcessed.init(CsvFilesProcessedSchema, CsvFilesProcessed.config(sequelize));
+    EmployeePointsCollect.init(EmployeePointsCollectSchema, EmployeePointsCollect.config(sequelize));
+    Sales.init(SalesSchema, Sales.config(sequelize));
 
     // End Process
 
@@ -70,6 +80,12 @@ function setupModels(sequelize){
     FiscalPeriod.associate(sequelize.models);
     Role.associate(sequelize.models);
     User.associate(sequelize.models);
+    PointsOfSale.associate(sequelize.models);
+    Product.associate(sequelize.models);
+    CompanyEmployee.associate(sequelize.models);
+    CsvFilesProcessed.associate(sequelize.models);
+    EmployeePointsCollect.associate(sequelize.models);
+    Sales.associate(sequelize.models);
 
 // -------------------------------------
 

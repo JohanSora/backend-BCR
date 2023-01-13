@@ -28,7 +28,11 @@ const SalesGroupSchema = {
 
 class SalesGroup extends Model{
 
-  static associate (){
+  static associate (models){
+     this.hasMany(models.Product, {
+       as: 'product',
+       foreignKey: 'salesGroupId'
+     });
      // Associate relationships
   }
 

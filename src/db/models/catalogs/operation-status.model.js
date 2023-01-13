@@ -50,6 +50,12 @@ class OperationStatus extends Model{
       as: 'fiscalPeriod',
       foreignKey: 'operationStatusId'
     });
+    this.hasMany(models.CsvFilesProcessed, {
+      as: 'csvFilesProcessed',
+      foreignKey: 'operationStatusId'
+    });
+
+
 
 
 

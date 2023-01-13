@@ -28,8 +28,14 @@ const ProductTypeSchema = {
 
 class ProductType extends Model{
 
-  static associate (){
+  static associate (models){
      // Associate relationships
+   this.hasMany(models.Product, {
+      as: 'Product',
+      foreignKey: 'productTypeId'
+    });
+
+
   }
 
   static config(sequelize){

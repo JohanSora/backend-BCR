@@ -1,8 +1,9 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const COUNTRY_TABLE = require('./../catalogs/country.model');
-const COMPANY_TABLE = require('./../catalogs/company.model');
-const PERSON_TABLE = require('./../catalogs/person.model');
+const { COUNTRY_TABLE } = require('./../catalogs/country.model');
+const { COMPANY_TABLE } = require('./../catalogs/company.model');
+const { PERSON_TABLE  }= require('./../catalogs/person.model');
+
 const POINTS_OF_SALES_TABLE = 'points_of_sales';
 
 
@@ -26,6 +27,19 @@ const PointsOfSaleSchema = {
     onDelete: 'SET NULL'
   },
 
+  companyId: {
+    field: 'company_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: COMPANY_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
+
+
   personId: {
     field: 'person_id',
     allowNull: false,
@@ -39,7 +53,7 @@ const PointsOfSaleSchema = {
   },
 
   serie:{
-    allowNull: false,
+    allowNull: true,
     type:DataTypes.INTEGER
   },
 
@@ -58,19 +72,6 @@ const PointsOfSaleSchema = {
     default: 0
   },
 
-
-  CompanyId: {
-    field: 'company_id',
-    allowNull: false,
-    type: DataTypes.INTEGER,
-    references: {
-      model: COMPANY_TABLE,
-      key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
-  },
-
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,
@@ -84,11 +85,25 @@ const PointsOfSaleSchema = {
 
 class PointsOfSale extends Model{
 
-  static associate (){
-    // this.hasMany(models.Person, {
-    //   as: 'person',
-    //   foreignKey: 'academicDegreeId'
-    // });
+  static associate (models){
+
+    this.belongsTo(models.Country, { as: 'country' });
+    this.belongsTo(models.Company, { as: 'company' });
+    this.belongsTo(models.Person, { as: 'person' });
+
+     this.hasMany(models.CompanyEmployee, {
+      as: 'companyEmployee',
+      foreignKey: 'posId'
+    });
+
+     this.hasMany(models.Sales, {
+      as: 'sales',
+      foreignKey: 'posId'
+    });
+
+
+
+
   }
 
   static config(sequelize){

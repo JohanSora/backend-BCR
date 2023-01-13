@@ -1,6 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const OPERATION_STATUS_TABLE = require('./../catalogs/operation-status.model');
+const { OPERATION_STATUS_TABLE } = require('./../catalogs/operation-status.model');
+
 const CSV_FILES_PROCESSED_TABLE = 'csv_files_processed';
 
 
@@ -62,11 +63,15 @@ const CsvFilesProcessedSchema = {
 
 class CsvFilesProcessed extends Model{
 
-  static associate (){
-    // this.hasMany(models.Person, {
-    //   as: 'person',
-    //   foreignKey: 'academicDegreeId'
-    // });
+  static associate (models){
+    this.belongsTo(models.OperationStatus, { as: 'operationStatus' });
+
+    this.hasMany(models.Sales, {
+      as: 'sales',
+      foreignKey: 'fileUploadId'
+    });
+
+
   }
 
   static config(sequelize){

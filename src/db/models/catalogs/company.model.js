@@ -69,6 +69,13 @@ class Company extends Model{
       foreignKey: 'companyId'
     });
 
+    this.hasMany(models.PointsOfSale, {
+      as: 'pointsOfSale',
+      foreignKey: 'companyId'
+    });
+
+
+
 
   }
 

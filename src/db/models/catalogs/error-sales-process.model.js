@@ -41,8 +41,12 @@ const ErrorSalesProcessSchema = {
 
 class ErrorSalesProcess extends Model{
 
-  static associate (){
+  static associate (models){
      // Associate relationships
+     this.hasMany(models.Sales, {
+      as: 'sales',
+      foreignKey: 'saleId'
+    });
   }
 
   static config(sequelize){

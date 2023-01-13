@@ -66,10 +66,19 @@ class User extends Model{
 
   static associate(models) {
     this.belongsTo(models.Role, { as: 'role' });
+
     this.hasMany(models.Person, {
       as: 'person',
-      foreignKey: 'user_id'
+      foreignKey: 'userId'
     });
+
+    this.hasMany(models.EmployeePointsCollect, {
+      as: 'employeePointsCollect',
+      foreignKey: 'userAssignedId'
+    });
+
+
+
   }
 
   static config(sequelize){

@@ -38,6 +38,13 @@ class Country extends Model{
       as: 'cities',
       foreignKey: 'countryId'
     });
+
+    this.hasMany(models.PointsOfSale, {
+      as: 'pointOfSale',
+      foreignKey: 'countryId'
+    });
+
+
   }
 
   static config(sequelize){
