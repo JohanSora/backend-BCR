@@ -39,10 +39,22 @@ class ProcessDocumentService{
         const workbook = XLSX.readFile(pathData)
 
         const  workbookSheets = workbook.SheetNames;
-        const  sheets = workbookSheets.length;
-        const dataExcel = XLSX.utils.sheet_to_json(workbook.Sheets(sheets));
+        const  sheets = workbookSheets[0];
+        const dataExcel = XLSX.utils.sheet_to_json(workbook.Sheets[sheets]);
+        console.log( dataExcel )
 
-        console.log(dataExcel);
+
+        for(const itemFila of dataExcel){
+
+            //var number = 44839;
+            var number = itemFila['DATE'];
+
+            var dateN = new Date((number - (25567 + 2)) * 86400 * 1000);
+
+            //let dateExplodeToFormat = dateRead
+
+            console.log( dateN)
+        }
 
 
 
