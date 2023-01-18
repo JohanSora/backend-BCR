@@ -19,7 +19,7 @@ const SalesSchema = {
 
   posId: {
     field: 'pos_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: POINTS_OF_SALES_TABLE,
@@ -30,8 +30,8 @@ const SalesSchema = {
   },
 
   productId: {
-    field: 'pos_id',
-    allowNull: false,
+    field: 'product_id',
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: OPERATION_STATUS_TABLE,
@@ -43,7 +43,7 @@ const SalesSchema = {
 
   employAssignedId: {
     field: 'employ_assigned_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: COMPANY_EMPLOYEES_TABLE,
@@ -54,6 +54,7 @@ const SalesSchema = {
   },
 
   totalPoints:{
+    field: 'total_points',
     allowNull: false,
     type:DataTypes.INTEGER,
     default:false
@@ -61,18 +62,21 @@ const SalesSchema = {
 
 
   pendingPoints:{
+    field: 'pending_points',
     allowNull: false,
     type:DataTypes.INTEGER,
     default:false
   },
 
   assignedPoints:{
+    field: 'assigned_points',
     allowNull: false,
     type:DataTypes.INTEGER,
     default:false
   },
 
   saleDates:{
+    field: 'sale_date',
     allowNull: false,
     type:DataTypes.DATE,
     default:false,
@@ -80,6 +84,7 @@ const SalesSchema = {
   },
 
   pointsLoadDates:{
+    field: 'points_load_date',
     allowNull: false,
     type:DataTypes.DATE,
     default:false,
@@ -88,7 +93,8 @@ const SalesSchema = {
 
 
   pointsAssignedDates:{
-    allowNull: false,
+    field: 'points_assigned_date',
+    allowNull: true,
     type:DataTypes.DATE,
     default:false,
     defaultValue: Sequelize.NOW
@@ -109,6 +115,7 @@ const SalesSchema = {
 
 
   uploadSuccess:{
+    field: 'upload_success',
     allowNull: false,
     type:DataTypes.BOOLEAN,
     default:false
@@ -116,12 +123,14 @@ const SalesSchema = {
 
 
   invoiceNumber:{
+    field: 'invoice_number',
     allowNull: false,
     type:DataTypes.STRING,
     default:false
   },
 
   saleAmount:{
+    field: 'sales_amount',
     allowNull: false,
     type:DataTypes.DECIMAL,
     default:false
@@ -129,7 +138,7 @@ const SalesSchema = {
 
   errorId: {
     field: 'error_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: ERROR_SALES_PROCESS_TABLE,
@@ -160,10 +169,10 @@ class Sales extends Model{
       foreignKey: 'saleId'
     });
 
-    this.belongsTo(models.PointsOfSale, { as: 'pointsOfSale' });
+    this.belongsTo(models.PointsOfSale, { as: 'pos' });
     this.belongsTo(models.Product, { as: 'product' });
-    this.belongsTo(models.CsvFilesProcessed, { as: 'csvFilesProcessed' });
-    this.belongsTo(models.ErrorSalesProcess, { as: 'errorSalesProcess' });
+    this.belongsTo(models.CsvFilesProcessed, { as: 'fileUpload' });
+    this.belongsTo(models.ErrorSalesProcess, { as: 'error' });
 
   }
 

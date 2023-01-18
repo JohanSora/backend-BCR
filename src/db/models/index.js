@@ -21,10 +21,10 @@ const {  Product, ProductSchema }                     = require('./catalogs/prod
 
 
 // Begin Operation Models
-const {  CompanyEmployee, CompanyEmployeeSchema }           = require('./operations/company-employees.model');
+const {  CompanyEmployee, CompanyEmployeeSchema }               = require('./operations/company-employees.model');
 const {  CsvFilesProcessed, CsvFilesProcessedSchema }           = require('./operations/csv-files-processed.model');
-const {  EmployeePointsCollect, EmployeePointsCollectSchema }           = require('./operations/employee-points-collect.model');
-const {  Sales, SalesSchema }           = require('./operations/sales.model');
+const {  EmployeePointsCollect, EmployeePointsCollectSchema }   = require('./operations/employee-points-collect.model');
+const {  Sales, SalesSchema }                                   = require('./operations/sales.model');
 
 //--------
 
