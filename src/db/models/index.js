@@ -25,6 +25,11 @@ const {  CompanyEmployee, CompanyEmployeeSchema }               = require('./ope
 const {  CsvFilesProcessed, CsvFilesProcessedSchema }           = require('./operations/csv-files-processed.model');
 const {  EmployeePointsCollect, EmployeePointsCollectSchema }   = require('./operations/employee-points-collect.model');
 const {  Sales, SalesSchema }                                   = require('./operations/sales.model');
+const {  Quarter, QuarterSchema }                               = require("./operations/quarters.model");
+const {  Weeks, WeekSchema }                                    = require("./operations/weeks.model");
+const {  RedeemAwards, RedeemAwardsSchema }                     = require("./operations/redeem-awards.model");
+const {  Rules, RulesSchema }                                   = require("./operations/rules.model");
+
 
 //--------
 
@@ -60,6 +65,11 @@ function setupModels(sequelize){
     CsvFilesProcessed.init(CsvFilesProcessedSchema, CsvFilesProcessed.config(sequelize));
     EmployeePointsCollect.init(EmployeePointsCollectSchema, EmployeePointsCollect.config(sequelize));
     Sales.init(SalesSchema, Sales.config(sequelize));
+    Quarter.init(QuarterSchema, Quarter.config(sequelize));
+    Weeks.init(WeekSchema, Weeks.config(sequelize));
+    RedeemAwards.init(RedeemAwardsSchema, RedeemAwards.config(sequelize));
+    Rules.init(RulesSchema, Rules.config(sequelize));
+
 
     // End Process
 
@@ -86,6 +96,10 @@ function setupModels(sequelize){
     CsvFilesProcessed.associate(sequelize.models);
     EmployeePointsCollect.associate(sequelize.models);
     Sales.associate(sequelize.models);
+    Quarter.associate(sequelize.models);
+    Weeks.associate(sequelize.models);
+    RedeemAwards.associate(sequelize.models);
+    Rules.associate(sequelize.models);
 
 // -------------------------------------
 

@@ -35,6 +35,13 @@ const FiscalPeriodSchema = {
     comment:"date end quarter"
   },
 
+  fiscalYear:{
+    allowNull: true,
+    type:DataTypes.INTEGER,
+    field: "fiscal_year",
+    comment:"year for fiscal period"
+  },
+
   operationStatusId: {
     field: 'status_id',
     allowNull: false,
@@ -59,6 +66,8 @@ const FiscalPeriodSchema = {
     onDelete: 'SET NULL'
   },
 
+
+
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,
@@ -73,6 +82,11 @@ class FiscalPeriod extends Model{
 
     this.belongsTo(models.OperationStatus, { as: 'operationStatus' });
     this.belongsTo(models.Company, { as: 'company' });
+
+    this.hasMany(models.Quarter, {
+      as: 'quarter',
+      foreignKey: 'quarterId'
+    });
 
 
   }

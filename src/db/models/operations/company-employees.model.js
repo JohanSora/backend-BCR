@@ -57,6 +57,7 @@ class CompanyEmployee extends Model{
     this.belongsTo(models.Person, { as: 'person' });
     this.belongsTo(models.PointsOfSale, { as: 'pointOfSale' });
 
+
     this.hasMany(models.EmployeePointsCollect, {
       as: 'employeePointsCollect',
       foreignKey: 'employId'
@@ -66,6 +67,14 @@ class CompanyEmployee extends Model{
       as: 'sales',
       foreignKey: 'employAssignedId'
     });
+
+
+    this.hasMany(models.RedeemAwards, {
+      as: 'redeemAwards',
+      foreignKey: 'employeeId'
+    });
+
+
 
 
 

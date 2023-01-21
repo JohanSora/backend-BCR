@@ -64,7 +64,14 @@ const AwardSchema = {
 
 class Award extends Model{
 
-  static associate (){
+  static associate (models){
+
+    this.hasMany(models.RedeemAwards, {
+      as: 'redeemAward',
+      foreignKey: 'awardId'
+    });
+
+
      // Associate relationships
   }
 

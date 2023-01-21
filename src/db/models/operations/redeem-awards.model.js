@@ -2,9 +2,9 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { COMPANY_EMPLOYEES_TABLE } = require('./../operations/company-employees.model');
 const { AWARD_TABLE } = require('./../catalogs/award.model');
-const { QUARTERS_TABLE } = require('./../operations/quaters.model');
+const { QUARTERS_TABLE } = require('./../operations/quarters.model');
 
-const REDEEM_AWARDS = 'redeem_awards';
+const REDEEM_AWARDS_TABLE = 'redeem_awards';
 
 
 const RedeemAwardsSchema = {
@@ -74,7 +74,8 @@ class RedeemAwards extends Model{
   static associate (models){
     this.belongsTo(models.CompanyEmployee, { as: 'employee' });
     this.belongsTo(models.Award, { as: 'award' });
-    this.belongsTo(models.CompanyEmployee, { as: 'quarter' });
+    this.belongsTo(models.Quarter, { as: 'quarter' });
+
 
    /*  this.hasMany(models.Sales, {
       as: 'sales',
@@ -87,7 +88,7 @@ class RedeemAwards extends Model{
   static config(sequelize){
     return {
       sequelize,
-      tableName:REDEEM_AWARDS,
+      tableName:REDEEM_AWARDS_TABLE,
       modelName:'RedeemAwards',
       timestamps:false
     }
@@ -96,4 +97,4 @@ class RedeemAwards extends Model{
 }
 
 
-module.exports = { RedeemAwards, RedeemAwardsSchema, REDEEM_AWARDS };
+module.exports = { RedeemAwards, RedeemAwardsSchema, REDEEM_AWARDS_TABLE };

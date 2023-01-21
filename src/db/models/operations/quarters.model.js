@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { FISCAL_PERIOD_TABLE } = require('./../catalogs/fiscal-periods.model');
+const { FISCAL_PERIOD_TABLE } = require('../catalogs/fiscal-periods.model');
 
 const QUARTERS_TABLE = 'quarters';
 
@@ -61,10 +61,31 @@ class Quarter extends Model{
   static associate (models){
     this.belongsTo(models.OperationStatus, { as: 'fiscalPeriod' });
 
+    this.hasMany(models.Weeks, {
+      as: 'week',
+      foreignKey: 'quarterId'
+    });
+
+    this.hasMany(models.RedeemAwards, {
+      as: 'redeemAwards',
+      foreignKey: 'quarterId'
+    });
+    this.hasMany(models.Rules, {
+      as: 'rules',
+      foreignKey: 'quarterId'
+    });
+
+
+
+
+
+
    /*  this.hasMany(models.Sales, {
       as: 'sales',
       foreignKey: 'fileUploadId'
     }); */
+
+
 
 
   }

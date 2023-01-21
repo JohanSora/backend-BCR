@@ -19,7 +19,13 @@ const UserRouter                = require('./catalogs/users.router');
 const AuthRouter                = require('./auth.router');
 
 // Process file router
-const documentUploadRouter                = require('./operations/base64-document-process.router');
+const documentUploadRouter                 = require('./operations/base64-document-process.router');
+const employeePointsCollectRouter          = require('./operations/employee-points-collect.router');
+const quarterRouter                        = require('./operations/quarter.router');
+const redeemAwardRouter                    = require('./operations/redeem-awards.router');
+const rulesRouter                          = require('./operations/rules.router');
+const weeksRouter                          = require('./operations/weeks.router');
+const companyEmployeeRouter                = require('./operations/company-employee.router');
 // end process file router
 
 
@@ -52,6 +58,12 @@ function routerApi(app){
 
     // process
     router.use('/uploads', documentUploadRouter);
+    router.use('/employee-poits-collects', employeePointsCollectRouter);
+    router.use('/quarters', quarterRouter);
+    router.use('/redeemAwards', redeemAwardRouter);
+    router.use('/rules', rulesRouter);
+    router.use('/weeks', weeksRouter);
+    router.use('/companyEmployees', companyEmployeeRouter);
     // end process
 
 

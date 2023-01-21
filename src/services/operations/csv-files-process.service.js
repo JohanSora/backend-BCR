@@ -21,9 +21,6 @@ class CsvFileProcessService{
   }
 
   async findOne(id){
-    const options = {
-      include:['country']
-    };
 
     const csvFile = await models.CsvFileProcessService.findByPk(id, options);
     if(!csvFile){

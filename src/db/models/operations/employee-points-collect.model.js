@@ -5,7 +5,7 @@ const { USER_TABLE } = require('./../catalogs/user.model');
 const { SALES_TABLE } = require('./sales.model');
 
 
-const EMPLOYEE_POINTS_COLLECT_TABLE = 'employee_points_collect';
+const EMPLOYEE_POINTS_COLLECT_TABLE = 'employee_points_collects';
 
 const EmployeePointsCollectSchema = {
 
@@ -51,7 +51,7 @@ const EmployeePointsCollectSchema = {
   pointsAssignedDate:{
     field: 'points_assigned_date',
     allowNull: false,
-    type:DataTypes.INTEGER,
+    type:DataTypes.DATEONLY,
     default:false
   },
 
@@ -111,10 +111,14 @@ class EmployeePointsCollect extends Model{
     this.belongsTo(models.User, { as: 'user' });
     this.belongsTo(models.Sales, { as: 'sales' });
 
-    // this.hasMany(models.Person, {
-    //   as: 'person',
-    //   foreignKey: 'academicDegreeId'
-    // });
+
+    /* this.hasMany(models.Person, {
+       as: 'person',
+      foreignKey: 'academicDegreeId'
+     });*/
+
+
+
   }
 
   static config(sequelize){

@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { QUARTERS_TABLE } = require('./../operations/quaters.model');
+const { QUARTERS_TABLE } = require('./../operations/quarters.model');
 
 const RULE_TABLE = 'rules';
 
@@ -20,7 +20,7 @@ const RulesSchema = {
 
   digipointsPerAmount:{
     allowNull: false,
-    type:DataTypes.BOOLEAN,
+    type:DataTypes.INTEGER,
     field: 'digipoints_per_amount'
   },
 
@@ -57,14 +57,7 @@ const RulesSchema = {
 class Rules extends Model{
 
   static associate (models){
-    this.belongsTo(models.OperationStatus, { as: 'Rules' });
-
-   /*  this.hasMany(models.Sales, {
-      as: 'sales',
-      foreignKey: 'fileUploadId'
-    }); */
-
-
+    this.belongsTo(models.Quarter, { as: 'quarter' });
   }
 
   static config(sequelize){

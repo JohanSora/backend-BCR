@@ -5,10 +5,11 @@ const { Sequelize } = require('sequelize');
 const { v4: uuidv4} = require('uuid');
 const XLSX = require('xlsx');
 const CsvFileService = require('./csv-files-process.service');
-const Sales = require('./sales.service.js')
+const Sales = require('./sales.service.js');
+const user = require('./../catalogs/user.service');
 
 const serviceDocument = new CsvFileService();
-const serviceSales = new Sales();
+const useSelection = new user();
 
 
 class ProcessDocumentService{
@@ -43,7 +44,7 @@ class ProcessDocumentService{
         const registerFile = await serviceDocument.create({
             nameUuid: getStringName,
             extension: fileExtension,
-            complete: (resFileSave) ? 1 : 0,
+            complete: 1,
             pathSrc:pathData,
             operationStatusId: 2
           });
@@ -56,6 +57,10 @@ class ProcessDocumentService{
 
           let count = 0;
           for(const itemFila of dataExcel){
+
+
+
+
               const serviceSales = new Sales();
                count = count +1;
                //var number = 44839;
@@ -63,11 +68,32 @@ class ProcessDocumentService{
                const dateN = new Date((number - (25567 + 2)) * 86400 * 1000);
                const salesFullDate = this.processDate(dateN,1);
                const nowDate = this.processDate(new Date(),2);
+               let uploadRowError = null;
+               let successType = 1;
+               let userSale = '';
 
-               console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ line truncate", count)
+
+
+               if(itemFila['Email Address'] == null ||  itemFila['Email Address'] == '' || itemFila['DATE'] == null){
+                  uploadRowError = 2;
+                  successType = 0;
+                  userSale = null
+               }else{
+
+                  userSale = await useSelection.findByEmail(String(itemFila['Email Address']));
+                  console.log("🚀 ~ file: process-document.service.js:83 ~ ProcessDocumentService ~ converAndSaveFile ~ userSale", userSale)
+
+               }
+
+
+
+
+
+
+
              const saleInvoiceSave =  await serviceSales.create({
                   productId: null,
-                  employAssignedId:null,
+                  employAssignedId:userSale.id,
                   totalPoints:1,
                   pendingPoints:1,
                   assignedPoints:1,
@@ -75,10 +101,10 @@ class ProcessDocumentService{
                   pointsLoadDates:nowDate.toString(),
                   pointsAssignedDates:nowDate.toString(),
                   fileUploadId:registerFile.id,
-                  uploadSuccess:1,
+                  uploadSuccess:successType,
                   invoiceNumber: itemFila['INVOICE'],
                   saleAmount: itemFila['Revenue USD'],
-                  errorId:null
+                  errorId:uploadRowError
                 });
                 console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
 

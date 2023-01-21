@@ -1,8 +1,8 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { QUARTERS_TABLE } = require('./../operations/quaters.model');
+const { QUARTERS_TABLE } = require('./../operations/quarters.model');
 
-const WEEKS_TABLE = 'quarters';
+const WEEKS_TABLE = 'weeks';
 
 
 const WeekSchema = {
@@ -45,7 +45,7 @@ const WeekSchema = {
 class Weeks extends Model{
 
   static associate (models){
-    this.belongsTo(models.OperationStatus, { as: 'fiscalPeriod' });
+    this.belongsTo(models.Quarter, { as: 'quarter' });
 
    /*  this.hasMany(models.Sales, {
       as: 'sales',
