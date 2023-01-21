@@ -14,6 +14,7 @@ const companyRouter             = require('./catalogs/company.router');
 const fiscalPeriodRouter        = require('./catalogs/fiscal-period.router');
 const RoleRouter                = require('./catalogs/roles.router');
 const UserRouter                = require('./catalogs/users.router');
+const ProductRouter                = require('./catalogs/product.router');
 
 //auth routers
 const AuthRouter                = require('./auth.router');
@@ -53,6 +54,7 @@ function routerApi(app){
     router.use('/fiscal-periods', fiscalPeriodRouter);
     router.use('/roles', RoleRouter);
     router.use('/users', UserRouter);
+    router.use('/products', ProductRouter);
 
     // end catalogs
 
@@ -60,10 +62,10 @@ function routerApi(app){
     router.use('/uploads', documentUploadRouter);
     router.use('/employee-poits-collects', employeePointsCollectRouter);
     router.use('/quarters', quarterRouter);
-    router.use('/redeemAwards', redeemAwardRouter);
+    router.use('/redeem-awards', redeemAwardRouter);
     router.use('/rules', rulesRouter);
     router.use('/weeks', weeksRouter);
-    router.use('/companyEmployees', companyEmployeeRouter);
+    router.use('/company-employees', companyEmployeeRouter);
     // end process
 
 

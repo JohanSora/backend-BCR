@@ -107,9 +107,9 @@ class EmployeePointsCollect extends Model{
 
   static associate (models){
 
-    this.belongsTo(models.CompanyEmployee, { as: 'companyEmployee' });
-    this.belongsTo(models.User, { as: 'user' });
-    this.belongsTo(models.Sales, { as: 'sales' });
+    this.belongsTo(models.CompanyEmployee, { as: 'employ' });
+    this.belongsTo(models.User, { as: 'userAssigned' });
+    this.belongsTo(models.Sales, { as: 'sale' });
 
 
     /* this.hasMany(models.Person, {

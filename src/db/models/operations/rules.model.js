@@ -48,7 +48,13 @@ const RulesSchema = {
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
-  }
+  },
+
+  baseAmount:{
+    allowNull:true,
+    type:DataTypes.DECIMAL,
+    field: 'base_amount'
+  },
 
 
 
@@ -58,6 +64,7 @@ class Rules extends Model{
 
   static associate (models){
     this.belongsTo(models.Quarter, { as: 'quarter' });
+
   }
 
   static config(sequelize){

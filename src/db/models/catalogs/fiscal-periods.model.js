@@ -85,7 +85,7 @@ class FiscalPeriod extends Model{
 
     this.hasMany(models.Quarter, {
       as: 'quarter',
-      foreignKey: 'quarterId'
+      foreignKey: 'fiscalPeriodId'
     });
 
 

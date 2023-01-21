@@ -1,13 +1,13 @@
 const express = require('express');
 
-const ProductTypeService = require('./../../services/catalogs/product-type.service');
+const ProductService = require('./../../services/catalogs/product.service');
 const validatorHandler = require('./../../middlewares/validator.handler');
-const { getProductTypeSchema, createProductTypeSchema, updateProductTypeSchema } = require('../../schemas/catalogs/product-type.schema');
+const { getProductSchema, createProductSchema, updateProductSchema } = require('../../schemas/catalogs/product.schema');
 const {checkRoles} = require('./../../middlewares/auth.handler');
 const passport = require('passport');
 
 const router = express.Router();
-const service = new ProductTypeService();
+const service = new ProductService();
 
 // List all product types
 router.get('/',
@@ -16,8 +16,8 @@ checkRoles(1,2),
 async(req, res, next)=>{
   try{
 
-    const productType = await service.find();
-    res.json(productType);
+    const Product = await service.find();
+    res.json(Product);
 
   }catch(error){
     next(error);
@@ -28,13 +28,13 @@ async(req, res, next)=>{
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
-    validatorHandler(getProductTypeSchema, 'params'),
+    validatorHandler(getProductSchema, 'params'),
   async(req, res, next) =>{
     try{
 
       const { id }  = req.params;
-      const ProductType = await service.findOne(id);
-      res.json(ProductType);
+      const Product = await service.findOne(id);
+      res.json(Product);
 
     }catch(error){
       next(error);
@@ -45,13 +45,13 @@ checkRoles(1,2),
 router.post('/',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
-    validatorHandler(createProductTypeSchema, 'body'),
+    validatorHandler(createProductSchema, 'body'),
     async(req, res, next) => {
 
       try{
         const body = req.body;
-        const newProductType = await service.create(body);
-        res.status(201).json(newProductType);
+        const newProduct = await service.create(body);
+        res.status(201).json(newProduct);
 
       }catch(error){
         next(error);
@@ -63,15 +63,15 @@ checkRoles(1,2),
 router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getProductTypeSchema, 'params'),
-    validatorHandler(updateProductTypeSchema, 'body'),
+    validatorHandler(getProductSchema, 'params'),
+    validatorHandler(updateProductSchema, 'body'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;
         const body = req.body;
-        const productType = await service.update(id, body);
+        const product = await service.update(id, body);
 
-        res.json(productType);
+        res.json(product);
 
       }catch(error){
          next(error);
@@ -82,7 +82,7 @@ checkRoles(1),
 router.delete('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getProductTypeSchema, 'params'),
+    validatorHandler(getProductSchema, 'params'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;

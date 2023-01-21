@@ -23,7 +23,6 @@ const ProductTypeSchema = {
   }
 
 
-
 }
 
 class ProductType extends Model{

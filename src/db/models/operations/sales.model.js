@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { OPERATION_STATUS_TABLE    }   = require('./../catalogs/operation-status.model');
+const { PRODUCT_TABLE    }   = require('./../catalogs/product.model');
 const { CSV_FILES_PROCESSED_TABLE }   = require('./csv-files-processed.model');
 const { ERROR_SALES_PROCESS_TABLE }   = require('./../catalogs/error-sales-process.model');
 const { POINTS_OF_SALES_TABLE     }   = require('./../catalogs/points_of_sales.model');
@@ -34,7 +34,7 @@ const SalesSchema = {
     allowNull: true,
     type: DataTypes.INTEGER,
     references: {
-      model: OPERATION_STATUS_TABLE,
+      model: PRODUCT_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -173,6 +173,7 @@ class Sales extends Model{
     this.belongsTo(models.Product, { as: 'product' });
     this.belongsTo(models.CsvFilesProcessed, { as: 'fileUpload' });
     this.belongsTo(models.ErrorSalesProcess, { as: 'error' });
+    this.belongsTo(models.CompanyEmployee, { as: 'employAssigned' });
 
   }
 

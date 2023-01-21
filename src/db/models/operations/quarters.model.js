@@ -59,7 +59,7 @@ const QuarterSchema = {
 class Quarter extends Model{
 
   static associate (models){
-    this.belongsTo(models.OperationStatus, { as: 'fiscalPeriod' });
+    this.belongsTo(models.FiscalPeriod, { as: 'fiscalPeriod' });
 
     this.hasMany(models.Weeks, {
       as: 'week',

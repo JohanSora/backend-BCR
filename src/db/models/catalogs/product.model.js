@@ -73,8 +73,8 @@ const ProductSchema = {
 class Product extends Model{
 
   static associate (models){
-    this.belongsTo(models.SalesGroup, { as: 'SalesGroup' });
-    this.belongsTo(models.ProductType, { as: 'ProductType' });
+    this.belongsTo(models.SalesGroup, { as: 'salesGroup' });
+    this.belongsTo(models.ProductType, { as: 'productType' });
 
     this.hasMany(models.Sales, {
       as: 'sales',
@@ -82,10 +82,6 @@ class Product extends Model{
     });
 
 
-    // this.hasMany(models.Person, {
-    //   as: 'person',
-    //   foreignKey: 'academicDegreeId'
-    // });
   }
 
   static config(sequelize){
