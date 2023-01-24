@@ -13,6 +13,51 @@ class EmployeePointsCollectService{
     return newEmployeePointCollect;
   }
 
+
+  async createBySalesId(data){
+    try{
+
+      const saleById          = await models.Sales.findByPk(data.saleId);
+      const pointsToAssign    = data.pointsAssigned;
+      const respOperation     =  (parseInt(saleById.pendingPoints) - parseInt(pointsToAssign));
+      const nowDate           = new Date();
+      const userIdReceiving   = data.userAssignedId;
+
+      console.log("points to assign", pointsToAssign);
+
+     if(respOperation > 0){
+              //
+      await models.EmployeePointsCollect.create({
+        employeeId:         data.employeeId,
+        status:             true,
+        pointsAssigned:     pointsToAssign,
+        pointsRedeemed:     0,
+        pointsAssignedDate: nowDate,
+        userAssignedId:     userIdReceiving,
+        saleId:             data.saleId,
+        saleAssigned:       true
+      });
+      const resp = (await saleById).update({
+        pendingPoints: respOperation,
+        assignedPoints: parseInt(saleById.assignedPoints) + parseInt(pointsToAssign),
+        pointsAssignedDate: nowDate,
+      });
+
+        return resp;
+
+      }else{
+        throw boom.conflict('Digipoints for sale are insufficient to be allocated or the information does not have the required format ');
+      }
+
+    }catch(error){
+      throw boom.badData('Somethig wront -> '+error);
+    }
+
+
+
+
+  }
+
   async find(){
 
     const EmployeePointCollect = await models.EmployeePointsCollect.findAll();

@@ -50,7 +50,7 @@ checkRoles(1,2),
 
       try{
         const body = req.body;
-        const employeePoint = await service.create(body);
+        const employeePoint = await service.createBySalesId(body);
         res.status(201).json(employeePoint);
 
       }catch(error){

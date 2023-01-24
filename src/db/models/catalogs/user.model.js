@@ -85,7 +85,7 @@ class User extends Model{
 
     this.hasMany(models.EmployeePointsCollect, {
       as: 'employee',
-      foreignKey: 'employId'
+      foreignKey: 'employeeId'
     });
 
 
