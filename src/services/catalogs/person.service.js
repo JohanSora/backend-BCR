@@ -1,4 +1,7 @@
 const boom  = require('@hapi/boom');
+const bycrypt = require("bcrypt");
+const {config} = require('./../../../config/config');
+const saltArround = Number( config.envSalt );
 
 const { models } = require('./../../libs/sequelize');
 
@@ -9,13 +12,32 @@ class PersonService{
   }
 
   async create(data){
-    const newPerson = await models.Person.create(data);
+
+    const encryptPassword = await bycrypt.hash(
+      data.user.password,
+      saltArround
+    );
+
+    const newData = {
+      ...data,
+      user:{
+        ...data.user,
+        password: encryptPassword
+      }
+  }
+
+
+    const newPerson = await models.Person.create(newData, {
+      include:['user']
+    });
     return newPerson;
   }
 
   async find(){
 
-    const people = await models.Person.findAll();
+    const people = await models.Person.findAll({
+      include:['user']
+    });
 
     return people;
   }
@@ -25,7 +47,8 @@ class PersonService{
       include:[
         'operationStatus',
         'academicDegree',
-        'language'
+        'language',
+        'user',
       ]
     };
 
@@ -33,6 +56,7 @@ class PersonService{
     if(!person){
      throw boom.notFound('Person not found');
     }
+    delete person.dataValues.user.dataValues.password
     return person;
   }
 

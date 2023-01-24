@@ -26,7 +26,7 @@ const quarterRouter                        = require('./operations/quarter.route
 const redeemAwardRouter                    = require('./operations/redeem-awards.router');
 const rulesRouter                          = require('./operations/rules.router');
 const weeksRouter                          = require('./operations/weeks.router');
-const companyEmployeeRouter                = require('./operations/company-employee.router');
+const EmployeePosRouter                = require('./operations/employee-pos.router');
 // end process file router
 
 
@@ -65,7 +65,7 @@ function routerApi(app){
     router.use('/redeem-awards', redeemAwardRouter);
     router.use('/rules', rulesRouter);
     router.use('/weeks', weeksRouter);
-    router.use('/company-employees', companyEmployeeRouter);
+    router.use('/employees-pos', EmployeePosRouter);
     // end process
 
 

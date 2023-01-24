@@ -72,9 +72,32 @@ class User extends Model{
       foreignKey: 'userId'
     });
 
+    this.hasMany(models.PointsOfSale, {
+      as: 'pointOfSale',
+      foreignKey: 'managerId'
+    });
+
     this.hasMany(models.EmployeePointsCollect, {
       as: 'employeePointsCollect',
       foreignKey: 'userAssignedId'
+    });
+
+
+    this.hasMany(models.EmployeePointsCollect, {
+      as: 'employee',
+      foreignKey: 'employId'
+    });
+
+
+    this.hasMany(models.RedeemAwards, {
+      as: 'redeemAward',
+      foreignKey: 'employeeId'
+    });
+
+
+    this.hasMany(models.Sales, {
+      as: 'sales',
+      foreignKey: 'employAssignedId'
     });
 
 

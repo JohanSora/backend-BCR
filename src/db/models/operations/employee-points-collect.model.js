@@ -1,6 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { COMPANY_EMPLOYEES_TABLE } = require('./company-employees.model');
 const { USER_TABLE } = require('./../catalogs/user.model');
 const { SALES_TABLE } = require('./sales.model');
 
@@ -16,12 +15,13 @@ const EmployeePointsCollectSchema = {
     type: DataTypes.INTEGER
   },
 
-  employId: {
+
+  employeeId: {
     field: 'employ_id',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
-      model: COMPANY_EMPLOYEES_TABLE,
+      model: USER_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -107,7 +107,7 @@ class EmployeePointsCollect extends Model{
 
   static associate (models){
 
-    this.belongsTo(models.CompanyEmployee, { as: 'employ' });
+    this.belongsTo(models.User, { as: 'employee' });
     this.belongsTo(models.User, { as: 'userAssigned' });
     this.belongsTo(models.Sales, { as: 'sale' });
 

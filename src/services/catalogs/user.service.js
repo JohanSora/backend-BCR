@@ -30,7 +30,7 @@ class UserService{
 
   async find(){
     const users = await models.User.findAll({
-      includes:['person']
+      include:['person']
     });
 
     return users;

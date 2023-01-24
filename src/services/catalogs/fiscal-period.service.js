@@ -36,6 +36,24 @@ class FiscalPeriod{
     return fiscalPeriod;
   }
 
+
+  async findByCompany(id){
+
+
+    const data = await models.FiscalPeriod.findOne({
+      where:{
+        companyId: id,
+        operationStatusId:4
+      }
+    });
+
+    return data;
+
+
+
+  }
+
+
   async update(id, changes){
      const fiscalPeriod = this.findOne(id);
      const resp = (await fiscalPeriod).update(changes);

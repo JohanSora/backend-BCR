@@ -4,7 +4,7 @@ const { PRODUCT_TABLE    }   = require('./../catalogs/product.model');
 const { CSV_FILES_PROCESSED_TABLE }   = require('./csv-files-processed.model');
 const { ERROR_SALES_PROCESS_TABLE }   = require('./../catalogs/error-sales-process.model');
 const { POINTS_OF_SALES_TABLE     }   = require('./../catalogs/points_of_sales.model');
-const { COMPANY_EMPLOYEES_TABLE   }   = require('./company-employees.model');
+const { USER_TABLE   }   = require('./../catalogs/user.model');
 
 const SALES_TABLE = 'sales';
 
@@ -46,7 +46,7 @@ const SalesSchema = {
     allowNull: true,
     type: DataTypes.INTEGER,
     references: {
-      model: COMPANY_EMPLOYEES_TABLE,
+      model: USER_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -173,7 +173,7 @@ class Sales extends Model{
     this.belongsTo(models.Product, { as: 'product' });
     this.belongsTo(models.CsvFilesProcessed, { as: 'fileUpload' });
     this.belongsTo(models.ErrorSalesProcess, { as: 'error' });
-    this.belongsTo(models.CompanyEmployee, { as: 'employAssigned' });
+    this.belongsTo(models.User, { as: 'employAssigned' });
 
   }
 

@@ -2,7 +2,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { COUNTRY_TABLE } = require('./../catalogs/country.model');
 const { COMPANY_TABLE } = require('./../catalogs/company.model');
-const { PERSON_TABLE  }= require('./../catalogs/person.model');
+const { USER_TABLE  }= require('./../catalogs/user.model');
 
 const POINTS_OF_SALES_TABLE = 'points_of_sales';
 
@@ -13,6 +13,12 @@ const PointsOfSaleSchema = {
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER
+  },
+
+  description:{
+    allowNull: false,
+    type:DataTypes.STRING,
+    default:false
   },
 
   countryId: {
@@ -39,13 +45,13 @@ const PointsOfSaleSchema = {
     onDelete: 'SET NULL'
   },
 
-
-  personId: {
-    field: 'person_id',
+// manager for this pos
+  managerId: {
+    field: 'manager_id',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
-      model: PERSON_TABLE,
+      model: USER_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -89,10 +95,10 @@ class PointsOfSale extends Model{
 
     this.belongsTo(models.Country, { as: 'country' });
     this.belongsTo(models.Company, { as: 'company' });
-    this.belongsTo(models.Person, { as: 'person' });
+    this.belongsTo(models.User, { as: 'manager' });
 
-     this.hasMany(models.CompanyEmployee, {
-      as: 'companyEmployee',
+     this.hasMany(models.EmployeePos, {
+      as: 'employeePos',
       foreignKey: 'posId'
     });
 
@@ -100,8 +106,6 @@ class PointsOfSale extends Model{
       as: 'sales',
       foreignKey: 'posId'
     });
-
-
 
 
   }

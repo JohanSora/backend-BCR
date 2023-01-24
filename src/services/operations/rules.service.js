@@ -29,6 +29,20 @@ class RuleService{
     return Rule;
   }
 
+  async findByQuarter(quarter){
+
+    const data = await models.Rules.findOne({
+      where:{
+        quarterId: quarter,
+        status:true
+      }
+    });
+
+    return data;
+
+
+  }
+
   async update(id, changes){
      const Rule = this.findOne(id);
      const resp = (await Rule).update(changes);

@@ -21,7 +21,7 @@ const {  Product, ProductSchema }                     = require('./catalogs/prod
 
 
 // Begin Operation Models
-const {  CompanyEmployee, CompanyEmployeeSchema }               = require('./operations/company-employees.model');
+const {  EmployeePos, EmployeePosSchema }               = require('./operations/employees-pos.model');
 const {  CsvFilesProcessed, CsvFilesProcessedSchema }           = require('./operations/csv-files-processed.model');
 const {  EmployeePointsCollect, EmployeePointsCollectSchema }   = require('./operations/employee-points-collect.model');
 const {  Sales, SalesSchema }                                   = require('./operations/sales.model');
@@ -61,7 +61,7 @@ function setupModels(sequelize){
     // Begbin process
 
 
-    CompanyEmployee.init(CompanyEmployeeSchema, CompanyEmployee.config(sequelize));
+    EmployeePos.init(EmployeePosSchema, EmployeePos.config(sequelize));
     CsvFilesProcessed.init(CsvFilesProcessedSchema, CsvFilesProcessed.config(sequelize));
     EmployeePointsCollect.init(EmployeePointsCollectSchema, EmployeePointsCollect.config(sequelize));
     Sales.init(SalesSchema, Sales.config(sequelize));
@@ -92,7 +92,7 @@ function setupModels(sequelize){
     User.associate(sequelize.models);
     PointsOfSale.associate(sequelize.models);
     Product.associate(sequelize.models);
-    CompanyEmployee.associate(sequelize.models);
+    EmployeePos.associate(sequelize.models);
     CsvFilesProcessed.associate(sequelize.models);
     EmployeePointsCollect.associate(sequelize.models);
     Sales.associate(sequelize.models);

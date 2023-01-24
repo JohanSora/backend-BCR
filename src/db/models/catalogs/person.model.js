@@ -37,7 +37,6 @@ const PersonSchema = {
     type:DataTypes.STRING
   },
 
-
   phoneNumber:{
     allowNull: true,
     type:DataTypes.STRING
@@ -54,7 +53,6 @@ const PersonSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
   },
-
 
   userId: {
     field: 'user_id',
@@ -92,6 +90,8 @@ const PersonSchema = {
     onDelete: 'SET NULL'
   },
 
+
+
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,
@@ -113,17 +113,6 @@ class Person extends Model{
       as: 'company',
       foreignKey: 'representativeId'
     });
-
-    this.hasMany(models.PointsOfSale, {
-      as: 'pointOfSale',
-      foreignKey: 'personId'
-    });
-
-    this.hasMany(models.CompanyEmployee, {
-      as: 'companyEmployee',
-      foreignKey: 'personId'
-    });
-
 
 
 

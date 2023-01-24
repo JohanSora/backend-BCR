@@ -42,6 +42,18 @@ const RulesSchema = {
     type:DataTypes.TEXT('long'),
   },
 
+  status:{
+    allowNull:false,
+    default: true,
+    type:DataTypes.BOOLEAN
+  },
+
+  baseAmount:{
+    allowNull:true,
+    type:DataTypes.DECIMAL,
+    field: 'base_amount'
+  },
+
 
   CreatedAt:{
     allowNull:false,
@@ -50,11 +62,7 @@ const RulesSchema = {
     defaultValue: Sequelize.NOW
   },
 
-  baseAmount:{
-    allowNull:true,
-    type:DataTypes.DECIMAL,
-    field: 'base_amount'
-  },
+
 
 
 

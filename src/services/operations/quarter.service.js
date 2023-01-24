@@ -26,6 +26,18 @@ class QuarterService{
     return Quarter;
   }
 
+  async findRuleByQuarterFiscal(id){
+
+    const data = await models.Quarter.findOne({
+
+      where:{fiscalPeriodId: id}
+
+    });
+
+    return data;
+
+  }
+
   async update(id, changes){
      const Quarter = this.findOne(id);
      const resp = (await Quarter).update(changes);

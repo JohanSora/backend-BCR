@@ -9,11 +9,20 @@ const Sales = require('./sales.service.js');
 const user = require('./../catalogs/user.service');
 const Product = require('./../catalogs/product.service');
 const Rule    = require('./../operations/rules.service');
+const EmployeePosService = require('./../operations/employees-pos.service');
+const PointsOfSaleService = require('./../operations/points-of-sale.service');
+const fiscalPeriodService = require('./../catalogs/fiscal-period.service');
+const QuarterService = require('./../operations/quarter.service');
+
 
 const serviceDocument   = new CsvFileService();
 const useSelection      = new user();
 const findProduct       = new Product();
 const findRule          = new Rule();
+const findPosEmployee   = new EmployeePosService();
+const findPos           = new PointsOfSaleService();
+const findFiscalPerid   = new fiscalPeriodService();
+const findQuarter       = new QuarterService();
 
 
 class ProcessDocumentService{
@@ -57,8 +66,8 @@ class ProcessDocumentService{
           const  workbookSheets = workbook.SheetNames;
           const  sheets = workbookSheets[0];
           const dataExcel = XLSX.utils.sheet_to_json(workbook.Sheets[sheets]);
-         // console.log( dataExcel )
-
+          // console.log( dataExcel )
+          // ToDo Change a new process and endPoint
           let count = 0;
           for(const itemFila of dataExcel){
 
@@ -68,37 +77,75 @@ class ProcessDocumentService{
                const dateN            = new Date((number - (25567 + 2)) * 86400 * 1000);
                const salesFullDate    = this.processDate(dateN,1);
                const nowDate          = this.processDate(new Date(),2);
+               const yearAndWeek      = String(itemFila['WK']).split("-");
                let uploadRowError     = null;
                let successType        = 1;
-               let userSale           = '';
                let findProd           = await findProduct.findByName(itemFila['PRODUCT_NAME']);
-               let findRuleInter      = await findRule.findOne(1);
-               let digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
-               let approuch           = Math.round(digipointSave);
+               let yearReference      = yearAndWeek[0];
+               let weekReference      = yearAndWeek[1];
+               let findPosInUser      = '';
+               let getIdCompany       = '';
+               let userSale           = '';
+               let dateSale           = ''
+               let findRuleInter      = '';
+               let digipointSave      = '';
+               let approuch           = '';
+               let getPosId           = '';
 
 
-                console.log("Object prod ->: ",findProd.id);
 
-               if(itemFila['Email Address'] == null ||  itemFila['Email Address'] == '' || itemFila['DATE'] == null){
+               if(findProd == null ){
+                  uploadRowError = 4;
+                  successType = 0;
+                  console.log("PRODUCT not  FOUND");
+                  findProd = null
+               }
+
+
+
+               if( salesFullDate.indexOf("NAN")){
+                  uploadRowError = 3;
+                  successType = 0;
+                  dateSale = null;
+               }
+
+              if(itemFila['Email Address'] == null ||  String(itemFila['Email Address']).length < 1 ){
                   uploadRowError = 2;
                   successType = 0;
-                  userSale = null
-               }else{
+                  userSale = null;
+              }
 
-                  userSale = await useSelection.findByEmail(String(itemFila['Email Address']));
+               if((itemFila['Email Address'] != null)){
+                  let userSaleToFind = await useSelection.findByEmail(String(itemFila['Email Address']));
+                  findPosInUser = await findPosEmployee.findByUserId(userSaleToFind.id);
+                  getIdCompany = await findPos.findOne(findPosInUser.posId);
+                  let getFiscalPeriod = await findFiscalPerid.findByCompany(getIdCompany.companyId);
+                  let getQuarter = await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
+
+
+                  findRuleInter      = await findRule.findByQuarter(getQuarter.id);
+                  digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
+                  approuch           = Math.round(digipointSave);
+
+
+                  getPosId = findPosInUser.posId;
+                  dateSale = salesFullDate;
+                  userSale = userSaleToFind.id;
+                  uploadRowError = null;
 
 
                }
 
              const saleInvoiceSave =  await serviceSales.create({
+                  posId: getPosId,
                   productId: findProd.id,
-                  employAssignedId:null,
+                  employAssignedId:userSale,
                   totalPoints:approuch,
                   pendingPoints:approuch,
                   assignedPoints:0,
-                  saleDates:salesFullDate.toString(),
+                  saleDates:dateSale.toString(),
                   pointsLoadDates:nowDate.toString(),
-                  pointsAssignedDates:nowDate.toString(),
+                  pointsAssignedDates:null,
                   fileUploadId:registerFile.id,
                   uploadSuccess:successType,
                   invoiceNumber: itemFila['INVOICE'],

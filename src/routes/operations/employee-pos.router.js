@@ -1,13 +1,13 @@
 const express = require('express');
 
-const CompanyEmployeeService = require('../../services/operations/company-employees.service');
+const EmployeePosService = require('../../services/operations/employees-pos.service');
 const validatorHandler = require('../../middlewares/validator.handler');
-const { getEmployeePointsCollectSchema, createEmployeePointsCollectSchema, updateEmployeePointsCollectSchema } = require('../../schemas/operations/companyEployees.schmea');
+const { getEmployeePosSchema, createEmployeePosSchema, updateEmployeePosSchema } = require('../../schemas/operations/eployeesPos.schema');
 const {checkRoles} = require('../../middlewares/auth.handler');
 const passport = require('passport');
 
 const router = express.Router();
-const service = new CompanyEmployeeService();
+const service = new EmployeePosService();
 
 // List all sales group
 router.get('/',
@@ -28,7 +28,7 @@ async(req, res, next)=>{
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
-    validatorHandler(getEmployeePointsCollectSchema, 'params'),
+    validatorHandler(getEmployeePosSchema, 'params'),
   async(req, res, next) =>{
     try{
 
@@ -45,7 +45,7 @@ checkRoles(1,2),
 router.post('/',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
-    validatorHandler(createEmployeePointsCollectSchema, 'body'),
+    validatorHandler(createEmployeePosSchema, 'body'),
     async(req, res, next) => {
 
       try{
@@ -63,8 +63,8 @@ checkRoles(1,2),
 router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getEmployeePointsCollectSchema, 'params'),
-    validatorHandler(updateEmployeePointsCollectSchema, 'body'),
+    validatorHandler(getEmployeePosSchema, 'params'),
+    validatorHandler(updateEmployeePosSchema, 'body'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;
@@ -82,7 +82,7 @@ checkRoles(1),
 router.delete('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getEmployeePointsCollectSchema, 'params'),
+    validatorHandler(getEmployeePosSchema, 'params'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;

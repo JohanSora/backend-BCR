@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const { COMPANY_EMPLOYEES_TABLE } = require('./../operations/company-employees.model');
+const { USER_TABLE } = require('./../catalogs/user.model');
 const { AWARD_TABLE } = require('./../catalogs/award.model');
 const { QUARTERS_TABLE } = require('./../operations/quarters.model');
 
@@ -20,7 +20,7 @@ const RedeemAwardsSchema = {
     allowNull: true,
     type: DataTypes.INTEGER,
     references: {
-      model: COMPANY_EMPLOYEES_TABLE,
+      model: USER_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -72,7 +72,7 @@ const RedeemAwardsSchema = {
 class RedeemAwards extends Model{
 
   static associate (models){
-    this.belongsTo(models.CompanyEmployee, { as: 'employee' });
+    this.belongsTo(models.User, { as: 'employee' });
     this.belongsTo(models.Award, { as: 'award' });
     this.belongsTo(models.Quarter, { as: 'quarter' });
 
