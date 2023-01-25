@@ -26,7 +26,8 @@ const quarterRouter                        = require('./operations/quarter.route
 const redeemAwardRouter                    = require('./operations/redeem-awards.router');
 const rulesRouter                          = require('./operations/rules.router');
 const weeksRouter                          = require('./operations/weeks.router');
-const EmployeePosRouter                = require('./operations/employee-pos.router');
+const EmployeePosRouter                    = require('./operations/employee-pos.router');
+const CsvFileRouter                        = require('./operations/csv-files-process.router');
 // end process file router
 
 
@@ -66,6 +67,7 @@ function routerApi(app){
     router.use('/rules', rulesRouter);
     router.use('/weeks', weeksRouter);
     router.use('/employees-pos', EmployeePosRouter);
+    router.use('/csv-files', CsvFileRouter);
     // end process
 
 

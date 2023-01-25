@@ -53,9 +53,6 @@ class EmployeePointsCollectService{
       throw boom.badData('Somethig wront -> '+error);
     }
 
-
-
-
   }
 
   async find(){
