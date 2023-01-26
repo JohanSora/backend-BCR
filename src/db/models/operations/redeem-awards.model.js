@@ -3,6 +3,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const { USER_TABLE } = require('./../catalogs/user.model');
 const { AWARD_TABLE } = require('./../catalogs/award.model');
 const { QUARTERS_TABLE } = require('./../operations/quarters.model');
+const { OPERATION_STATUS_TABLE } = require('./../catalogs/operation-status.model');
 
 const REDEEM_AWARDS_TABLE = 'redeem_awards';
 
@@ -57,11 +58,30 @@ const RedeemAwardsSchema = {
     field:'digipoint_substract'
   },
 
+  operationStatusId: {
+    field: 'status_id',
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: OPERATION_STATUS_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
+
 
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,
     field:'created_at',
+    defaultValue: Sequelize.NOW
+  },
+
+  UpdatedAt:{
+    allowNull:false,
+    type:DataTypes.DATE,
+    field:'updated_at',
     defaultValue: Sequelize.NOW
   }
 
@@ -75,6 +95,7 @@ class RedeemAwards extends Model{
     this.belongsTo(models.User, { as: 'employee' });
     this.belongsTo(models.Award, { as: 'award' });
     this.belongsTo(models.Quarter, { as: 'quarter' });
+    this.belongsTo(models.OperationStatus, { as: 'operationStatus' });
 
 
    /*  this.hasMany(models.Sales, {

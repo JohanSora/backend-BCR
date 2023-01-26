@@ -154,6 +154,13 @@ const SalesSchema = {
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
+  },
+
+  UpdatedAt:{
+    allowNull:false,
+    type:DataTypes.DATE,
+    field:'updated_at',
+    defaultValue: Sequelize.NOW
   }
 
 

@@ -75,10 +75,12 @@ class CsvFileProcessService{
     const  workbookSheets = workbook.SheetNames;
     const  sheets = workbookSheets[0];
     const dataExcel = XLSX.utils.sheet_to_json(workbook.Sheets[sheets]);
+    const nowDate          = this.processDate(new Date(),2);
 
     let count = 0;
     getFile.update({
-      operationStatusId:1
+      operationStatusId:1,
+      UpdatedAt:nowDate.toString(),
     })
   for(const itemFila of dataExcel){
 
@@ -87,7 +89,7 @@ class CsvFileProcessService{
         const number           = itemFila['DATE'];
         const dateN            = new Date((number - (25567 + 2)) * 86400 * 1000);
         const salesFullDate    = this.processDate(dateN,1);
-        const nowDate          = this.processDate(new Date(),2);
+
         const yearAndWeek      = String(itemFila['WK']).split("-");
         let uploadRowError     = null;
         let successType        = 1;
@@ -157,14 +159,16 @@ class CsvFileProcessService{
             uploadSuccess:successType,
             invoiceNumber: itemFila['INVOICE'],
             saleAmount: itemFila['Revenue USD'],
-            errorId:uploadRowError
+            errorId:uploadRowError,
+            UpdatedAt:nowDate.toString(),
           });
         // console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
                     //let dateExplodeToFormat = dateRead
     }
 
     getFile.update({
-      operationStatusId:7
+      operationStatusId:7,
+      UpdatedAt:nowDate.toString(),
     })
 
 

@@ -24,6 +24,7 @@ class ProcessDocumentService{
 
         const getStringName = uuidv4();
         const setNewName = getStringName+fileExtension;
+        const nowDate           = new Date();
 
 
 
@@ -38,7 +39,8 @@ class ProcessDocumentService{
             extension: fileExtension,
             complete: 1,
             pathSrc:pathData,
-            operationStatusId: 2
+            operationStatusId: 2,
+            UpdatedAt:nowDate,
           });
 
         return registerFile;

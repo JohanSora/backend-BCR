@@ -35,12 +35,14 @@ class EmployeePointsCollectService{
         pointsAssignedDate: nowDate,
         userAssignedId:     userIdReceiving,
         saleId:             data.saleId,
-        saleAssigned:       true
+        saleAssigned:       true,
+        statusId:           11,
+        UpdatedAt:nowDate
       });
       const resp = (await saleById).update({
         pendingPoints: respOperation,
         assignedPoints: parseInt(saleById.assignedPoints) + parseInt(pointsToAssign),
-        pointsAssignedDate: nowDate,
+        pointsAssignedDate: nowDate
       });
 
         return resp;
@@ -64,7 +66,13 @@ class EmployeePointsCollectService{
 
   async findOne(id){
 
-    const EmployeePointCollect = await models.EmployeePointsCollect.findByPk(id);
+    const EmployeePointCollect = await models.EmployeePointsCollect.findByPk(id, {
+      include:[
+        'employee',
+        'sale',
+        'status'
+      ]
+    });
     if(!EmployeePointCollect){
      throw boom.notFound('Eployee points collect not found');
     }

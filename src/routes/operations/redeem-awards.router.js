@@ -62,7 +62,7 @@ checkRoles(1,2),
 
 router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1),
+checkRoles(1,2),
     validatorHandler(getRedeemAwardsSchema, 'params'),
     validatorHandler(updateRedeemAwardsSchema, 'body'),
     async(req, res, next) =>{
