@@ -5,6 +5,7 @@ const { CSV_FILES_PROCESSED_TABLE }   = require('./csv-files-processed.model');
 const { ERROR_SALES_PROCESS_TABLE }   = require('./../catalogs/error-sales-process.model');
 const { POINTS_OF_SALES_TABLE     }   = require('./../catalogs/points_of_sales.model');
 const { USER_TABLE   }   = require('./../catalogs/user.model');
+const { QUARTERS_TABLE } = require('./quarters.model');
 
 const SALES_TABLE = 'sales';
 
@@ -113,6 +114,31 @@ const SalesSchema = {
     onDelete: 'SET NULL'
   },
 
+  yearInFile:{
+    field: 'year_file',
+    allowNull: true,
+    type:DataTypes.INTEGER,
+    default:false
+  },
+
+  weekInFile:{
+    field: 'week_file',
+    allowNull: true,
+    type:DataTypes.INTEGER,
+    default:false
+  },
+
+  quarterId:{
+    field: 'quarter_id',
+    allowNull: true,
+    type:DataTypes.INTEGER,
+    references: {
+      model: QUARTERS_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
 
   uploadSuccess:{
     field: 'upload_success',
@@ -120,7 +146,6 @@ const SalesSchema = {
     type:DataTypes.BOOLEAN,
     default:false
   },
-
 
   invoiceNumber:{
     field: 'invoice_number',
@@ -147,7 +172,6 @@ const SalesSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
   },
-
 
   CreatedAt:{
     allowNull:false,
@@ -181,6 +205,7 @@ class Sales extends Model{
     this.belongsTo(models.CsvFilesProcessed, { as: 'fileUpload' });
     this.belongsTo(models.ErrorSalesProcess, { as: 'error' });
     this.belongsTo(models.User, { as: 'employAssigned' });
+    this.belongsTo(models.Quarter, { as: 'quarter' });
 
   }
 

@@ -104,23 +104,24 @@ class CsvFileProcessService{
         let digipointSave      = '';
         let approuch           = '';
         let getPosId           = '';
+        let quarter            = null;
 
 
         if(findProd == null ){
             uploadRowError = 4;
-            successType = 0;
+            successType = false;
             findProd = null
         }
 
         if( salesFullDate.indexOf("NAN")){
             uploadRowError = 3;
-            successType = 0;
+            successType = false;
             dateSale = null;
         }
 
         if(itemFila['Email Address'] == null ||  String(itemFila['Email Address']).length < 1 ){
             uploadRowError = 2;
-            successType = 0;
+            successType = false;
             userSale = null;
         }
 
@@ -141,6 +142,9 @@ class CsvFileProcessService{
             dateSale = salesFullDate;
             userSale = userSaleToFind.id;
             uploadRowError = null;
+            quarter = getQuarter.id;
+            successType = true;
+
 
 
         }
@@ -150,6 +154,9 @@ class CsvFileProcessService{
             productId: findProd.id,
             employAssignedId:userSale,
             totalPoints:approuch,
+            quarterId:quarter,
+            yearInFile:yearReference,
+            weekInFile:weekReference,
             pendingPoints:approuch,
             assignedPoints:0,
             saleDates:dateSale.toString(),

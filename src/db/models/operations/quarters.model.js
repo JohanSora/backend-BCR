@@ -53,7 +53,6 @@ const QuarterSchema = {
   }
 
 
-
 }
 
 class Quarter extends Model{
@@ -70,8 +69,14 @@ class Quarter extends Model{
       as: 'redeemAwards',
       foreignKey: 'quarterId'
     });
+
     this.hasMany(models.Rules, {
       as: 'rules',
+      foreignKey: 'quarterId'
+    });
+
+    this.hasMany(models.Rules, {
+      as: 'quarter',
       foreignKey: 'quarterId'
     });
 

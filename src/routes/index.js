@@ -28,7 +28,12 @@ const rulesRouter                          = require('./operations/rules.router'
 const weeksRouter                          = require('./operations/weeks.router');
 const EmployeePosRouter                    = require('./operations/employee-pos.router');
 const CsvFileRouter                        = require('./operations/csv-files-process.router');
+
 // end process file router
+
+// Reporters
+const ReportersRouter                        = require('./reporters/reporters.router');
+// end reporters
 
 
 //function routes manager
@@ -75,6 +80,11 @@ function routerApi(app){
     router.use('/auth', AuthRouter);
 
     // end auth
+
+    // Reporters
+    router.use('/reporters', ReportersRouter);
+
+    // End reporters
 
 
 }
