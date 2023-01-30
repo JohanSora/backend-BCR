@@ -14,7 +14,7 @@ const companyRouter             = require('./catalogs/company.router');
 const fiscalPeriodRouter        = require('./catalogs/fiscal-period.router');
 const RoleRouter                = require('./catalogs/roles.router');
 const UserRouter                = require('./catalogs/users.router');
-const ProductRouter                = require('./catalogs/product.router');
+const ProductRouter             = require('./catalogs/product.router');
 
 //auth routers
 const AuthRouter                = require('./auth.router');
@@ -28,6 +28,7 @@ const rulesRouter                          = require('./operations/rules.router'
 const weeksRouter                          = require('./operations/weeks.router');
 const EmployeePosRouter                    = require('./operations/employee-pos.router');
 const CsvFileRouter                        = require('./operations/csv-files-process.router');
+const PointsOfSalesRouter                        = require('./operations/points-of-sale.router');
 
 // end process file router
 
@@ -73,6 +74,7 @@ function routerApi(app){
     router.use('/weeks', weeksRouter);
     router.use('/employees-pos', EmployeePosRouter);
     router.use('/csv-files', CsvFileRouter);
+    router.use('/pos', PointsOfSalesRouter);
     // end process
 
 

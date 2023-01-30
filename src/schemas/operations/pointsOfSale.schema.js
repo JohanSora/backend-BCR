@@ -14,9 +14,9 @@ const createPointOfSaleSchema = Joi.object({
   countryId:              countryId.required(),
   companyId:              companyId.required(),
   personId:               personId.required(),
-  serie:                  serie.required(),
+  serie:                  serie,
   status:                 status.required(),
-  digipointsCollect:      digipointsCollect.required()
+  digipointsCollect:      digipointsCollect
 
 });
 

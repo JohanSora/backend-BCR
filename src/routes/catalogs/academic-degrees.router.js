@@ -28,7 +28,7 @@ async(req, res, next)=>{
 router.get('/:id',
   passport.authenticate('jwt', {session:false}),
     checkRoles(1,2),
-    validatorHandler(getAcademicDegreeSchema, 'params'),
+    validatorHandler(getAcademicDegreeSchema, 'params'), 
   async(req, res, next) =>{
     try{
 
