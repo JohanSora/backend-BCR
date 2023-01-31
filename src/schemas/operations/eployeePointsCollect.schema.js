@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const id                 = Joi.number().integer();
 const employeeId         = Joi.number().integer();
-const status             = Joi.boolean();
+const statusId           = Joi.boolean();
 const pointsAssigned     = Joi.number().integer();
 const pointsRedeemed     = Joi.number().integer();
 const pointsAssignedDate = Joi.date();
@@ -15,7 +15,7 @@ const saleId             = Joi.number().integer();
 
 const createEmployeePointsCollectSchema = Joi.object({
   employeeId:         employeeId.required(),
-  status:             status,
+  statusId:           statusId,
   pointsAssigned:     pointsAssigned.required(),
   pointsRedeemed:     pointsRedeemed,
   pointsAssignedDate: pointsAssignedDate,
@@ -30,7 +30,7 @@ const createEmployeePointsCollectSchema = Joi.object({
 
 const updateEmployeePointsCollectSchema = Joi.object({
   employeeId:         employeeId,
-  status:             status,
+  statusId:           statusId,
   pointsAssigned:     pointsAssigned,
   pointsRedeemed:     pointsRedeemed,
   pointsAssignedDate: pointsAssignedDate,

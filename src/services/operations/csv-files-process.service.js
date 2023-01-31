@@ -11,6 +11,9 @@ const fiscalPeriodService = require('./../catalogs/fiscal-period.service');
 const QuarterService = require('./../operations/quarter.service');
 const XLSX = require('xlsx');
 
+// provisional services
+const employeeAssignService = require('../operations/employee-points.service');
+
 
 const useSelection      = new user();
 const findProduct       = new Product();
@@ -19,6 +22,7 @@ const findPosEmployee   = new EmployeePosService();
 const findPos           = new PointsOfSaleService();
 const findFiscalPerid   = new fiscalPeriodService();
 const findQuarter       = new QuarterService();
+const employeeAssign    = new employeeAssignService();
 
 class CsvFileProcessService{
 
@@ -141,7 +145,7 @@ class CsvFileProcessService{
                 approuch           = Math.round(digipointSave);
 
                 if(findRuleInter !== null){
-                  console.log('READY****')
+                  //console.log('READY****')
                   getPosId = findPosInUser.posId;
                   dateSale = salesFullDate;
                   userSale = userSaleToFind.id;
@@ -176,11 +180,11 @@ class CsvFileProcessService{
             quarterId:quarter,
             yearInFile:yearReference,
             weekInFile:weekReference,
-            pendingPoints:approuch,
-            assignedPoints:0,
+            pendingPoints:0,
+            assignedPoints:approuch,
             saleDates:dateSale.toString(),
             pointsLoadDates:nowDate.toString(),
-            pointsAssignedDates:null,
+            pointsAssignedDates:nowDate.toString(),
             fileUploadId:getFile.id,
             uploadSuccess:successType,
             invoiceNumber: itemFila['INVOICE'],
@@ -189,6 +193,22 @@ class CsvFileProcessService{
             UpdatedAt:nowDate.toString(),
             saleType: itemFila['STYPE'].toString()
           });
+
+          // provisional info insert
+          let  employeeAssig =  await employeeAssign.create({
+            employeeId: userSale,
+            statusId: 11,
+            pointsAssigned:approuch,
+            pointsRedeemed:0,
+            pointsAssignedDate:nowDate.toString(),
+            userAssignedId:1,
+            saleAssigned:true,
+            percentageSale:0,
+            saleId:saleInvoiceSave.id,
+            createdAt:nowDate.toString(),
+            updatedAt:nowDate.toString(),
+
+          })
         // console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
                     //let dateExplodeToFormat = dateRead
     }
