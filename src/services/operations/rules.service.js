@@ -29,12 +29,18 @@ class RuleService{
     return Rule;
   }
 
-  async findByQuarter(quarter){
+  async findByQuarter(quarter, saleType, week){
+
+    const { Op } = require("sequelize");
 
     const data = await models.Rules.findOne({
       where:{
         quarterId: quarter,
-        status:true
+        saleType: saleType,
+        status:true,
+        weeks:{
+          [Op.like]: `%${week}%`
+        }
       }
     });
 

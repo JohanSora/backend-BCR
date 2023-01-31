@@ -113,7 +113,7 @@ class CsvFileProcessService{
             findProd = null
         }
 
-        if( salesFullDate.indexOf("NAN")){
+        if( salesFullDate.indexOf("NAN") || salesFullDate == null){
             uploadRowError = 3;
             successType = false;
             dateSale = null;
@@ -125,31 +125,50 @@ class CsvFileProcessService{
             userSale = null;
         }
 
+
         if((itemFila['Email Address'] != null)){
             let userSaleToFind = await useSelection.findByEmail(String(itemFila['Email Address']));
             findPosInUser = await findPosEmployee.findByUserId(userSaleToFind.id);
             getIdCompany = await findPos.findOne(findPosInUser.posId);
             let getFiscalPeriod = await findFiscalPerid.findByCompany(getIdCompany.companyId);
             let getQuarter = await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
+            let sType = itemFila['STYPE'];
 
+            if(sType !== null || sType != ''){
 
-            findRuleInter      = await findRule.findByQuarter(getQuarter.id);
-            digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
-            approuch           = Math.round(digipointSave);
+                findRuleInter      = await findRule.findByQuarter(getQuarter.id,sType, weekReference);
+                digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
+                approuch           = Math.round(digipointSave);
 
+                if(findRuleInter !== null){
+                  console.log('READY****')
+                  getPosId = findPosInUser.posId;
+                  dateSale = salesFullDate;
+                  userSale = userSaleToFind.id;
+                  uploadRowError = null;
+                  quarter = getQuarter.id;
+                  successType = true;
+                  //console.log(" ****** FECHA DE LA VENTA ******",dateSale);
 
-            getPosId = findPosInUser.posId;
-            dateSale = salesFullDate;
-            userSale = userSaleToFind.id;
-            uploadRowError = null;
-            quarter = getQuarter.id;
-            successType = true;
+                }else{
+                        dateSale = salesFullDate;
+                        uploadRowError = 5;
+                        quarter = getQuarter.id;
+                        successType = false;
+                }
 
-
+             // return dateSale;
+            }else{
+              uploadRowError = null;
+              quarter = getQuarter.id;
+              successType = true;
+            }
 
         }
 
-      const saleInvoiceSave =  await serviceSales.create({
+
+
+        const saleInvoiceSave =  await serviceSales.create({
             posId: getPosId,
             productId: findProd.id,
             employAssignedId:userSale,
@@ -168,17 +187,16 @@ class CsvFileProcessService{
             saleAmount: itemFila['Revenue USD'],
             errorId:uploadRowError,
             UpdatedAt:nowDate.toString(),
+            saleType: itemFila['STYPE'].toString()
           });
         // console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
                     //let dateExplodeToFormat = dateRead
     }
 
-    getFile.update({
+      getFile.update({
       operationStatusId:7,
       UpdatedAt:nowDate.toString(),
     })
-
-
 
 
     return "Process Success";
@@ -201,6 +219,9 @@ processDate(data, type){
 
   const dateMonth = (date.getMonth()+1 < 10) ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
   const year = date.getFullYear();
+
+
+//  console.log( year+'-'+dateMonth+'-'+dateDay+' 00:00:00.000');
 
   return year+'-'+dateMonth+'-'+dateDay+' 00:00:00.000';
 

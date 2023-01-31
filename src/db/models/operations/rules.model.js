@@ -24,7 +24,6 @@ const RulesSchema = {
     field: 'digipoints_per_amount'
   },
 
-
   quarterId: {
     field: 'quarter_id',
     allowNull: true,
@@ -61,6 +60,14 @@ const RulesSchema = {
     field:'created_at',
     defaultValue: Sequelize.NOW
   },
+
+  saleType:{
+    allowNull: true,
+    type:DataTypes.STRING,
+    field:'sale_type'
+  },
+
+
 
 
 

@@ -78,7 +78,7 @@ const SalesSchema = {
 
   saleDates:{
     field: 'sale_date',
-    allowNull: false,
+    allowNull: true,
     type:DataTypes.DATE,
     default:false,
     defaultValue: Sequelize.NOW
@@ -185,7 +185,13 @@ const SalesSchema = {
     type:DataTypes.DATE,
     field:'updated_at',
     defaultValue: Sequelize.NOW
-  }
+  },
+
+  saleType:{
+    allowNull: true,
+    type:DataTypes.STRING,
+    field:'sale_type'
+  },
 
 
 

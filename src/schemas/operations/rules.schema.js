@@ -4,8 +4,10 @@ const id                  = Joi.number().integer();
 const name                = Joi.string().min(3);
 const digipointsPerAmount = Joi.number().integer();
 const quarterId           = Joi.number().integer();
-const weeks               = Joi.string().min(10);
+const weeks               = Joi.string().min(1);
 const baseAmount          = Joi.number().positive().precision(2);
+const saleType            = Joi.string().min(1);
+const status              = Joi.boolean();
 
 const createRuleSchema = Joi.object({
   name:                   name.required(),
@@ -13,6 +15,8 @@ const createRuleSchema = Joi.object({
   quarterId:              quarterId.required(),
   weeks:                  weeks.required(),
   baseAmount:             baseAmount.required(),
+  saleType:               saleType,
+  status:                 status.required(),
 });
 
 
@@ -22,6 +26,8 @@ const updateRuleSchema = Joi.object({
   quarterId:            quarterId,
   weeks:                weeks,
   baseAmount:           baseAmount,
+  saleType:             saleType,
+  status:               status,
 });
 
 
