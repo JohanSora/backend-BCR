@@ -91,7 +91,6 @@ const PersonSchema = {
   },
 
 
-
   CreatedAt:{
     allowNull:false,
     type:DataTypes.DATE,

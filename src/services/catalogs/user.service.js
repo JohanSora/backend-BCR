@@ -19,10 +19,16 @@ class UserService{
 
     );
 
+
+
     const newUser = await models.User.create({
       ...data,
           password:encryptPassword
-    });
+    },
+    {
+             include:['person', 'employeePos']
+        }
+    );
 
     delete newUser.dataValues.password;
     return newUser;
@@ -30,7 +36,8 @@ class UserService{
 
   async find(){
     const users = await models.User.findAll({
-      include:['person']
+      include:['person', 'employeePos'],
+      attributes: { exclude: ['password'] }
     });
 
     return users;

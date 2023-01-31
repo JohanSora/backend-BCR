@@ -6,9 +6,11 @@ const lastName          = Joi.string().min(3);
 const birthDate         = Joi.date();
 const position          = Joi.string().min(5);
 const phoneNumber       = Joi.string().min(4);
-const operationStatusId = Joi.number().integer();
+const operationStatusId = Joi.number().integer(); //statusId
+const userId            = Joi.number().integer(); //statusId
 const academicDegreeId  = Joi.number().integer();
 const languageId        = Joi.number().integer();
+
 
 
 const createPersonSchema = Joi.object({
@@ -18,6 +20,7 @@ const createPersonSchema = Joi.object({
   position          :position.required(),
   phoneNumber       :phoneNumber.required(),
   operationStatusId :operationStatusId.required(),
+  userId            :userId.required(),
   academicDegreeId  :academicDegreeId.required(),
   languageId        :languageId.required()
 
@@ -31,6 +34,7 @@ const updatePersonSchema = Joi.object({
   position          :position,
   phoneNumber       :phoneNumber,
   operationStatusId :operationStatusId,
+  userId            :userId,
   academicDegreeId  :academicDegreeId,
   languageId        :languageId
 

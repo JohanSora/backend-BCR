@@ -36,7 +36,7 @@ class PersonService{
   async find(){
 
     const people = await models.Person.findAll({
-      include:['user']
+      include:['user', '']
     });
 
     return people;

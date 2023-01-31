@@ -59,7 +59,32 @@ const UserSchema = {
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
-  }
+  },
+
+  policy:{
+    allowNull: true,
+    type:DataTypes.BOOLEAN
+  },
+
+  passwordReset:{
+    field: 'password_reset',
+    allowNull: true,
+    type:DataTypes.BOOLEAN
+  },
+
+  region: {
+    allowNull:true,
+    type: DataTypes.STRING
+  },
+
+  cpf: {
+    allowNull:true,
+    type: DataTypes.TEXT
+  },
+
+
+
+
 }
 
 class User extends Model{
@@ -99,6 +124,11 @@ class User extends Model{
       as: 'sales',
       foreignKey: 'employAssignedId'
     });
+
+    this.hasMany(models.EmployeePos, {
+      as: 'employeePos',
+      foreignKey:'employeeId'
+    })
 
 
 
