@@ -128,7 +128,15 @@ class User extends Model{
     this.hasMany(models.EmployeePos, {
       as: 'employeePos',
       foreignKey:'employeeId'
+    });
+
+    this.hasMany(models.OrderCart, {
+      as: 'orderCart',
+      foreignKey:'employeeId'
     })
+
+
+
 
 
 

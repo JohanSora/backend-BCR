@@ -29,6 +29,7 @@ const {  Quarter, QuarterSchema }                               = require("./ope
 const {  Weeks, WeekSchema }                                    = require("./operations/weeks.model");
 const {  RedeemAwards, RedeemAwardsSchema }                     = require("./operations/redeem-awards.model");
 const {  Rules, RulesSchema }                                   = require("./operations/rules.model");
+const {  OrderCart, OrderCartSchema}                                   = require("./operations/order-cart.model");
 
 
 //--------
@@ -69,6 +70,7 @@ function setupModels(sequelize){
     Weeks.init(WeekSchema, Weeks.config(sequelize));
     RedeemAwards.init(RedeemAwardsSchema, RedeemAwards.config(sequelize));
     Rules.init(RulesSchema, Rules.config(sequelize));
+    OrderCart.init(OrderCartSchema, OrderCart.config(sequelize));
 
 
     // End Process
@@ -100,6 +102,7 @@ function setupModels(sequelize){
     Weeks.associate(sequelize.models);
     RedeemAwards.associate(sequelize.models);
     Rules.associate(sequelize.models);
+    OrderCart.associate(sequelize.models);
 
 // -------------------------------------
 

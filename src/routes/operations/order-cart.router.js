@@ -1,18 +1,18 @@
 const express = require('express');
 
-const EmployeePointsCollectService = require('../../services/operations/employee-points.service');
+const EmployeePosService = require('../../services/operations/employees-pos.service');
 const validatorHandler = require('../../middlewares/validator.handler');
-const { getEmployeePointsCollectSchema, createEmployeePointsCollectSchema, updateEmployeePointsCollectSchema } = require('../../schemas/operations/eployeePointsCollect.schema');
+const { getEmployeePosSchema, createEmployeePosSchema, updateEmployeePosSchema } = require('../../schemas/operations/eployeesPos.schema');
 const {checkRoles} = require('../../middlewares/auth.handler');
 const passport = require('passport');
 
 const router = express.Router();
-const service = new EmployeePointsCollectService();
+const service = new EmployeePosService();
 
 // List all sales group
 router.get('/',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2,5),
+checkRoles(1,2),
 async(req, res, next)=>{
   try{
 
@@ -27,8 +27,8 @@ async(req, res, next)=>{
 // find by Id
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2,5),
-    validatorHandler(getEmployeePointsCollectSchema, 'params'),
+checkRoles(1,2),
+    validatorHandler(getEmployeePosSchema, 'params'),
   async(req, res, next) =>{
     try{
 
@@ -45,12 +45,12 @@ checkRoles(1,2,5),
 router.post('/',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,5),
-    validatorHandler(createEmployeePointsCollectSchema, 'body'),
+    validatorHandler(createEmployeePosSchema, 'body'),
     async(req, res, next) => {
 
       try{
         const body = req.body;
-        const employeePoint = await service.createBySalesId(body);
+        const employeePoint = await service.create(body);
         res.status(201).json(employeePoint);
 
       }catch(error){
@@ -62,9 +62,9 @@ checkRoles(1,2,5),
 
 router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2,5),
-    validatorHandler(getEmployeePointsCollectSchema, 'params'),
-    validatorHandler(updateEmployeePointsCollectSchema, 'body'),
+checkRoles(1),
+    validatorHandler(getEmployeePosSchema, 'params'),
+    validatorHandler(updateEmployeePosSchema, 'body'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;
@@ -82,7 +82,7 @@ checkRoles(1,2,5),
 router.delete('/:id',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1),
-    validatorHandler(getEmployeePointsCollectSchema, 'params'),
+    validatorHandler(getEmployeePosSchema, 'params'),
     async(req, res, next) =>{
       try{
         const {id} = req.params;

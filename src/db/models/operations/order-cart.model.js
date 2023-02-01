@@ -1,6 +1,7 @@
-const { Model, DataTypes, Sequelize, UUID } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { USER_TABLE } = require('../catalogs/user.model');
+const { OPERATION_STATUS_TABLE } = require('../catalogs/operation-status.model');
 const ORDER_CARTS_TABLE = 'order_carts';
 
 const OrderCartSchema = {
@@ -27,7 +28,33 @@ const OrderCartSchema = {
   orderNumber:{
     allowNull: true,
     type:DataTypes.UUID,
-    field:'order_number'
+    field:'order_number',
+    default: DataTypes.UUIDV4
+  },
+
+  productsObject:{
+    allowNull: true,
+    type:DataTypes.JSON,
+    field:'product_object'
+  },
+
+  operationStatusId: {
+    field: 'status_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: OPERATION_STATUS_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
+
+  digipointSubstract:{
+    allowNull: false,
+    type:DataTypes.INTEGER,
+    field:'digipoint_substract',
+    default:0
   },
 
 
