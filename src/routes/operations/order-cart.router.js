@@ -62,7 +62,7 @@ checkRoles(1,2,5),
 
  router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1),
+checkRoles(1,2,5),
     validatorHandler(getOrderCartSchema, 'params'),
     validatorHandler(updateOrderCartSchema, 'body'),
     async(req, res, next) =>{

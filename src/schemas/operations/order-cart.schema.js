@@ -4,7 +4,7 @@ const id                  = Joi.number().integer();
 const employeeId          = Joi.number().integer()
 const orderNumber         = Joi.string();
 const productsObject      = Joi.array();
-const operationStatusId   = Joi.string().min(1);
+const operationStatusId   = Joi.number().integer();
 const digipointSubstract  = Joi.number().positive().precision(2);
 
 const createOrderCartSchema = Joi.object({

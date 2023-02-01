@@ -16,7 +16,7 @@ class OrderCartService{
     const newOrderCart = await models.OrderCart.create({
       ...data,
         orderNumber:ordNum,
-        operationStatusId:12
+        operationStatusId:13
 
     });
     return newOrderCart;
