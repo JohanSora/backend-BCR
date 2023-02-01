@@ -75,7 +75,7 @@ class UserService{
 
      const user = this.findOne(id);
      if(encryptPassword != ''){
-         resp = (await user).update({...changes, password:encryptPassword});
+         resp = (await user).update({...changes, password:encryptPassword });
      }else{
         resp = (await user).update(changes);
      }
