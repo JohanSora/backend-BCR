@@ -2,7 +2,7 @@ const express = require('express');
 
 const EmployeePosService = require('../../services/operations/employees-pos.service');
 const validatorHandler = require('../../middlewares/validator.handler');
-const { getEmployeePosSchema, createEmployeePosSchema, updateEmployeePosSchema } = require('../../schemas/operations/order-cart.schema');
+const { getOrderCartSchema, createOrderCartSchema, updateOrderCartSchema } = require('../../schemas/operations/order-cart.schema');
 const {checkRoles} = require('../../middlewares/auth.handler');
 const passport = require('passport');
 
@@ -14,7 +14,7 @@ const service = new EmployeePosService();
 router.post('/',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,5),
-    validatorHandler(createEmployeePosSchema, 'body'),
+    validatorHandler(createOrderCartSchema, 'body'),
     async(req, res, next) => {
 
       try{
