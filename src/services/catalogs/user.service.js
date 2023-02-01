@@ -61,9 +61,27 @@ class UserService{
   }
 
   async update(id, changes){
-     const user = this.findOne(id);
-     const resp = (await user).update(changes);
+    let encryptPassword = '';
+    let resp = '' ;
 
+    if(changes.password != null){
+      encryptPassword = await bycrypt.hash(
+        changes.password,
+        saltArround
+
+      );
+
+    }
+
+     const user = this.findOne(id);
+     if(encryptPassword != ''){
+         resp = (await user).update({...changes, password:encryptPassword});
+     }else{
+        resp = (await user).update(changes);
+     }
+
+
+    delete (await resp).dataValues.password
      return resp;
   }
 
