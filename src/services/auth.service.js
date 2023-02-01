@@ -35,6 +35,8 @@ class AuthService {
       role: user.roleId,
     };
 
+    console.log(payload);
+
     const token = jwt.sign(payload, secret);
     return {
       user,
@@ -75,11 +77,11 @@ class AuthService {
         throw boom.unauthorized();
       }
 
-      const hash = await bcrypt.hash(newPassword, saltArround);
+      //const hash = await bcrypt.hash(newPassword, saltArround);
 
       await service.update(user.id, {
         recoveryToken: null,
-        password: hash,
+        password: newPassword,
       });
 
       return { message: 'Password chenged' };
