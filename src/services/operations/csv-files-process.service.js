@@ -13,6 +13,7 @@ const XLSX = require('xlsx');
 
 // provisional services
 const employeeAssignService = require('../operations/employee-points.service');
+const { CommandCompleteMessage } = require('pg-protocol/dist/messages');
 
 
 const useSelection      = new user();
@@ -110,7 +111,6 @@ class CsvFileProcessService{
         let getPosId           = '';
         let quarter            = null;
 
-
         if(findProd == null ){
             uploadRowError = 4;
             successType = false;
@@ -171,7 +171,7 @@ class CsvFileProcessService{
         }
 
 
-
+        console.log(dateSale)
         const saleInvoiceSave =  await serviceSales.create({
             posId: getPosId,
             productId: findProd.id,
@@ -182,9 +182,9 @@ class CsvFileProcessService{
             weekInFile:weekReference,
             pendingPoints:0,
             assignedPoints:approuch,
-            saleDates:dateSale.toString(),
-            pointsLoadDates:nowDate.toString(),
-            pointsAssignedDates:nowDate.toString(),
+            saleDates:dateSale,
+            pointsLoadDates:nowDate,
+            pointsAssignedDates:nowDate,
             fileUploadId:getFile.id,
             uploadSuccess:successType,
             invoiceNumber: itemFila['INVOICE'],
@@ -200,13 +200,13 @@ class CsvFileProcessService{
             statusId: 11,
             pointsAssigned:approuch,
             pointsRedeemed:0,
-            pointsAssignedDate:nowDate.toString(),
+            pointsAssignedDate:nowDate,
             userAssignedId:1,
             saleAssigned:true,
             percentageSale:0,
             saleId:saleInvoiceSave.id,
-            createdAt:nowDate.toString(),
-            updatedAt:nowDate.toString(),
+            createdAt:nowDate,
+            updatedAt:nowDate,
 
           })
         // console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
@@ -232,7 +232,18 @@ processDate(data, type){
   const date = new Date(data);
 
   if(type == 1){
-    dateDay = (date.getDate() < 10) ? "0"+parseInt(date.getDate()+1) : parseInt(date.getDate()+1);
+    if(date.getDate() < 10){
+      dateDay = "0"+parseInt(date.getDate()+1);
+    }
+
+    if(date.getDate() > 10 && date.getDate() < 31){
+      dateDay = parseInt(date.getDate()+1);
+    }
+    if(date.getDate() == 31){
+      dateDay = parseInt(date.getDate())
+    }
+
+   //dateDay = (date.getDate() < 10) ? "0"+parseInt(date.getDate()+1) : parseInt(date.getDate()+1);
   }else{
     dateDay = (date.getDate() < 10) ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
   }
