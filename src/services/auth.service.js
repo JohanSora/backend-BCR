@@ -13,7 +13,7 @@ class AuthService {
   // Compare for login
   async getUser(email, password) {
     const user = await service.findByEmail(email);
-    console.log(user);
+
     if (!user) {
       throw boom.unauthorized();
     }
@@ -58,7 +58,7 @@ class AuthService {
       from: config.mailSetFromAddress, // sender address
       to: `${user.email}`, // list of receivers
       subject: 'Email para recuperar contraseña', // Subject line
-      html: `<b>Ingresa a este link => ${link} </b>`, // html body
+      html: `<b>Ingresa a este link => <a href="${link}">  Click here </a> </b>`, // html body
     };
 
     const rta = await this.sendMail(mail);
