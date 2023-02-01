@@ -7,7 +7,7 @@ const productsObject      = Joi.object();
 const operationStatusId   = Joi.string().min(1);
 const digipointSubstract  = Joi.number().positive().precision(2);
 
-const createRuleSchema = Joi.object({
+const createOrderCartSchema = Joi.object({
   employeeId         : employeeId.require(),
   productsObject     : productsObject,
   operationStatusId  : operationStatusId,
@@ -15,7 +15,7 @@ const createRuleSchema = Joi.object({
 });
 
 
-const updateRuleSchema = Joi.object({
+const updateOrderCartSchema = Joi.object({
 
   employeeId         : employeeId,
   orderNumber        : orderNumber,
@@ -26,8 +26,8 @@ const updateRuleSchema = Joi.object({
 });
 
 
-const getRuleSchema = Joi.object({
+const getOrderCartSchema = Joi.object({
   id:id.required()
 })
 
-module.exports = { createRuleSchema, updateRuleSchema, getRuleSchema };
+module.exports = { createOrderCartSchema, updateOrderCartSchema, getOrderCartSchema };
