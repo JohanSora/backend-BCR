@@ -11,16 +11,14 @@ class OrderCartService{
 
   async createProcess(data){
 
-    const orderNumber = uuidv4();
-    let totalDigipointSubstract = 0;
+    const ordNum = uuidv4();
 
-      for(let item of data.productsObject){
-          totalDigipointSubstract = 
-      }
+    const newOrderCart = await models.OrderCart.create({
+      ...data,
+        orderNumber:ordNum,
+        operationStatusId:12
 
-
-
-    const newOrderCart = await models.OrderCart.create(data);
+    });
     return newOrderCart;
   }
 
