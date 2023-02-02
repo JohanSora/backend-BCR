@@ -112,9 +112,7 @@ class CsvFileProcessService{
         let quarter            = null;
 
         if(findProd == null ){
-            uploadRowError = 4;
-            successType = false;
-            findProd = null
+            return `Product should be created Invice: ${itemFila['INVOICE']}`
         }
 
         if( salesFullDate.indexOf("NAN") || salesFullDate == null){
@@ -123,10 +121,9 @@ class CsvFileProcessService{
             dateSale = null;
         }
 
-        if(itemFila['Email Address'] == null ||  String(itemFila['Email Address']).length < 1 ){
-            uploadRowError = 2;
-            successType = false;
-            userSale = null;
+        if(itemFila['Email Address'] == null ||  String(itemFila['Email Address']).length < 1  || String(itemFila['Email Address']) == ''){
+
+            return `Email is empty or null please check your file Invoice: ${itemFila['INVOICE']} in the line: ${count+1}`
         }
 
 
@@ -176,7 +173,9 @@ class CsvFileProcessService{
         }
 
 
-        console.log(dateSale)
+        /* console.log("RESPONSE: ",getPosId,findProd.id, userSale, approuch,
+        quarter, yearReference, weekReference, dateSale, nowDate
+        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE']) */
         const saleInvoiceSave =  await serviceSales.create({
             posId: getPosId,
             productId: findProd.id,
