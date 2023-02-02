@@ -1,4 +1,5 @@
 const boom  = require('@hapi/boom');
+const { v4: uuidv4} = require('uuid');
 
 const { models } = require('./../../libs/sequelize');
 
@@ -9,7 +10,11 @@ class ProductService{
   }
 
   async create(data){
-    const newProducts = await models.Product.create(data);
+    const sku = uuidv4();
+    const newProducts = await models.Product.create({
+      ...data,
+      skuUuid:sku
+    });
     return newProducts;
   }
 
@@ -28,12 +33,16 @@ class ProductService{
   }
 
   async findByName(name){
-
+      console.log('product name recieve: ', name);
       const data = await models.Product.findOne({
         where:{
           description:name
         }
       });
+
+      if(!data){
+        throw boom.notFound('Product not found');
+      }
 
       return data;
 

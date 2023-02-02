@@ -13,7 +13,6 @@ const XLSX = require('xlsx');
 
 // provisional services
 const employeeAssignService = require('../operations/employee-points.service');
-const { CommandCompleteMessage } = require('pg-protocol/dist/messages');
 
 
 const useSelection      = new user();
@@ -111,7 +110,7 @@ class CsvFileProcessService{
         let getPosId           = '';
         let quarter            = null;
 
-        if(findProd == null ){
+        if(findProd == null ||  String(findProd).length < 1  || String(findProd) == '' ){
             return `Product should be created Invice: ${itemFila['INVOICE']}`
         }
 
@@ -173,9 +172,9 @@ class CsvFileProcessService{
         }
 
 
-        /* console.log("RESPONSE: ",getPosId,findProd.id, userSale, approuch,
+        console.log("RESPONSE: ",getPosId,findProd.id, userSale, approuch,
         quarter, yearReference, weekReference, dateSale, nowDate
-        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE']) */
+        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
         const saleInvoiceSave =  await serviceSales.create({
             posId: getPosId,
             productId: findProd.id,
