@@ -132,41 +132,46 @@ class CsvFileProcessService{
 
         if((itemFila['Email Address'] != null)){
             let userSaleToFind = await useSelection.findByEmail(String(itemFila['Email Address']));
-            findPosInUser = await findPosEmployee.findByUserId(userSaleToFind.id);
-            getIdCompany = await findPos.findOne(findPosInUser.posId);
-            let getFiscalPeriod = await findFiscalPerid.findByCompany(getIdCompany.companyId);
-            let getQuarter = await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
-            let sType = itemFila['STYPE'];
+            if(userSaleToFind != null){
+              findPosInUser = await findPosEmployee.findByUserId(userSaleToFind.id);
+              getIdCompany = await findPos.findOne(findPosInUser.posId);
+              let getFiscalPeriod = await findFiscalPerid.findByCompany(getIdCompany.companyId);
+              let getQuarter = await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
+              let sType = itemFila['STYPE'];
 
-            if(sType !== null || sType != ''){
+              if(sType !== null || sType != ''){
 
-                findRuleInter      = await findRule.findByQuarter(getQuarter.id,sType, weekReference);
-                digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
-                approuch           = Math.round(digipointSave);
+                  findRuleInter      = await findRule.findByQuarter(getQuarter.id,sType, weekReference);
+                  digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
+                  approuch           = Math.round(digipointSave);
 
-                if(findRuleInter !== null){
-                  //console.log('READY****')
-                  getPosId = findPosInUser.posId;
-                  dateSale = salesFullDate;
-                  userSale = userSaleToFind.id;
-                  uploadRowError = null;
-                  quarter = getQuarter.id;
-                  successType = true;
-                  //console.log(" ****** FECHA DE LA VENTA ******",dateSale);
+                  if(findRuleInter !== null){
+                    //console.log('READY****')
+                    getPosId = findPosInUser.posId;
+                    dateSale = salesFullDate;
+                    userSale = userSaleToFind.id;
+                    uploadRowError = null;
+                    quarter = getQuarter.id;
+                    successType = true;
+                    //console.log(" ****** FECHA DE LA VENTA ******",dateSale);
 
-                }else{
-                        dateSale = salesFullDate;
-                        uploadRowError = 5;
-                        quarter = getQuarter.id;
-                        successType = false;
-                }
+                  }else{
+                          dateSale = salesFullDate;
+                          uploadRowError = 5;
+                          quarter = getQuarter.id;
+                          successType = false;
+                  }
 
-             // return dateSale;
+               // return dateSale;
+              }else{
+                uploadRowError = null;
+                quarter = getQuarter.id;
+                successType = true;
+              }
             }else{
-              uploadRowError = null;
-              quarter = getQuarter.id;
-              successType = true;
+              return `No process row because email no found in the invoice: ${itemFila['INVOICE']}`;
             }
+
 
         }
 
