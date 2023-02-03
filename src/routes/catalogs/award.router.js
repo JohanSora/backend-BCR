@@ -32,7 +32,7 @@ router.get(
 router.get(
   '/:id',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3, 4, 5),
   validatorHandler(getAwardSchema, 'params'),
   async (req, res, next) => {
     try {
