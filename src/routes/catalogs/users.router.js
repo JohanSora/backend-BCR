@@ -16,7 +16,7 @@ const passport = require('passport');
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1),
+  checkRoles(1, 2, 3, 4, 5),
   async (req, res, next) => {
     try {
       const users = await service.find();
@@ -31,7 +31,7 @@ router.get(
 router.get(
   '/:id',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1),
+  checkRoles(1, 2, 3, 4, 5),
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {

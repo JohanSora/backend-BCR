@@ -12,7 +12,7 @@ const service = new RoleService();
 // List all roles
 router.get('/',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1, 2, 3, 4, 5),
 async(req, res, next)=>{
   try{
 
@@ -27,7 +27,7 @@ async(req, res, next)=>{
 // find by Id
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1, 2, 3, 4, 5),
     validatorHandler(getRoleSchema, 'params'),
   async(req, res, next) =>{
     try{
