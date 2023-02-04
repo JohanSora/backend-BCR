@@ -11,7 +11,7 @@ const service = new OrderCartService();
 
 router.get('/',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2,5),
+checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
 
@@ -26,7 +26,7 @@ async(req, res, next)=>{
 // find by Id
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2,5),
+checkRoles(1,2,3,4,5),
     validatorHandler(getOrderCartSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -44,7 +44,7 @@ checkRoles(1,2,5),
 // Create orderCart
 router.post('/',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2,5),
+checkRoles(1,2,3,4,5),
     validatorHandler(createOrderCartSchema, 'body'),
     async(req, res, next) => {
 
@@ -81,7 +81,7 @@ checkRoles(1,2,5),
 
 router.delete('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1),
+checkRoles(1,2,3,4,5),
     validatorHandler(getOrderCartSchema, 'params'),
     async(req, res, next) =>{
       try{
