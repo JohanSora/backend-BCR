@@ -4,6 +4,11 @@ const { config } = require('./../../../config/config');
 const saltArround = Number(config.envSalt);
 
 const { models } = require('./../../libs/sequelize');
+const PersonService = require('../catalogs/person.service');
+const EmployeeService = require('../operations/employees-pos.service');
+
+const servicePerson = new PersonService();
+const serviceEmployee = new EmployeeService();
 
 class UserService {
   constructor() {
@@ -64,12 +69,37 @@ class UserService {
       encryptPassword = await bycrypt.hash(changes.password, saltArround);
     }
 
+    console.log('the object',changes);
+
     const user = this.findOne(id);
     if (encryptPassword != '') {
-      resp = (await user).update({ ...changes, password: encryptPassword });
+      resp = (await user).update({
+                ...changes, password: encryptPassword
+               });
     } else {
       resp = (await user).update(changes);
     }
+
+    if(changes.person){
+      //servicePerson
+      //serviceEmployee
+      console.log('Have person', changes.person)
+
+      await servicePerson.update(changes.person.personId, changes.person ,{
+        where:{ 'userId': changes.person.userId}
+      });
+
+    }
+
+
+    if(changes.employeePos){
+      console.log('Have employees')
+
+      await serviceEmployee.update(changes.employeePos.employeePosId, changes.employeePos,{
+        where: {employeeId:changes.person.personId }
+      })
+    }
+
 
     delete (await resp).dataValues.password;
     return resp;

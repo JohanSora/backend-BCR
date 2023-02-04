@@ -19,7 +19,10 @@ const phoneNumber       = Joi.string().min(5);
 const operationStatusId = Joi.number().integer(); //statusId
 const academicDegreeId  = Joi.number().integer();
 const languageId        = Joi.number().integer();
-const posId  = Joi.number().integer();
+const employeePosId     = Joi.number().integer();
+const userId            = Joi.number().integer();
+const posId             = Joi.number().integer();
+const personId          = Joi.number().integer();
 
 
 const createUserSchema = Joi.object({
@@ -43,9 +46,9 @@ const createUserSchema = Joi.object({
     academicDegreeId  :academicDegreeId.required(),
     languageId        :languageId.required()
   }),
-  employeePos:{
+  employeePos: Joi.object({
     posId:posId.required(),
-  }
+  })
 
 
 
@@ -62,7 +65,23 @@ const updateUserSchema = Joi.object({
   policy:policy,
   passwordReset:passwordReset,
   region: region,
-  cpf: cpf
+  cpf: cpf,
+  person: Joi.object({
+    personId          : personId,
+    names             : names,
+    lastName          : lastName,
+    birthDate         : birthDate,
+    position          : position,
+    phoneNumber       : phoneNumber,
+    operationStatusId : operationStatusId,
+    academicDegreeId  : academicDegreeId,
+    languageId        : languageId,
+    userId:userId
+  }),
+  employeePos: Joi.object({
+    employeePosId:employeePosId,
+    posId:posId,
+  })
 
 
 });
