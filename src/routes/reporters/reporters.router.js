@@ -12,7 +12,7 @@ const service = new ReporterService();
 // List all sales group
 router.get('/no-assigned',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
 
@@ -26,7 +26,7 @@ async(req, res, next)=>{
 
 router.get('/assigned',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
 
@@ -40,7 +40,7 @@ async(req, res, next)=>{
 
 router.get('/digipoints-redeem-status/:type/:country',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
 
