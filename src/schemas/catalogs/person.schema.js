@@ -10,6 +10,7 @@ const operationStatusId = Joi.number().integer(); //statusId
 const userId            = Joi.number().integer(); //statusId
 const academicDegreeId  = Joi.number().integer();
 const languageId        = Joi.number().integer();
+const secondaryEmail    = Joi.string().email();
 
 
 
@@ -22,7 +23,8 @@ const createPersonSchema = Joi.object({
   operationStatusId :operationStatusId.required(),
   userId            :userId.required(),
   academicDegreeId  :academicDegreeId.required(),
-  languageId        :languageId.required()
+  languageId        :languageId.required(),
+  secondaryEmail    :secondaryEmail,
 
 });
 
@@ -36,7 +38,8 @@ const updatePersonSchema = Joi.object({
   operationStatusId :operationStatusId,
   userId            :userId,
   academicDegreeId  :academicDegreeId,
-  languageId        :languageId
+  languageId        :languageId,
+  secondaryEmail    :secondaryEmail,
 
 });
 

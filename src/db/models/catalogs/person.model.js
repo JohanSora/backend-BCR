@@ -42,6 +42,11 @@ const PersonSchema = {
     type:DataTypes.STRING
   },
 
+
+
+
+
+
   operationStatusId: {
     field: 'status_id',
     allowNull: false,
@@ -96,6 +101,12 @@ const PersonSchema = {
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
+  },
+
+  secondaryEmail:{
+    allowNull:true,
+      type: Sequelize.DataTypes.STRING,
+      field: 'secondary_email'
   }
 }
 

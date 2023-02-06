@@ -60,7 +60,7 @@ async(req, res, next)=>{
 
 
 // find by Id
-router.get('/selective-reporter/:quarter/:week/:product',
+router.get('/selective-reporter/:quarter/:week/:saleType',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2),
 
@@ -69,9 +69,9 @@ checkRoles(1,2),
 
       const {quarter} = req.params;
       const {week} = req.params;
-      const {product} = req.params;
+      const {saleType} = req.params;
 
-      const redeemAward = await service.salesWithParams(quarter,week, product);
+      const redeemAward = await service.salesWithParams(quarter,week, saleType);
       res.json(redeemAward);
 
     }catch(error){

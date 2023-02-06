@@ -81,9 +81,6 @@ class UserService {
     }
 
     if(changes.person){
-      //servicePerson
-      //serviceEmployee
-      console.log('Have person', changes.person)
 
       await servicePerson.update(changes.person.personId, changes.person ,{
         where:{ 'userId': changes.person.userId}
@@ -91,11 +88,8 @@ class UserService {
 
     }
 
-
     if(changes.employeePos){
-      console.log('Have employees')
-
-      await serviceEmployee.update(changes.employeePos.employeePosId, changes.employeePos,{
+        await serviceEmployee.update(changes.employeePos.employeePosId, changes.employeePos,{
         where: {employeeId:changes.person.personId }
       })
     }
