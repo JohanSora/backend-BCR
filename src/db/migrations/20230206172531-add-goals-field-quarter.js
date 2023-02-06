@@ -8,7 +8,7 @@ module.exports = {
 
     await queryInterface.addColumn(QUARTERS_TABLE, 'goals',{
       allowNull:true,
-      type: Sequelize.DataTypes.STRING,
+      type: Sequelize.DataTypes.DECIMAL,
       field: 'goals'
     });
 

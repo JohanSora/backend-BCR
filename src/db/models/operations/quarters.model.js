@@ -50,7 +50,12 @@ const QuarterSchema = {
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
-  }
+  },
+
+  goals:{
+    allowNull: true,
+    type:DataTypes.DECIMAL,
+  },
 
 
 }
