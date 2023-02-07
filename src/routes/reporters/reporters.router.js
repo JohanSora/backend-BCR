@@ -57,8 +57,6 @@ async(req, res, next)=>{
 
 
 
-
-
 // find by Id
 router.get('/selective-reporter/:quarter/:week/:saleType',
 passport.authenticate('jwt', {session:false}),
