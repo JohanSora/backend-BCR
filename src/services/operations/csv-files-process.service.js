@@ -124,47 +124,60 @@ class CsvFileProcessService{
           let getFiscalPeriod = (getIdCompany == null) ? null : await findFiscalPerid.findByCompany(getIdCompany.companyId);
           let getQuarter = (getFiscalPeriod == null )  ? null : await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
           let sType = itemFila['STYPE'];
+        /*   console.log("**** IVOINCE **** ",getInvoice);
+          console.log("**** USER **** ",findPosInUser); */
+          findRuleInter      = (findPosInUser == null) ? null : await findRule.findByQuarter(getQuarter.id,sType, weekReference);
 
-        if( salesFullDate.indexOf("NAN") || salesFullDate == null){
+
+
+            //console.log("**** RULE **** ",findRuleInter);
+            console.log("**** SALES DATE **** ",itemFila['DATE']);
+
+        if(  (itemFila['DATE'] == 'NULL') || (salesFullDate == null )){
             uploadRowError = 3;
             successType = false;
             dateSale = null;
+            console.log("**** IN FEIL **** ",itemFila['DATE']);
         }
 
-        if((getInvoice != null) || (factError == 1) || (emailError == 1) || (dateN == null)  ){
-          console.log("ERRORS : ",getPosId,findProd.id, userSale, approuch,
-          quarter, yearReference, weekReference, dateSale, nowDate
-          ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
-          const saleInvoiceSave =  await serviceSales.create({
-              posId: null,
-              productId: null,
-              employAssignedId:null,
-              totalPoints:0,
-              quarterId:null,
-              yearInFile:null,
-              weekInFile:null,
-              pendingPoints:0,
-              assignedPoints:0,
-              saleDates:nowDate,
-              pointsLoadDates:nowDate,
-              pointsAssignedDates:nowDate,
-              fileUploadId:getFile.id,
-              uploadSuccess:0,
-              invoiceNumber:String(itemFila['INVOICE']) ,
-              saleAmount: itemFila['Revenue USD'],
-              errorId:(getInvoice != null) ? 7 : uploadRowError,
-              UpdatedAt:nowDate.toString(),
-              saleType: null,
-              salesNote: 'Sales Error '
-            });
+        if(findRuleInter == null){
+          uploadRowError = 9;
+        }
 
-}
+        if(  (itemFila['DATE'] == 'NULL') || (getInvoice != null) || (factError == 1) || (emailError == 1) || ( findRuleInter == null)  || (findRuleInter == null) ){
+              console.log("ERRORS : ",findRuleInter,getPosId,findProd.id, userSale, approuch,
+              quarter, yearReference, weekReference, dateSale, nowDate
+              ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
+              const saleInvoiceSave =  await serviceSales.create({
+                  posId: null,
+                  productId: null,
+                  employAssignedId:null,
+                  totalPoints:0,
+                  quarterId:null,
+                  yearInFile:null,
+                  weekInFile:null,
+                  pendingPoints:0,
+                  assignedPoints:0,
+                  saleDates:nowDate,
+                  pointsLoadDates:nowDate,
+                  pointsAssignedDates:nowDate,
+                  fileUploadId:getFile.id,
+                  uploadSuccess:0,
+                  invoiceNumber:String(itemFila['INVOICE']) ,
+                  saleAmount: itemFila['Revenue USD'],
+                  errorId:(getInvoice != null) ? 7 : uploadRowError,
+                  UpdatedAt:nowDate.toString(),
+                  saleType: null,
+                  salesNote: `Sales Error factura: ${ itemFila['INVOICE'] } Line: ${count}`
+                });
+
+        }
 
 
-        if(emailError == 0 && getInvoice == null && factError == 0 && emailError == 0 && dateN != null){
+        if(emailError == 0 && getInvoice == null && factError == 0 && emailError == 0 && dateN != null && findRuleInter != null && (itemFila['DATE'] != 'NULL')){
             if(userSaleToFind != null){
               if(sType !== null || sType != ''){
-                  findRuleInter      = await findRule.findByQuarter(getQuarter.id,sType, weekReference);
+
                   digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
                   approuch           = Math.round(digipointSave);
 
@@ -241,11 +254,6 @@ class CsvFileProcessService{
 
 
         }
-
-
-
-
-
         // console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
                     //let dateExplodeToFormat = dateRead
     }
