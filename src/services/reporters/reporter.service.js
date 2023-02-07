@@ -14,9 +14,11 @@ class ReporterService{
 
 
     const salesReporter = await models.Sales.findAll( {
-        include:[
-            'employAssigned'
-        ],
+        include:[{
+          model: models.User,
+          as: 'employAssigned',
+            attributes: { exclude: ['password'] },
+        }],
         where:{
           assignedPoints:0
         },
@@ -38,7 +40,8 @@ class ReporterService{
     const salesReporter = await models.Sales.findAll( {
         include:[{
           model: models.User,
-          as: 'employAssigned'
+          as: 'employAssigned',
+          attributes: { exclude: ['password'] },
 
         }],
         where:{
@@ -162,6 +165,29 @@ console.log(query);
       }
   }
 
+
+  async  getErrorFile(){
+    const { Op } = require("sequelize");
+
+    const salesReporter = await models.Sales.findAll( {
+        include:[{
+          model: models.User,
+          as: 'employAssigned',
+          attributes: { exclude: ['password'] },
+
+        },
+      'error'],
+        where:{
+          errorId: {[Op.ne]: null}
+        }
+
+    });
+    if(!salesReporter){
+      throw boom.notFound('Not found');
+    }
+
+    return salesReporter;
+  }
 
 
 }

@@ -80,4 +80,23 @@ checkRoles(1,2),
 
 
 
+
+  // get error salses file
+router.get('/error-file',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2),
+async(req, res, next)=>{
+  try{
+
+    const errorFileData = await service.getErrorFile();
+    res.json(errorFileData);
+
+  }catch(error){
+    next(error);
+  }
+});
+
+
+
+
 module.exports = router
