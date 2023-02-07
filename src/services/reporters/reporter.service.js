@@ -106,11 +106,11 @@ class ReporterService{
     let saleTypeQuery     = " and sa.sale_type = ";
 
     if(parseInt(saleType) == 1){
-      saleTypeQuery = saleTypeQuery+'IN';
+      saleTypeQuery = saleTypeQuery+'\'IN\'';
     }
 
     if(parseInt(saleType) == 2){
-      saleTypeQuery = saleTypeQuery+'TM';
+      saleTypeQuery = saleTypeQuery+'\'TM\'';
     }
 
 
@@ -149,7 +149,7 @@ class ReporterService{
 
     console.log(saleType, saleTypeQuery);
 
-   const query = `select pos.description, p.description, concat(pe.names, ' ', pe.last_name) names_employee, q."name", sa.week_file as week, sa.year_file from sales sa join points_of_sales pos on pos.id = sa.pos_id join products p on p.id = sa.product_id join quarters q on q.id = sa.quarter_id join people pe on pe.user_id = employ_assigned_id left join error_sales_process esp on esp.id = sa.error_id where ${querySection}`;
+   const query = `select pos.description as pos, p.description as product, concat(pe.names, ' ', pe.last_name) names_employee, q."name", sa.week_file as week, sa.year_file, sa.sale_type from sales sa join points_of_sales pos on pos.id = sa.pos_id join products p on p.id = sa.product_id join quarters q on q.id = sa.quarter_id join people pe on pe.user_id = employ_assigned_id left join error_sales_process esp on esp.id = sa.error_id where ${querySection}`;
 
 console.log(query);
        try {

@@ -109,10 +109,21 @@ class CsvFileProcessService{
         let approuch           = '';
         let getPosId           = '';
         let quarter            = null;
+        let invoiceAssigNumber = '';
 
-        if(findProd == null ||  String(findProd).length < 1  || String(findProd) == '' ){
-            return `Product should be created Invice: ${itemFila['INVOICE']}`
-        }
+          let getInvoice = await this.findByInvoice(String(itemFila['INVOICE']));
+          // manage Errors
+
+           let factError = (findProd == null ||  String(findProd).length < 1  || String(findProd) == '' ) ? 1 : 0;
+            invoiceAssigNumber = (factError === 1 ) ? 0 : String(itemFila['INVOICE']);
+
+          let emailError = (itemFila['Email Address'] == null || itemFila['Email Address'] == 'NULL'  ||  String(itemFila['Email Address']).length < 1  || String(itemFila['Email Address']) == '') ? 1 : 0;
+          let userSaleToFind = (emailError === 1 ) ? null  : await useSelection.findByEmail(String(itemFila['Email Address']));
+          findPosInUser =  (userSaleToFind == null) ? null : await findPosEmployee.findByUserId(userSaleToFind.id);
+          getIdCompany = (findPosInUser == null) ? null : await findPos.findOne(findPosInUser.posId);
+          let getFiscalPeriod = (getIdCompany == null) ? null : await findFiscalPerid.findByCompany(getIdCompany.companyId);
+          let getQuarter = (getFiscalPeriod == null )  ? null : await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
+          let sType = itemFila['STYPE'];
 
         if( salesFullDate.indexOf("NAN") || salesFullDate == null){
             uploadRowError = 3;
@@ -120,23 +131,39 @@ class CsvFileProcessService{
             dateSale = null;
         }
 
-        if(itemFila['Email Address'] == null ||  String(itemFila['Email Address']).length < 1  || String(itemFila['Email Address']) == ''){
+        if((getInvoice != null) || (factError == 1) || (emailError == 1) || (dateN == null)  ){
+          console.log("ERRORS : ",getPosId,findProd.id, userSale, approuch,
+          quarter, yearReference, weekReference, dateSale, nowDate
+          ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
+          const saleInvoiceSave =  await serviceSales.create({
+              posId: null,
+              productId: null,
+              employAssignedId:null,
+              totalPoints:0,
+              quarterId:null,
+              yearInFile:null,
+              weekInFile:null,
+              pendingPoints:0,
+              assignedPoints:0,
+              saleDates:nowDate,
+              pointsLoadDates:nowDate,
+              pointsAssignedDates:nowDate,
+              fileUploadId:getFile.id,
+              uploadSuccess:0,
+              invoiceNumber:String(itemFila['INVOICE']) ,
+              saleAmount: itemFila['Revenue USD'],
+              errorId:(getInvoice != null) ? 7 : uploadRowError,
+              UpdatedAt:nowDate.toString(),
+              saleType: null,
+              salesNote: 'Sales Error '
+            });
 
-            return `Email is empty or null please check your file Invoice: ${itemFila['INVOICE']} in the line: ${count+1}`
-        }
+}
 
 
-        if((itemFila['Email Address'] != null)){
-            let userSaleToFind = await useSelection.findByEmail(String(itemFila['Email Address']));
+        if(emailError == 0 && getInvoice == null && factError == 0 && emailError == 0 && dateN != null){
             if(userSaleToFind != null){
-              findPosInUser = await findPosEmployee.findByUserId(userSaleToFind.id);
-              getIdCompany = await findPos.findOne(findPosInUser.posId);
-              let getFiscalPeriod = await findFiscalPerid.findByCompany(getIdCompany.companyId);
-              let getQuarter = await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
-              let sType = itemFila['STYPE'];
-
               if(sType !== null || sType != ''){
-
                   findRuleInter      = await findRule.findByQuarter(getQuarter.id,sType, weekReference);
                   digipointSave      = ( parseFloat(itemFila['Revenue USD']) * findRuleInter.digipointsPerAmount) / findRuleInter.baseAmount;
                   approuch           = Math.round(digipointSave);
@@ -151,8 +178,50 @@ class CsvFileProcessService{
                     successType = true;
                     //console.log(" ****** FECHA DE LA VENTA ******",dateSale);
 
+
+                    console.log("NO ERRORS : ",getPosId,findProd.id, userSale, approuch,
+                        quarter, yearReference, weekReference, dateSale, nowDate
+                        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
+                        const saleInvoiceSave =  await serviceSales.create({
+                            posId: getPosId,
+                            productId: findProd.id,
+                            employAssignedId:userSale,
+                            totalPoints:approuch,
+                            quarterId:quarter,
+                            yearInFile:yearReference,
+                            weekInFile:weekReference,
+                            pendingPoints:0,
+                            assignedPoints:approuch,
+                            saleDates:dateSale,
+                            pointsLoadDates:nowDate,
+                            pointsAssignedDates:nowDate,
+                            fileUploadId:getFile.id,
+                            uploadSuccess:successType,
+                            invoiceNumber:invoiceAssigNumber ,
+                            saleAmount: itemFila['Revenue USD'],
+                            errorId:uploadRowError,
+                            UpdatedAt:nowDate.toString(),
+                            saleType: itemFila['STYPE'].toString()
+                          });
+
+                          // provisional info insert
+                          let  employeeAssig =  await employeeAssign.create({
+                            employeeId: userSale,
+                            statusId: 11,
+                            pointsAssigned:approuch,
+                            pointsRedeemed:0,
+                            pointsAssignedDate:nowDate,
+                            userAssignedId:1,
+                            saleAssigned:true,
+                            percentageSale:0,
+                            saleId:saleInvoiceSave.id,
+                            createdAt:nowDate,
+                            updatedAt:nowDate,
+
+                          })
+
                   }else{
-                          dateSale = salesFullDate;
+                          dateSale = null;
                           uploadRowError = 5;
                           quarter = getQuarter.id;
                           successType = false;
@@ -160,58 +229,23 @@ class CsvFileProcessService{
 
                // return dateSale;
               }else{
-                uploadRowError = null;
-                quarter = getQuarter.id;
-                successType = true;
+                 uploadRowError = 6;
+                successType = false;
+                dateSale = null;
               }
             }else{
-              return `No process row because email no found in the invoice: ${itemFila['INVOICE']}`;
+                uploadRowError = 7;
+                successType = false;
+                dateSale = null;
             }
 
 
         }
 
 
-        console.log("RESPONSE: ",getPosId,findProd.id, userSale, approuch,
-        quarter, yearReference, weekReference, dateSale, nowDate
-        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
-        const saleInvoiceSave =  await serviceSales.create({
-            posId: getPosId,
-            productId: findProd.id,
-            employAssignedId:userSale,
-            totalPoints:approuch,
-            quarterId:quarter,
-            yearInFile:yearReference,
-            weekInFile:weekReference,
-            pendingPoints:0,
-            assignedPoints:approuch,
-            saleDates:dateSale,
-            pointsLoadDates:nowDate,
-            pointsAssignedDates:nowDate,
-            fileUploadId:getFile.id,
-            uploadSuccess:successType,
-            invoiceNumber: itemFila['INVOICE'],
-            saleAmount: itemFila['Revenue USD'],
-            errorId:uploadRowError,
-            UpdatedAt:nowDate.toString(),
-            saleType: itemFila['STYPE'].toString()
-          });
 
-          // provisional info insert
-          let  employeeAssig =  await employeeAssign.create({
-            employeeId: userSale,
-            statusId: 11,
-            pointsAssigned:approuch,
-            pointsRedeemed:0,
-            pointsAssignedDate:nowDate,
-            userAssignedId:1,
-            saleAssigned:true,
-            percentageSale:0,
-            saleId:saleInvoiceSave.id,
-            createdAt:nowDate,
-            updatedAt:nowDate,
 
-          })
+
         // console.log("🚀 ~ file: process-document.service.js:80 ~ ProcessDocumentService ~ converAndSaveFile ~ saleInvoiceSave", saleInvoiceSave)
                     //let dateExplodeToFormat = dateRead
     }
@@ -261,6 +295,20 @@ processDate(data, type){
 
 
 }
+
+
+async findByInvoice(getInvoiceNumber){
+
+  const data = await models.Sales.findOne({
+    where:{
+      invoiceNumber: getInvoiceNumber,
+    }
+  });
+  return data;
+
+}
+
+
 
 
 }
