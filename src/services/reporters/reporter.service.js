@@ -60,7 +60,7 @@ class ReporterService{
   async getDigipointsPending(type, country, userEmployee){
     let types = type;
     let countryId = country;
-    let whereInner = ``;
+
 
     switch (parseInt(types)) {
       case 1:
@@ -79,30 +79,19 @@ class ReporterService{
       countryId = 1
     }
 
-    whereInner= ` where empColl.points_redeemed  ${types} 0 and cou.id = ${countryId} group by empColl.employ_id,
-    empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name`;
-
-    if(userEmployee != 0){
-      whereInner = ` where empColl.points_redeemed  ${types} 0 and cou.id = ${countryId} and empColl.employ_id = ${userEmployee} group by
-      empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name `;
-    }
-
-      const query = `select empColl.employ_id as employeeId, compa."name" as company,
-      os."name" as status , cou."name" as country  , concat(pe.names, ' ', pe.last_name ) as user_assig,
-      sum(empColl.points_assigned) as poins_assig,
-      sum(empColl.points_redeemed) as redeem,
-      rol."name" as role
-  from employee_points_collects empColl
-  inner join people pe on pe.user_id = empColl.employ_id
-  inner join employee_pos ep on ep.employee_id = empColl.employ_id
-  inner join points_of_sales pos on pos.id = ep.pos_id
-  inner join companies compa on compa.id = pos.company_id
-  inner join users us on us.id  = empcoll.employ_id
-  inner join roles rol on rol.id = us.role_id
-  inner join countries cou on cou.id = pos.country_id
-  inner join operation_statuses os on os.id = empColl.status_id
-  ${whereInner}`;
-
+      const query = `
+      select sa.employ_assigned_id , comp.name as company_name, coun.name as country_name, rol."name"  as role_assigned,
+        sum(sa.assigned_points) as assigned_points,
+        (select sum(order_carts.digipoint_substract) as digi_cart from order_carts where order_carts.employee_id = ${userEmployee}) as cart_points
+      from sales sa
+      inner join employee_pos epos on epos.employee_id  =  ${userEmployee}
+      inner join points_of_sales pos on pos.id = epos.pos_id
+      inner join companies comp on comp.id = pos.company_id
+      inner join countries coun on coun.id = pos.country_id
+      inner join users us on us.id  = sa.employ_assigned_id
+      inner join roles rol on rol.id = us.role_id
+      where sa.assigned_points > 0 and sa.employ_assigned_id  =  ${userEmployee} and coun.id = ${countryId}
+      group by  sa.employ_assigned_id, comp.name, coun.name, rol.name`;
 //console.log(query);
      try {
 
