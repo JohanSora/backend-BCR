@@ -38,7 +38,7 @@ async(req, res, next)=>{
   }
 });
 
-router.get('/digipoints-redeem-status/:type/:country',
+router.get('/digipoints-redeem-status/:type/:country/:userEmployeeId',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
@@ -46,7 +46,8 @@ async(req, res, next)=>{
 
     const {type} = req.params;
     const {country} = req.params;
-    const salesAssigned = await service.getDigipointsPending(type, country);
+    const {userEmployeeId} = req.params;
+    const salesAssigned = await service.getDigipointsPending(type, country, userEmployeeId);
     res.json(salesAssigned);
 
   }catch(error){
