@@ -194,6 +194,15 @@ const SalesSchema = {
   },
 
 
+  salesNote:{
+    allowNull: true,
+    type:DataTypes.TEXT,
+    field:'sales_note'
+  },
+
+
+
+
 
 }
 

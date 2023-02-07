@@ -19,11 +19,13 @@ class ProcessDocumentService{
 
         const fileExtension = path.parse(bodyData.fileName).ext;
 
+        const originalFileName = path.parse(bodyData.fileName).name;
+
         //convert b64 to binary
         const binaryData = Buffer.from(bodyData.base64String, 'base64');
 
         const getStringName = uuidv4();
-        const setNewName = getStringName+fileExtension;
+        const setNewName = getStringName+'-'+originalFileName+fileExtension;
         const nowDate           = new Date();
 
 
@@ -35,7 +37,7 @@ class ProcessDocumentService{
         const pathData      = dirNameString+"/assets/uploads/"+setNewName;
 
         const registerFile = await serviceDocument.create({
-            nameUuid: getStringName,
+            nameUuid: getStringName+'-'+originalFileName,
             extension: fileExtension,
             complete: 1,
             pathSrc:pathData,
