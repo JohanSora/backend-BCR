@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { USER_TABLE } = require('./../catalogs/user.model');
-const { SALES_TABLE } = require('./sales.model');
+//const { SALES_TABLE } = require('./sales.model');
 const { OPERATION_STATUS_TABLE } = require('./../catalogs/operation-status.model');
 
 
@@ -74,18 +74,6 @@ const EmployeePointsCollectSchema = {
     onDelete: 'SET NULL'
   },
 
-  saleId:{
-    field: 'user_assigned_id',
-    allowNull: false,
-    type: DataTypes.INTEGER,
-    references: {
-      model: SALES_TABLE,
-      key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
-  },
-
   saleAssigned:{
     field: 'sale_assigned',
     allowNull: true,
@@ -110,7 +98,31 @@ const EmployeePointsCollectSchema = {
     type:DataTypes.DATE,
     field:'updated_at',
     defaultValue: Sequelize.NOW
-  }
+  },
+
+  reasonAssign:{
+    field: 'reason_assign',
+    allowNull: true,
+    type:DataTypes.TEXT
+  },
+
+  behavior:{
+    allowNull:false,
+    type:DataTypes.BOOLEAN,
+    default:false
+  },
+
+
+  promotion:{
+    allowNull:false,
+    type:DataTypes.BOOLEAN,
+    default:false
+  },
+
+
+
+
+
 
 
 
@@ -122,7 +134,6 @@ class EmployeePointsCollect extends Model{
 
     this.belongsTo(models.User, { as: 'employee' });
     this.belongsTo(models.User, { as: 'userAssigned' });
-    this.belongsTo(models.Sales, { as: 'sale' });
     this.belongsTo(models.OperationStatus, { as: 'status' });
 
 

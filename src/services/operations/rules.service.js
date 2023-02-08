@@ -38,6 +38,7 @@ class RuleService{
         quarterId: quarter,
         saleType: saleType,
         status:true,
+        promotion:false,
         weeks:{
           [Op.like]: `%${week}%`
         }
@@ -48,6 +49,30 @@ class RuleService{
 
 
   }
+
+
+  async findByPromotion(quarter, saleType, week){
+
+    const { Op } = require("sequelize");
+
+    const data = await models.Rules.findOne({
+      where:{
+        quarterId: quarter,
+        saleType: saleType,
+        status:true,
+        promotion:true,
+        weeks:{
+          [Op.like]: `%${week}%`
+        }
+      }
+    });
+
+    return data;
+
+
+  }
+
+
 
   async update(id, changes){
      const Rule = this.findOne(id);

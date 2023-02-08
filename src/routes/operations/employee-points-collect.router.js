@@ -41,6 +41,24 @@ checkRoles(1,2,5),
     }
   });
 
+router.get('/by-user/:user',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,5),
+  async(req, res, next) =>{
+    try{
+
+      const { user }  = req.params;
+      const employeePoint = await service.findByUser(user);
+      res.json(employeePoint);
+
+    }catch(error){
+      next(error);
+    }
+  });
+
+
+
+
 // Create employeePoint
 router.post('/',
 passport.authenticate('jwt', {session:false}),

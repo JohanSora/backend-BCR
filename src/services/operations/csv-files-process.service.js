@@ -203,8 +203,8 @@ class CsvFileProcessService{
                             quarterId:quarter,
                             yearInFile:yearReference,
                             weekInFile:weekReference,
-                            pendingPoints:0,
-                            assignedPoints:approuch,
+                            pendingPoints:approuch,
+                            assignedPoints:0,
                             saleDates:dateSale,
                             pointsLoadDates:nowDate,
                             pointsAssignedDates:nowDate,
@@ -218,7 +218,7 @@ class CsvFileProcessService{
                           });
 
                           // provisional info insert
-                          let  employeeAssig =  await employeeAssign.create({
+                      /*     let  employeeAssig =  await employeeAssign.create({
                             employeeId: userSale,
                             statusId: 11,
                             pointsAssigned:approuch,
@@ -231,7 +231,7 @@ class CsvFileProcessService{
                             createdAt:nowDate,
                             updatedAt:nowDate,
 
-                          })
+                          }) */
 
                   }else{
                           dateSale = null;

@@ -210,10 +210,10 @@ class Sales extends Model{
 
   static associate (models){
 
-    this.hasMany(models.EmployeePointsCollect, {
+    /* this.hasMany(models.EmployeePointsCollect, {
       as: 'employeePointsCollect',
       foreignKey: 'saleId'
-    });
+    }); */
 
     this.belongsTo(models.PointsOfSale, { as: 'pos' });
     this.belongsTo(models.Product, { as: 'product' });

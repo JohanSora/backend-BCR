@@ -69,7 +69,6 @@ class EmployeePointsCollectService{
     const EmployeePointCollect = await models.EmployeePointsCollect.findByPk(id, {
       include:[
         'employee',
-        'sale',
         'status'
       ]
     });
@@ -78,6 +77,26 @@ class EmployeePointsCollectService{
     }
     return EmployeePointCollect;
   }
+
+  async findByUser(userId){
+
+    const EmployeePointCollect = await models.EmployeePointsCollect.findAll( {
+      where:{
+        employeeId:userId,
+      },
+      include:[
+        'employee',
+        'status'
+      ]
+    });
+    if(!EmployeePointCollect){
+     throw boom.notFound('Employee points collect not found');
+    }
+    return EmployeePointCollect;
+  }
+
+
+
 
   async update(id, changes){
      const EmployeePointsCollect = this.findOne(id);

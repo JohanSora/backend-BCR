@@ -41,6 +41,26 @@ class SaleService{
     return {id};
   }
 
+  async findSaleByUser(userId){
+
+    const { Op } = require("sequelize");
+
+    const sales = await models.Sales.findAll( {
+      where:{
+        employAssignedId: userId,
+        errorId:{
+          [Op.is]: null,
+        },
+        assignedPoints:{
+          [Op.eq]: 0,
+        }
+      }
+    });
+
+    return sales;
+
+  }
+
 
 }
 

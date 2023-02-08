@@ -68,10 +68,23 @@ const RulesSchema = {
   },
 
 
+  multiplier:{
+    allowNull: true,
+    type:DataTypes.INTEGER,
+    field:'multiplier'
+  },
 
 
+  reason:{
+    allowNull: true,
+    type:DataTypes.TEXT
+  },
 
-
+  promotion:{
+    allowNull:false,
+    default: false,
+    type:DataTypes.BOOLEAN
+  },
 
 }
 
