@@ -30,7 +30,8 @@ const EmployeePosRouter                    = require('./operations/employee-pos.
 const CsvFileRouter                        = require('./operations/csv-files-process.router');
 const PointsOfSalesRouter                  = require('./operations/points-of-sale.router');
 const OrderCartRouter                      = require('./operations/order-cart.router');
-const SpecialAssign                        = require('./operations/special-assigns.router');
+const SpecialAssignRouter                  = require('./operations/special-assigns.router');
+const SalesRouter                          = require('./operations/sale.router');
 
 // end process file router
 
@@ -78,7 +79,8 @@ function routerApi(app){
     router.use('/csv-files', CsvFileRouter);
     router.use('/pos', PointsOfSalesRouter);
     router.use('/order-carts', OrderCartRouter);
-    router.use('/special-assign', SpecialAssign);
+    router.use('/special-assign', SpecialAssignRouter);
+    router.use('/sales', SalesRouter);
     // end process
 
 
