@@ -218,7 +218,7 @@ class CsvFileProcessService{
                           });
 
                           // provisional info insert
-                      /*     let  employeeAssig =  await employeeAssign.create({
+                      let  employeeAssig =  await employeeAssign.create({
                             employeeId: userSale,
                             statusId: 11,
                             pointsAssigned:approuch,
@@ -230,8 +230,11 @@ class CsvFileProcessService{
                             saleId:saleInvoiceSave.id,
                             createdAt:nowDate,
                             updatedAt:nowDate,
+                            reasonAssign:'Default assign invoice: '+invoiceAssigNumber,
+                            behavior:false,
+                            promotion:false,
 
-                          }) */
+                          })
 
                   }else{
                           dateSale = null;
