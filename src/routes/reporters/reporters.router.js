@@ -55,13 +55,29 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/digipoints-redeem-status-all/:type/:country/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+
+    const {type} = req.params;
+    const {country} = req.params;
+    const salesAssigned = await service.getDigipointsPendingAll(type, country);
+    res.json(salesAssigned);
+
+  }catch(error){
+    next(error);
+  }
+});
+
 
 
 
 // find by Id
 router.get('/selective-reporter/:quarter/:week/:saleType',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
 
   async(req, res, next) =>{
     try{
