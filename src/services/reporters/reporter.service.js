@@ -93,7 +93,7 @@ class ReporterService{
   inner join countries cou on cou.id = pos.country_id
   inner join operation_statuses os on os.id = empColl.status_id
     where empColl.points_redeemed  ${types} 0 and cou.id = ${countryId} group by empColl.employ_id,
-      empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name`;
+      empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name order by poins_assig DESC`;
 //console.log(query);
      try {
 
