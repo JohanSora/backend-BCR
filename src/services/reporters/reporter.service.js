@@ -79,7 +79,7 @@ class ReporterService{
       countryId = 1
     }
 
-    const query = `select empColl.employ_id, compa."name" as company,
+    const query = `select empColl.employ_id, ROW_NUMBER() OVER(ORDER BY sum(empColl.points_assigned) DESC) AS ranking, compa."name" as company,
     os."name" as status, cou."name" as country, concat(pe.names, ' ', pe.last_name ) as user_assig, us.email, us.region,
     sum(empColl.points_assigned) as poins_assig,
     sum(empColl.points_redeemed) as redeem, rol."name" as role
