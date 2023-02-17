@@ -84,11 +84,14 @@ class ReporterService{
     sum(empColl.points_assigned) as poins_assig,
     sum(empColl.points_redeemed) as redeem, rol."name" as role
     from employee_points_collects empColl
-    inner join people pe on pe.user_id = empColl.employ_id
-    inner join employee_pos ep on ep.employee_id = empColl.employ_id
-    inner join roles rol on rol.id = us.role_id
-    inner join countries cou on cou.id = pos.country_id
-    inner join operation_statuses os on os.id = empColl.status_id
+  inner join people pe on pe.user_id = empColl.employ_id
+  inner join employee_pos ep on ep.employee_id = empColl.employ_id
+  inner join points_of_sales pos on pos.id = ep.pos_id
+  inner join companies compa on compa.id = pos.company_id
+  inner join users us on us.id  = empcoll.employ_id
+  inner join roles rol on rol.id = us.role_id
+  inner join countries cou on cou.id = pos.country_id
+  inner join operation_statuses os on os.id = empColl.status_id
     where empColl.points_redeemed  ${types} 0 and cou.id = ${countryId} group by empColl.employ_id,
       empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name`;
 //console.log(query);
