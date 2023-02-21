@@ -158,7 +158,7 @@ class ReporterService {
       inner join countries coun on coun.id = pos.country_id
       inner join users us on us.id  = sa.employ_assigned_id
       inner join roles rol on rol.id = us.role_id
-      where sa.assigned_points > 0 and sa.employ_assigned_id  =  ${userEmployee} and coun.id = ${countryId}
+      where sa.assigned_points ${types} 0 and sa.employ_assigned_id  =  ${userEmployee} and coun.id = ${countryId}
       group by  sa.employ_assigned_id, comp.name, coun.name, rol.name`;
     //console.log(query);
     try {
