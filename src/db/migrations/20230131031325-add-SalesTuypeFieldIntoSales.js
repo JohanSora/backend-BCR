@@ -1,16 +1,12 @@
 'use strict';
 
-const {SALES_TABLE} = require('./../models/operations/sales.model');
+const {SalesSchema, SALES_TABLE} = require('./../models/operations/sales.model');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async(queryInterface, Sequelize) => {
 
-    await queryInterface.addColumn(SALES_TABLE, 'sale_type',{
-      allowNull:true,
-      type: Sequelize.DataTypes.STRING,
-      field: 'sale_type'
-    });
+    await queryInterface.addColumn(SALES_TABLE, 'sale_type', SalesSchema.saleType);
 
   },
 

@@ -193,12 +193,19 @@ const SalesSchema = {
     field:'sale_type'
   },
 
-
   salesNote:{
     allowNull: true,
     type:DataTypes.TEXT,
     field:'sales_note'
   },
+
+  marketSegment:{
+    allowNull: true,
+    type:DataTypes.TEXT,
+    field:'market_segment'
+  },
+
+
 
 
 
