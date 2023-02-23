@@ -28,6 +28,9 @@ const whitelist = [
   'http://localhost:8050',
   'https://bcr.adobepcclub.net',
   'https://adobe-bcr.vercel.app',
+  'https://frontend-apc.vercel.app',
+  'https://apcclub.vercel.app',
+  'https://www.bcr.adobepcclub.net'
 ];
 
 // Add options method cors manager

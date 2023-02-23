@@ -24,6 +24,21 @@ async(req, res, next)=>{
   }
 });
 
+// List all sales by week and sales type (TM, IN)
+router.get('/sales-by-week-and-stype',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+
+    const getSalesByWeekAndStype = await service.getSalesByWeekAndStype();
+    res.json(getSalesByWeekAndStype);
+
+  }catch(error){
+    next(error);
+  }
+});
+
 router.get('/assigned',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
@@ -55,13 +70,29 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/digipoints-redeem-status-all/:type/:country/',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+
+    const {type} = req.params;
+    const {country} = req.params;
+    const salesAssigned = await service.getDigipointsPendingAll(type, country);
+    res.json(salesAssigned);
+
+  }catch(error){
+    next(error);
+  }
+});
+
 
 
 
 // find by Id
 router.get('/selective-reporter/:quarter/:week/:saleType',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
 
   async(req, res, next) =>{
     try{
