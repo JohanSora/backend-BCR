@@ -28,7 +28,8 @@ router.post('/recovery',
   async (req, res, next) => {
       try {
         const {email} = req.body;
-        const rta = await service.sendRecovery(email);
+        const {lang} = req.body;
+        const rta = await service.sendRecovery(email, lang);
         res.json(rta);
       } catch (error) {
         next(error);
