@@ -69,7 +69,7 @@ class UserService {
       encryptPassword = await bycrypt.hash(changes.password, saltArround);
     }
 
-    console.log('the object',changes);
+    //console.log('the object',changes);
 
     const user = this.findOne(id);
     if (encryptPassword != '') {

@@ -42,11 +42,6 @@ const PersonSchema = {
     type:DataTypes.STRING
   },
 
-
-
-
-
-
   operationStatusId: {
     field: 'status_id',
     allowNull: false,

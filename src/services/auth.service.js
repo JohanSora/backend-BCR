@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 
 const { config } = require('./../../config/config');
 const secret = config.jwtSecret;
-const saltArround = Number(config.envSalt);
+
 
 class AuthService {
   // Compare for login

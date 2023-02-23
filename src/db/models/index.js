@@ -29,7 +29,7 @@ const {  Quarter, QuarterSchema }                               = require("./ope
 const {  Weeks, WeekSchema }                                    = require("./operations/weeks.model");
 const {  RedeemAwards, RedeemAwardsSchema }                     = require("./operations/redeem-awards.model");
 const {  Rules, RulesSchema }                                   = require("./operations/rules.model");
-const {  OrderCart, OrderCartSchema}                                   = require("./operations/order-cart.model");
+const {  OrderCart, OrderCartSchema}                            = require("./operations/order-cart.model");
 
 
 //--------

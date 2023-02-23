@@ -192,9 +192,9 @@ class CsvFileProcessService{
                     //console.log(" ****** FECHA DE LA VENTA ******",dateSale);
 
 
-                    console.log("NO ERRORS : ",getPosId,findProd.id, userSale, approuch,
+                   /*  console.log("NO ERRORS : ",getPosId,findProd.id, userSale, approuch,
                         quarter, yearReference, weekReference, dateSale, nowDate
-                        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
+                        ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE']) */
                         const saleInvoiceSave =  await serviceSales.create({
                             posId: getPosId,
                             productId: findProd.id,
@@ -203,8 +203,8 @@ class CsvFileProcessService{
                             quarterId:quarter,
                             yearInFile:yearReference,
                             weekInFile:weekReference,
-                            pendingPoints:approuch,
-                            assignedPoints:0,
+                            pendingPoints:0,
+                            assignedPoints:approuch,
                             saleDates:dateSale,
                             pointsLoadDates:nowDate,
                             pointsAssignedDates:nowDate,
@@ -216,9 +216,8 @@ class CsvFileProcessService{
                             UpdatedAt:nowDate.toString(),
                             saleType: itemFila['STYPE'].toString()
                           });
-
-                          // provisional info insert
-                      let  employeeAssig =  await employeeAssign.create({
+                      if(approuch > 0){
+                        let  employeeAssig =  await employeeAssign.create({
                             employeeId: userSale,
                             statusId: 11,
                             pointsAssigned:approuch,
@@ -235,6 +234,9 @@ class CsvFileProcessService{
                             promotion:false,
 
                           })
+                      }
+                          // provisional info insert
+
 
                   }else{
                           dateSale = null;
