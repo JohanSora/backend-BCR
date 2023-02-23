@@ -59,7 +59,19 @@ const AwardSchema = {
     type:DataTypes.DATE,
     field:'created_at',
     defaultValue: Sequelize.NOW
-  }
+  },
+
+  imagePathSecond:{
+    allowNull:true,
+    type: DataTypes.STRING,
+    field:'image_path_2'
+  },
+
+
+
+
+
+
 }
 
 class Award extends Model{
