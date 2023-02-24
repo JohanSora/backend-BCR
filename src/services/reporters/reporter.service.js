@@ -76,6 +76,21 @@ class ReporterService {
     }
   }
 
+  async getRedeemAll() {
+    const query = `SELECT oc.id, oc.employee_id, oc.order_number, oc.product_object, oc.status_id, os.name AS status_name, oc.digipoint_substract, oc.created_at
+    FROM order_carts AS oc
+    JOIN operation_statuses AS os ON oc.status_id = os.id
+    ORDER BY oc.created_at DESC;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
   async getDigipointsPendingAll(type, country) {
     let types = type;
     let countryId = country;
