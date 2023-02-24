@@ -12,7 +12,7 @@ const service = new PersonService();
 // List all People
 router.get('/',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
 
@@ -27,7 +27,7 @@ async(req, res, next)=>{
 // find by Id
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3,4,5),
     validatorHandler(getPersonSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -62,7 +62,7 @@ checkRoles(1,2),
 // update person
 router.patch('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1),
+checkRoles(1,2,3,4,5),
     validatorHandler(getPersonSchema, 'params'),
     validatorHandler(updatePersonSchema, 'body'),
     async(req, res, next) =>{

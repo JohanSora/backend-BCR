@@ -27,7 +27,7 @@ async(req, res, next)=>{
 // find by Id
 router.get('/:id',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3),
     validatorHandler(getSalesGroupSchema, 'params'),
   async(req, res, next) =>{
     try{
@@ -44,7 +44,7 @@ checkRoles(1,2),
 // Create sales group
 router.post('/',
 passport.authenticate('jwt', {session:false}),
-checkRoles(1,2),
+checkRoles(1,2,3),
     validatorHandler(createSalesGroupSchema, 'body'),
     async(req, res, next) => {
 
