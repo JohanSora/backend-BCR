@@ -76,6 +76,31 @@ class ReporterService {
     }
   }
 
+  async getSalesBySegment() {
+    const query = `SELECT 
+    sale_type, 
+    market_segment, 
+    ROUND(SUM(sales_amount), 2) AS total_sales
+FROM 
+    sales
+WHERE 
+    sale_type IN ('TM', 'IN') AND 
+    market_segment IN ('COMMERCIAL', 'EDUCATION')
+GROUP BY 
+    sale_type, 
+    market_segment
+ORDER BY 
+    sale_type desc;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
   async getRedeemAll() {
     const query = `SELECT oc.id, oc.employee_id, oc.order_number, oc.product_object, oc.status_id, os.name AS status_name, oc.digipoint_substract, oc.created_at
     FROM order_carts AS oc
