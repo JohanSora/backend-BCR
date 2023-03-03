@@ -76,6 +76,46 @@ class ReporterService {
     }
   }
 
+  async getSalesBySegment() {
+    const query = `SELECT 
+    sale_type, 
+    market_segment, 
+    ROUND(SUM(sales_amount), 2) AS total_sales
+FROM 
+    sales
+WHERE 
+    sale_type IN ('TM', 'IN') AND 
+    market_segment IN ('COMMERCIAL', 'EDUCATION')
+GROUP BY 
+    sale_type, 
+    market_segment
+ORDER BY 
+    sale_type desc;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
+  async getRedeemAll() {
+    const query = `SELECT oc.id, oc.employee_id, oc.order_number, oc.product_object, oc.status_id, os.name AS status_name, oc.digipoint_substract, oc.created_at
+    FROM order_carts AS oc
+    JOIN operation_statuses AS os ON oc.status_id = os.id
+    ORDER BY oc.created_at DESC;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
   async getDigipointsPendingAll(type, country) {
     let types = type;
     let countryId = country;
@@ -98,10 +138,11 @@ class ReporterService {
       countryId = 1
     }
 
-    const query = `select empColl.employ_id, ROW_NUMBER() OVER(ORDER BY sum(empColl.points_assigned) DESC) AS ranking, compa."name" as company,
+    const query = `select empColl.employ_id, ROW_NUMBER() OVER(ORDER BY (SELECT SUM(sales_amount) FROM sales WHERE employ_assigned_id = empColl.employ_id) DESC) AS ranking, compa."name" as company,
     os."name" as status, cou."name" as country, concat(pe.names, ' ', pe.last_name ) as user_assig, us.email, us.region,
     sum(empColl.points_assigned) as poins_assig,
-    sum(empColl.points_redeemed) as redeem, rol."name" as role
+    sum(empColl.points_redeemed) as redeem, rol."name" as role,
+    (SELECT SUM(sales_amount) FROM sales WHERE employ_assigned_id = empColl.employ_id) AS total_sales_amount
     from employee_points_collects empColl
     inner join people pe on pe.user_id = empColl.employ_id
     inner join employee_pos ep on ep.employee_id = empColl.employ_id
@@ -111,9 +152,9 @@ class ReporterService {
     inner join roles rol on rol.id = us.role_id
     inner join countries cou on cou.id = pos.country_id
     inner join operation_statuses os on os.id = empColl.status_id
-    where empColl.points_redeemed  ${types} 0 and cou.id = ${countryId}
+    where empColl.points_redeemed ${types} 0 and cou.id = ${countryId}
     group by empColl.employ_id, empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name, us.email, us.region
-    order by poins_assig DESC;`;
+    order by total_sales_amount DESC;`;
     //console.log(query);
     try {
 
