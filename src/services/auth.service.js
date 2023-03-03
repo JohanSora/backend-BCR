@@ -409,7 +409,7 @@ a[x-apple-data-detectors] {
     }
 
     const mail = {
-      from: config.mailSetFromAddress, // sender address
+      from: `Adobe Partner Connection Club ${config.mailSetFromAddress}`, // sender address
       to: `${user.email}`, // list of receivers
       subject: subjectMail, // Subject line
       html: language, // html body
