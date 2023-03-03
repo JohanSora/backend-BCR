@@ -227,7 +227,7 @@ class CsvFileProcessService{
                             saleId:saleInvoiceSave.id,
                             createdAt:nowDate,
                             updatedAt:nowDate,
-                            reasonAssign:'Default assign invoice: '+invoiceAssigNumber,
+                            reasonAssign:invoiceAssigNumber,
                             behavior:false,
                             promotion:false,
 
