@@ -138,10 +138,11 @@ ORDER BY
       countryId = 1
     }
 
-    const query = `select empColl.employ_id, ROW_NUMBER() OVER(ORDER BY sum(empColl.points_assigned) DESC) AS ranking, compa."name" as company,
+    const query = `select empColl.employ_id, ROW_NUMBER() OVER(ORDER BY (SELECT SUM(sales_amount) FROM sales WHERE employ_assigned_id = empColl.employ_id) DESC) AS ranking, compa."name" as company,
     os."name" as status, cou."name" as country, concat(pe.names, ' ', pe.last_name ) as user_assig, us.email, us.region,
     sum(empColl.points_assigned) as poins_assig,
-    sum(empColl.points_redeemed) as redeem, rol."name" as role
+    sum(empColl.points_redeemed) as redeem, rol."name" as role,
+    (SELECT SUM(sales_amount) FROM sales WHERE employ_assigned_id = empColl.employ_id) AS total_sales_amount
     from employee_points_collects empColl
     inner join people pe on pe.user_id = empColl.employ_id
     inner join employee_pos ep on ep.employee_id = empColl.employ_id
@@ -151,9 +152,9 @@ ORDER BY
     inner join roles rol on rol.id = us.role_id
     inner join countries cou on cou.id = pos.country_id
     inner join operation_statuses os on os.id = empColl.status_id
-    where empColl.points_redeemed  ${types} 0 and cou.id = ${countryId}
+    where empColl.points_redeemed ${types} 0 and cou.id = ${countryId}
     group by empColl.employ_id, empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name, us.email, us.region
-    order by poins_assig DESC;`;
+    order by total_sales_amount DESC;`;
     //console.log(query);
     try {
 
