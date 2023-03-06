@@ -138,23 +138,35 @@ ORDER BY
       countryId = 1
     }
 
-    const query = `select empColl.employ_id, ROW_NUMBER() OVER(ORDER BY (SELECT SUM(sales_amount) FROM sales WHERE employ_assigned_id = empColl.employ_id) DESC) AS ranking, compa."name" as company,
-    os."name" as status, cou."name" as country, concat(pe.names, ' ', pe.last_name ) as user_assig, us.email, us.region,
-    sum(empColl.points_assigned) as poins_assig,
-    sum(empColl.points_redeemed) as redeem, rol."name" as role,
-    (SELECT SUM(sales_amount) FROM sales WHERE employ_assigned_id = empColl.employ_id) AS total_sales_amount
-    from employee_points_collects empColl
-    inner join people pe on pe.user_id = empColl.employ_id
-    inner join employee_pos ep on ep.employee_id = empColl.employ_id
-    inner join points_of_sales pos on pos.id = ep.pos_id
-    inner join companies compa on compa.id = pos.company_id
-    inner join users us on us.id = empColl.employ_id
-    inner join roles rol on rol.id = us.role_id
-    inner join countries cou on cou.id = pos.country_id
-    inner join operation_statuses os on os.id = empColl.status_id
-    where empColl.points_redeemed ${types} 0 and cou.id = ${countryId}
-    group by empColl.employ_id, empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name, us.email, us.region
-    order by total_sales_amount DESC;`;
+    const query = `SELECT empColl.employ_id AS employ_assigned_id,
+    ROW_NUMBER() OVER (ORDER BY COALESCE(total_sales_amount, 0) DESC) AS ranking,
+    compa."name" AS company,
+    os."name" AS status,
+    cou."name" AS country,
+    CONCAT(pe.names, ' ', pe.last_name) AS user_assig,
+    us.email,
+    us.region,
+    SUM(empColl.points_assigned) AS poins_assig,
+    SUM(empColl.points_redeemed) AS redeem,
+    rol."name" AS role,
+    sales.total_sales_amount
+FROM employee_points_collects empColl
+INNER JOIN people pe ON pe.user_id = empColl.employ_id
+INNER JOIN employee_pos ep ON ep.employee_id = empColl.employ_id
+INNER JOIN points_of_sales pos ON pos.id = ep.pos_id
+INNER JOIN companies compa ON compa.id = pos.company_id
+INNER JOIN users us ON us.id = empColl.employ_id
+INNER JOIN roles rol ON rol.id = us.role_id
+INNER JOIN countries cou ON cou.id = pos.country_id
+INNER JOIN operation_statuses os ON os.id = empColl.status_id
+LEFT JOIN (
+    SELECT employ_assigned_id, SUM(sales_amount) AS total_sales_amount
+    FROM sales
+    GROUP BY employ_assigned_id
+) sales ON sales.employ_assigned_id = empColl.employ_id
+WHERE empColl.points_redeemed ${types} 0 AND cou.id = ${countryId}
+GROUP BY empColl.employ_id, empColl.status_id, pe.names, pe.last_name, os."name", compa."name", rol."name", cou.name, us.email, us.region, sales.total_sales_amount
+ORDER BY COALESCE(sales.total_sales_amount, 0) DESC, ranking ASC;`;
     //console.log(query);
     try {
 
@@ -189,18 +201,18 @@ ORDER BY
     }
 
     const query = `
-      select sa.employ_assigned_id , comp.name as company_name, coun.name as country_name, rol."name"  as role_assigned,
-        sum(sa.assigned_points) as assigned_points,
-        (select sum(order_carts.digipoint_substract) as digi_cart from order_carts where order_carts.employee_id = ${userEmployee}) as cart_points
-      from sales sa
-      inner join employee_pos epos on epos.employee_id  =  ${userEmployee}
-      inner join points_of_sales pos on pos.id = epos.pos_id
-      inner join companies comp on comp.id = pos.company_id
-      inner join countries coun on coun.id = pos.country_id
-      inner join users us on us.id  = sa.employ_assigned_id
-      inner join roles rol on rol.id = us.role_id
-      where sa.assigned_points ${types} 0 and sa.employ_assigned_id  =  ${userEmployee} and coun.id = ${countryId}
-      group by  sa.employ_assigned_id, comp.name, coun.name, rol.name`;
+    select epc.employ_id , comp.name as company_name, coun.name as country_name, rol."name"  as role_assigned,
+    sum(epc.points_assigned) as assigned_points,
+    (select sum(order_carts.digipoint_substract) as digi_cart from order_carts where order_carts.employee_id = ${userEmployee}) as cart_points
+    from employee_points_collects epc
+    inner join employee_pos epos on epos.employee_id  =  ${userEmployee}
+    inner join points_of_sales pos on pos.id = epos.pos_id
+    inner join companies comp on comp.id = pos.company_id
+    inner join countries coun on coun.id = pos.country_id
+    inner join users us on us.id  = epc.employ_id
+    inner join roles rol on rol.id = us.role_id
+    where epc.points_assigned ${types} 0 and epc.employ_id  =  ${userEmployee} and coun.id = ${countryId}
+    group by  epc.employ_id, comp.name, coun.name, rol.name`;
     //console.log(query);
     try {
 
