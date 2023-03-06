@@ -111,7 +111,7 @@ class CsvFileProcessService{
         let quarter            = null;
         let invoiceAssigNumber = '';
 
-          let getInvoice = await this.findByInvoice(String(itemFila['INVOICE']));
+          let getInvoice = await this.findByInvoice(String(itemFila['INVOICE']), parseInt(findProd.id) );
           // manage Errors
 
            let factError = (findProd == null ||  String(findProd).length < 1  || String(findProd) == '' ) ? 1 : 0;
@@ -143,10 +143,10 @@ class CsvFileProcessService{
           uploadRowError = 9;
         }
 
+
+
         if(  (itemFila['DATE'] == 'NULL') || (getInvoice != null) || (factError == 1) || (emailError == 1) || ( findRuleInter == null)  || (findRuleInter == null) ){
-              console.log("ERRORS : ",findRuleInter,getPosId,findProd.id, userSale, approuch,
-              quarter, yearReference, weekReference, dateSale, nowDate
-              ,getFile.id, successType, uploadRowError, itemFila['STYPE'].toString(), itemFila['INVOICE'])
+              console.log("ERRORS : ", getInvoice)
               const saleInvoiceSave =  await serviceSales.create({
                   posId: null,
                   productId: null,
@@ -308,11 +308,12 @@ processDate(data, type){
 }
 
 
-async findByInvoice(getInvoiceNumber){
+async findByInvoice(getInvoiceNumber, prodId){
 
   const data = await models.Sales.findOne({
     where:{
       invoiceNumber: getInvoiceNumber,
+      productId:prodId
     }
   });
   return data;
