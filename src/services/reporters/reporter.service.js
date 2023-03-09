@@ -102,10 +102,12 @@ ORDER BY
   }
 
   async getRedeemAll() {
-    const query = `SELECT oc.id, oc.employee_id, oc.order_number, oc.product_object, oc.status_id, os.name AS status_name, oc.digipoint_substract, oc.created_at
-    FROM order_carts AS oc
-    JOIN operation_statuses AS os ON oc.status_id = os.id
-    ORDER BY oc.created_at DESC;`;
+    const query = `SELECT order_carts.employee_id as employeeId, users.name, users.email, users.role_id, roles.name AS role_name, order_carts.order_number as orderNumber, order_carts.product_object AS productsObject, operation_statuses.name AS status_name,  operation_statuses.id AS operationStatusId, order_carts.digipoint_substract, order_carts.created_at
+    FROM order_carts
+    JOIN users ON order_carts.employee_id = users.id
+    JOIN roles ON users.role_id = roles.id
+    JOIN operation_statuses ON order_carts.status_id = operation_statuses.id
+    order by order_carts.created_at DESC;`;
     try {
 
       const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
