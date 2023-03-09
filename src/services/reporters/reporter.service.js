@@ -100,7 +100,22 @@ ORDER BY
       throw boom.notFound('No longer data to show ', error);
     }
   }
+  
+  async getUsersPolicyAll() {
+    const query = `SELECT u.id, u.name, u.email, u.role_id, roles."name" as role_name, u.created_at, u.region
+    FROM users as u
+    JOIN roles ON role_id = roles.id
+    WHERE policy = false;`;
+    try {
 
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+  
   async getRedeemAll() {
     const query = `SELECT order_carts.employee_id as employeeId, users.name, users.email, users.role_id, roles.name AS role_name, order_carts.order_number as orderNumber, order_carts.product_object AS productsObject, operation_statuses.name AS status_name,  operation_statuses.id AS operationStatusId, order_carts.digipoint_substract, order_carts.created_at
     FROM order_carts
