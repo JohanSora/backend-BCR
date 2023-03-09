@@ -105,7 +105,8 @@ ORDER BY
     const query = `SELECT u.id, u.name, u.email, u.role_id, roles."name" as role_name, u.created_at, u.region
     FROM users as u
     JOIN roles ON role_id = roles.id
-    WHERE policy = false;`;
+    WHERE policy = false
+    order by u.name;`;
     try {
 
       const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
