@@ -116,6 +116,42 @@ ORDER BY
       throw boom.notFound('No longer data to show ', error);
     }
   }
+
+  async getDigiStatus() {
+    const query = `SELECT
+	epc.employ_id,
+	u.name,
+	u.email,
+	u.role_id,
+	r.name as rol_name,
+	SUM(CASE WHEN epc.behavior = false THEN epc.points_assigned ELSE 0 END) AS ventas,
+	SUM(CASE WHEN epc.behavior = true THEN epc.points_assigned ELSE 0 END) AS behavior,
+	SUM(epc.points_assigned) AS tpuntos,
+	(SELECT COALESCE(SUM(oc.digipoint_substract), 0) FROM order_carts oc WHERE oc.employee_id = u.id) AS redimidos,
+	SUM(epc.points_assigned) - (SELECT COALESCE(SUM(oc.digipoint_substract), 0) FROM order_carts oc WHERE oc.employee_id = u.id) AS puntos_disponibles
+FROM
+	employee_points_collects epc
+	LEFT JOIN users u ON epc.employ_id = u.id
+	LEFT JOIN roles r on u.role_id = r.id
+GROUP BY
+	epc.employ_id,
+	u.name,
+	u.email,
+	u.name,
+	u.role_id,
+	r.name,
+	u.id
+ORDER BY
+	u.email ASC;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
   
   async getRedeemAll() {
     const query = `SELECT order_carts.employee_id as employeeId, users.name, users.email, users.role_id, roles.name AS role_name, order_carts.order_number as orderNumber, order_carts.product_object AS productsObject, operation_statuses.name AS status_name,  operation_statuses.id AS operationStatusId, order_carts.digipoint_substract, order_carts.created_at

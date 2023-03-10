@@ -110,6 +110,18 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/digistatus',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    const salesAssigned = await service.getDigiStatus();
+    res.json(salesAssigned);
+  }catch(error){
+    next(error);
+  }
+});
+
 router.get('/salesbysegment',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
