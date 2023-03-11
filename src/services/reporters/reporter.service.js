@@ -154,7 +154,7 @@ ORDER BY
   }
   
   async getRedeemAll() {
-    const query = `SELECT order_carts.employee_id as employeeId, users.name, users.email, users.role_id, roles.name AS role_name, order_carts.order_number as orderNumber, order_carts.product_object AS productsObject, operation_statuses.name AS status_name,  operation_statuses.id AS operationStatusId, order_carts.digipoint_substract, order_carts.created_at
+    const query = `SELECT order_carts.id, order_carts.employee_id as employeeId, users.name, users.email, users.role_id, roles.name AS role_name, order_carts.order_number as orderNumber, order_carts.product_object AS productsObject, operation_statuses.name AS status_name,  operation_statuses.id AS operationStatusId, order_carts.digipoint_substract, order_carts.created_at
     FROM order_carts
     JOIN users ON order_carts.employee_id = users.id
     JOIN roles ON users.role_id = roles.id
