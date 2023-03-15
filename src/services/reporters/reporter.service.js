@@ -124,8 +124,9 @@ ORDER BY
 	u.email,
 	u.role_id,
 	r.name as rol_name,
-	SUM(CASE WHEN epc.behavior = false THEN epc.points_assigned ELSE 0 END) AS ventas,
+	SUM(CASE WHEN epc.behavior = false AND epc.promotion = false THEN epc.points_assigned ELSE 0 END) AS ventas,
 	SUM(CASE WHEN epc.behavior = true THEN epc.points_assigned ELSE 0 END) AS behavior,
+  SUM(CASE WHEN epc.promotion  = true THEN epc.points_assigned ELSE 0 END) AS promociones,
 	SUM(epc.points_assigned) AS tpuntos,
 	(SELECT COALESCE(SUM(oc.digipoint_substract), 0) FROM order_carts oc WHERE oc.employee_id = u.id) AS redimidos,
 	SUM(epc.points_assigned) - (SELECT COALESCE(SUM(oc.digipoint_substract), 0) FROM order_carts oc WHERE oc.employee_id = u.id) AS puntos_disponibles
