@@ -122,6 +122,30 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/promousers',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    const salesAssigned = await service.getDigiByPromoPerUser();
+    res.json(salesAssigned);
+  }catch(error){
+    next(error);
+  }
+});
+
+router.get('/promo',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    const salesAssigned = await service.getDigiByPromo();
+    res.json(salesAssigned);
+  }catch(error){
+    next(error);
+  }
+});
+
 router.get('/salesbysegment',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),

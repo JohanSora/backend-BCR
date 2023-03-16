@@ -76,6 +76,62 @@ class ReporterService {
     }
   }
 
+  async getDigiByPromoPerUser() {
+    const query = `select
+	epc.employ_id,
+	u.name,
+	u.email,
+	u.role_id,
+	r.name as rol_name,
+	epc.points_assigned,
+	epc.reason_assign,
+	epc.promotion
+FROM employee_points_collects epc 
+LEFT JOIN users u ON epc.employ_id = u.id
+LEFT JOIN roles r on u.role_id = r.id
+WHERE epc.promotion = true
+GROUP BY epc.employ_id,
+	u.name,
+	u.email,
+	u.name,
+	u.role_id,
+	r.name,
+	u.id,
+	epc.points_assigned,
+	epc.reason_assign,
+	epc.promotion
+ORDER BY 
+	u.email;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+  
+
+  async getDigiByPromo() {
+    const query = `select
+    epc.reason_assign,
+    sum(epc.points_assigned)
+  FROM employee_points_collects epc
+  WHERE epc.promotion = true
+  GROUP BY epc.reason_assign
+  ORDER BY 
+    epc.reason_assign;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
   async getSalesBySegment() {
     const query = `SELECT 
     sale_type, 
