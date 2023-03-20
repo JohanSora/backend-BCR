@@ -111,7 +111,7 @@ ORDER BY
       throw boom.notFound('No longer data to show ', error);
     }
   }
-  
+
 
   async getDigiByPromo() {
     const query = `select
@@ -119,6 +119,62 @@ ORDER BY
     sum(epc.points_assigned)
   FROM employee_points_collects epc
   WHERE epc.promotion = true
+  GROUP BY epc.reason_assign
+  ORDER BY 
+    epc.reason_assign;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
+  async getDigiByBehaPerUser() {
+    const query = `select
+    epc.employ_id,
+    u.name,
+    u.email,
+    u.role_id,
+    r.name as rol_name,
+    epc.points_assigned,
+    epc.reason_assign,
+    epc.behavior
+  FROM employee_points_collects epc 
+  LEFT JOIN users u ON epc.employ_id = u.id
+  LEFT JOIN roles r on u.role_id = r.id
+  WHERE epc.behavior = true
+  GROUP BY epc.employ_id,
+    u.name,
+    u.email,
+    u.name,
+    u.role_id,
+    r.name,
+    u.id,
+    epc.points_assigned,
+    epc.reason_assign,
+    epc.behavior
+  ORDER BY 
+    u.email;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
+
+  async getDigiByBeha() {
+    const query = `select
+    epc.reason_assign,
+    sum(epc.points_assigned)
+  FROM employee_points_collects epc
+  WHERE epc.behavior = true
   GROUP BY epc.reason_assign
   ORDER BY 
     epc.reason_assign;`;
@@ -156,7 +212,7 @@ ORDER BY
       throw boom.notFound('No longer data to show ', error);
     }
   }
-  
+
   async getUsersPolicyAll() {
     const query = `SELECT u.id, u.name, u.email, u.role_id, roles."name" as role_name, u.created_at, u.region
     FROM users as u
@@ -209,7 +265,7 @@ ORDER BY
       throw boom.notFound('No longer data to show ', error);
     }
   }
-  
+
   async getRedeemAll() {
     const query = `SELECT order_carts.id, order_carts.employee_id as employeeId, users.name, users.email, users.role_id, roles.name AS role_name, order_carts.order_number as orderNumber, order_carts.product_object AS productsObject, operation_statuses.name AS status_name,  operation_statuses.id AS operationStatusId, order_carts.digipoint_substract, order_carts.created_at
     FROM order_carts

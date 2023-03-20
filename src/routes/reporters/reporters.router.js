@@ -146,6 +146,30 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/behavioruser',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    const salesAssigned = await service.getDigiByBehaPerUser();
+    res.json(salesAssigned);
+  }catch(error){
+    next(error);
+  }
+});
+
+router.get('/behavior',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    const salesAssigned = await service.getDigiByBeha();
+    res.json(salesAssigned);
+  }catch(error){
+    next(error);
+  }
+});
+
 router.get('/salesbysegment',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
