@@ -63,7 +63,7 @@ class ReporterService {
     SUM(CASE WHEN sale_type = 'TM' THEN sales_amount ELSE 0 END) as CCT,
     SUM(CASE WHEN sale_type = 'IN' THEN sales_amount ELSE 0 END) as CCI
     FROM sales
-    WHERE week_file IS NOT NULL
+    WHERE week_file IS NOT null and quarter_id = 2
     GROUP BY week_file
     ORDER BY week_file;`;
     try {
@@ -198,6 +198,7 @@ FROM
 WHERE 
     sale_type IN ('TM', 'IN') AND 
     market_segment IN ('COMMERCIAL', 'EDUCATION')
+    and quarter_id = 2
 GROUP BY 
     sale_type, 
     market_segment

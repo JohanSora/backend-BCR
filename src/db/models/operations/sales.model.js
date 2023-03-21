@@ -204,6 +204,11 @@ const SalesSchema = {
     type:DataTypes.TEXT,
     field:'market_segment'
   },
+  phonevsWeb:{
+    allowNull: true,
+    type:DataTypes.TEXT,
+    field:'phone_vs_web'
+  },
 
 
 

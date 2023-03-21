@@ -81,7 +81,7 @@ const RulesSchema = {
   },
 
   promotion:{
-    allowNull:false,
+    allowNull:true,
     default: false,
     type:DataTypes.BOOLEAN
   },
