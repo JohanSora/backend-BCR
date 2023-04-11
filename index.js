@@ -30,7 +30,9 @@ const whitelist = [
   'https://adobe-bcr.vercel.app',
   'https://frontend-apc.vercel.app',
   'https://apcclub.vercel.app',
-  'https://www.bcr.adobepcclub.net'
+  'https://www.bcr.adobepcclub.net',
+  'https://dev.d1cnzx1iw9hoze.amplifyapp.com/',
+  'https://dev.d1cnzx1iw9hoze.amplifyapp.com'
 ];
 
 // Add options method cors manager
