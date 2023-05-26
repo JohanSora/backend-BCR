@@ -61,6 +61,23 @@ class SaleService{
 
   }
 
+  async findSaleByInvoice(invoice_number){
+    const sales = await models.Sales.findAll({
+      where: {
+        invoice_number,
+      },
+      include: [
+        {
+          model: models.Product,
+          as: 'product',
+          attributes: ['description'],
+        }
+      ]
+    });
+
+    return sales;
+    
+  }
 
 }
 
