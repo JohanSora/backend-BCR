@@ -30,7 +30,10 @@ class QuarterService{
 
     const data = await models.Quarter.findOne({
 
-      where:{fiscalPeriodId: id}
+      where:{
+        fiscalPeriodId: id,
+        status:true,
+      }
 
     });
 

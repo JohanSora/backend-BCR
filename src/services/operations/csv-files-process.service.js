@@ -112,25 +112,32 @@ class CsvFileProcessService{
         let invoiceAssigNumber = '';
 
           let getInvoice = await this.findByInvoice(String(itemFila['INVOICE']), parseInt(findProd.id) );
+
+          
           // manage Errors
 
            let factError = (findProd == null ||  String(findProd).length < 1  || String(findProd) == '' ) ? 1 : 0;
             invoiceAssigNumber = (factError === 1 ) ? 0 : String(itemFila['INVOICE']);
-
-          let emailError = (itemFila['Email Address'] == null || itemFila['Email Address'] == 'NULL'  ||  String(itemFila['Email Address']).length < 1  || String(itemFila['Email Address']) == '') ? 1 : 0;
-          let userSaleToFind = (emailError === 1 ) ? null  : await useSelection.findByEmail(String(itemFila['Email Address']));
-          findPosInUser =  (userSaleToFind == null) ? null : await findPosEmployee.findByUserId(userSaleToFind.id);
-          getIdCompany = (findPosInUser == null) ? null : await findPos.findOne(findPosInUser.posId);
-          let getFiscalPeriod = (getIdCompany == null) ? null : await findFiscalPerid.findByCompany(getIdCompany.companyId);
-          let getQuarter = (getFiscalPeriod == null )  ? null : await findQuarter.findRuleByQuarterFiscal(getFiscalPeriod.id);
+            
+          let email = String(itemFila['Email Address']).trim();
+          let emailError = (itemFila['Email Address'] == null || itemFila['Email Address'] == 'NULL' || email.length < 1 || email === '') ? 1 : 0;
+          let userSaleToFind = (emailError === 1 ) ? null  : await useSelection.findByEmail(String(itemFila['Email Address']).toLowerCase());
+          //findPosInUser =  (userSaleToFind == null) ? null : await findPosEmployee.findByUserId(userSaleToFind.id);
+          //getIdCompany = (findPosInUser == null) ? null : await findPos.findOne(findPosInUser.posId);
+          let getQuarter = await findQuarter.findRuleByQuarterFiscal(parseInt(2));
           let sType = itemFila['STYPE'];
         /*   console.log("**** IVOINCE **** ",getInvoice);
           console.log("**** USER **** ",findPosInUser); */
-          findRuleInter      = (findPosInUser == null) ? null : await findRule.findByQuarter(getQuarter.id,sType, weekReference);
-          //console.log("Rule encontrada: ",findRuleInter);
+          findRuleInter      = (userSaleToFind == null) ? null : await findRule.findByQuarter(getQuarter.id,sType, weekReference);
+          console.log("Rule encontrada: ",findRuleInter);
 
             //console.log("**** RULE **** ",findRuleInter);
             //console.log("**** SALES DATE **** ",itemFila['DATE']);
+          let getInvoiceAndUser = await this.findByInvoiceAndUser(String(itemFila['INVOICE']), parseInt(findProd.id), parseInt(userSaleToFind.id));
+
+          let montoValue = itemFila['Revenue USD']
+          let getInvoiceAndAmount = await this.findByInvoiceAndAmount(String(itemFila['INVOICE']), parseInt(findProd.id), montoValue);
+          
 
         if(  (itemFila['DATE'] == 'NULL') || (salesFullDate == null )){
             uploadRowError = 3;
@@ -144,13 +151,22 @@ class CsvFileProcessService{
         }
 
 
-
-        if(  (itemFila['DATE'] == 'NULL') || (getInvoice != null) || (factError == 1) || (emailError == 1) || ( findRuleInter == null)  || (findRuleInter == null) ){
-              console.log("ERRORS : ", getInvoice)
+        if(  (itemFila['DATE'] == 'NULL') || (getInvoice != null) || (factError == 1) || (emailError == 1) || ( findRuleInter == null)  ){
+              console.log("ERRORSxD : ", getInvoice)
+              
+              if((getInvoice != null) && (getInvoiceAndUser != null) && (getInvoiceAndAmount != null)){
+                uploadRowError = 7;
+              }
+              if((getInvoice != null) && (getInvoiceAndUser == null && (getInvoiceAndAmount != null))){
+                uploadRowError = 10;
+              }
+              if ((getInvoice != null) && (getInvoiceAndUser != null) && (getInvoiceAndAmount == null)){
+                uploadRowError = 11;
+              }
               const saleInvoiceSave =  await serviceSales.create({
                   posId: null,
                   productId: null,
-                  employAssignedId:null,
+                  employAssignedId:userSaleToFind.id,
                   totalPoints:0,
                   quarterId:null,
                   yearInFile:null,
@@ -164,7 +180,7 @@ class CsvFileProcessService{
                   uploadSuccess:0,
                   invoiceNumber:String(itemFila['INVOICE']) ,
                   saleAmount: itemFila['Revenue USD'],
-                  errorId:(getInvoice != null) ? 7 : uploadRowError,
+                  errorId:uploadRowError,
                   UpdatedAt:nowDate.toString(),
                   saleType: null,
                   salesNote: `Sales Error factura: ${ itemFila['INVOICE'] } Line: ${count}`,
@@ -173,6 +189,7 @@ class CsvFileProcessService{
                 });
 
         }
+        
 
 
         if(emailError == 0 && getInvoice == null && factError == 0 && emailError == 0 && dateN != null && findRuleInter != null && (itemFila['DATE'] != 'NULL')){
@@ -184,7 +201,7 @@ class CsvFileProcessService{
 
                   if(findRuleInter !== null){
                     //console.log('READY****')
-                    getPosId = findPosInUser.posId;
+                    getPosId = 1;
                     dateSale = salesFullDate;
                     userSale = userSaleToFind.id;
                     uploadRowError = null;
@@ -322,6 +339,30 @@ async findByInvoice(getInvoiceNumber, prodId){
 
 }
 
+async findByInvoiceAndUser(getInvoiceNumber, prodId, userId){
+
+  const data = await models.Sales.findOne({
+    where:{
+      invoiceNumber: getInvoiceNumber,
+      productId:prodId,
+      employAssignedId: userId
+    }
+  });
+  return data;
+
+}
+async findByInvoiceAndAmount(getInvoiceNumber, prodId, saleAmount){
+
+  const data = await models.Sales.findOne({
+    where:{
+      invoiceNumber: getInvoiceNumber,
+      productId:prodId,
+      saleAmount: saleAmount
+    }
+  });
+  return data;
+
+}
 
 
 
