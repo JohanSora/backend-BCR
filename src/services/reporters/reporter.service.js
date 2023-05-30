@@ -35,25 +35,21 @@ class ReporterService {
 
 
   async getPointsAssign() {
-    const { Op } = require("sequelize");
+    const query = `SELECT s.sale_date, s.quarter_id, s.week_file, s.employ_assigned_id, u.email, s.invoice_number,
+    s.product_id, p.description,s.sale_type, s.sales_amount, s.assigned_points
+    FROM sales s
+    JOIN users u ON s.employ_assigned_id = u.id
+    JOIN products p ON s.product_id = p.id
+    WHERE s.error_id IS null and sales_amount != 0
+    ORDER BY s.sale_date DESC;`;
+    try {
 
-    const salesReporter = await models.Sales.findAll({
-      include: [{
-        model: models.User,
-        as: 'employAssigned',
-        attributes: { exclude: ['password'] },
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
 
-      }],
-      where: {
-        assignedPoints: { [Op.gt]: 0 }
-      }
-
-    });
-    if (!salesReporter) {
-      throw boom.notFound('Sale not found');
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
     }
-
-    return salesReporter;
   }
 
 
