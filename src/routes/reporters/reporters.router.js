@@ -58,7 +58,7 @@ passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
-    const {email} = req.params;
+    let {email} = req.params;
     const salesAssigned = await service.getPointsAssignByUser(email);
     res.json(salesAssigned);
 
