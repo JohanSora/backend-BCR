@@ -53,6 +53,20 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/assigned/:email',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    const {email} = req.params;
+    const salesAssigned = await service.getPointsAssignByUser(email);
+    res.json(salesAssigned);
+
+  }catch(error){
+    next(error);
+  }
+});
+
 router.get('/digipoints-redeem-status/:type/:country/:userEmployeeId',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),

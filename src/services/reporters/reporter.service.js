@@ -52,6 +52,25 @@ class ReporterService {
     }
   }
 
+  async getPointsAssignByUser(email) {
+    let email = email;
+    const query = `SELECT s.sale_date, s.quarter_id, s.week_file, s.employ_assigned_id, u.email, s.invoice_number,
+    s.product_id, p.description,s.sale_type, s.sales_amount, s.assigned_points
+    FROM sales s
+    JOIN users u ON s.employ_assigned_id = u.id
+    JOIN products p ON s.product_id = p.id
+    WHERE s.error_id IS null and sales_amount > 0 AND u.email = '${types}'
+    ORDER BY s.sale_date DESC;`;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
+
 
   async getSalesByWeekAndStype() {
     const query = `SELECT 
