@@ -53,7 +53,7 @@ class ReporterService {
   }
 
   async getPointsAssignByUser(emailuser) {
-    let email = emailuser;
+    let emailuser = emailuser;
     const query = `SELECT s.sale_date, s.quarter_id, s.week_file, s.employ_assigned_id, u.email, s.invoice_number,
     s.product_id, p.description,s.sale_type, s.sales_amount, s.assigned_points
     FROM sales s
