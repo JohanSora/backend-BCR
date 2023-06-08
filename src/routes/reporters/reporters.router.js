@@ -53,13 +53,13 @@ async(req, res, next)=>{
   }
 });
 
-router.get('/assigned/:email',
+router.get('/assigned/:emailuser',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
 async(req, res, next)=>{
   try{
-    let {email} = req.params;
-    const salesAssigned = await service.getPointsAssignByUser(email);
+    let {emailuser} = req.params;
+    const salesAssigned = await service.getPointsAssignByUser(emailuser);
     res.json(salesAssigned);
 
   }catch(error){
