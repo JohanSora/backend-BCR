@@ -34,7 +34,7 @@ class ReporterService {
 
   async getResumenByUser(emailuser) {
     const query = `SELECT 
-      SUM(CASE WHEN epc.promotion = false AND epc.behavior = false THEN epc.points_assigned ELSE 0 END) AS behavior_points,
+      SUM(CASE WHEN epc.promotion = false AND epc.behavior = false THEN epc.points_assigned ELSE 0 END) AS ventas_points,
       SUM(CASE WHEN epc.promotion = false AND epc.behavior = true THEN epc.points_assigned ELSE 0 END) AS behavior_points,
       SUM(CASE WHEN epc.promotion = true AND epc.behavior = false THEN epc.points_assigned ELSE 0 END) AS promo_points
     FROM
