@@ -39,6 +39,20 @@ async(req, res, next)=>{
   }
 });
 
+router.get('/resumendp/:emailuser',
+passport.authenticate('jwt', {session:false}),
+checkRoles(1,2,3,4,5),
+async(req, res, next)=>{
+  try{
+    let {emailuser} = req.params;
+    const salesAssigned = await service.getResumenByUser(emailuser);
+    res.json(salesAssigned);
+
+  }catch(error){
+    next(error);
+  }
+});
+
 router.get('/assigned',
 passport.authenticate('jwt', {session:false}),
 checkRoles(1,2,3,4,5),
