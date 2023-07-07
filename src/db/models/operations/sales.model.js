@@ -209,6 +209,11 @@ const SalesSchema = {
     type:DataTypes.TEXT,
     field:'phone_vs_web'
   },
+  wkqtr:{
+    allowNull: true,
+    type:DataTypes.TEXT,
+    field:'wk_qtr'
+  },
 
 
 

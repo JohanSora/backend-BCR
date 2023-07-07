@@ -185,7 +185,8 @@ class CsvFileProcessService{
                   saleType: null,
                   salesNote: `Sales Error factura: ${ itemFila['INVOICE'] } Line: ${count}`,
                   marketSegment: String(itemFila['MARKET_SEGMENT']),
-                  phonevsWeb: String(itemFila['PHONE_VS_WEB'])
+                  phonevsWeb: String(itemFila['PHONE_VS_WEB']),
+                  wkqtr: String(itemFila['WK_QTR'])
                 });
 
         }
@@ -231,7 +232,8 @@ class CsvFileProcessService{
                             saleType: itemFila['STYPE'].toString(),
                             salesNote: null,
                             marketSegment: String(itemFila['MARKET_SEGMENT']),
-                            phonevsWeb: String(itemFila['PHONE_VS_WEB'])
+                            phonevsWeb: String(itemFila['PHONE_VS_WEB']),
+                            wkqtr: String(itemFila['WK_QTR'])
                           });
                       if(approuch > 0){
                         let  employeeAssig =  await employeeAssign.create({
