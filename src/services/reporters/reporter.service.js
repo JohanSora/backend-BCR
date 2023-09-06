@@ -54,7 +54,7 @@ class ReporterService {
 
   async getPointsAssign() {
     const query = `SELECT s.sale_date, s.quarter_id, s.week_file, s.employ_assigned_id, u.email, s.invoice_number,
-    s.product_id, p.description,s.sale_type, s.sales_amount, s.assigned_points
+    s.product_id, p.name_product as description,s.sale_type, s.sales_amount, s.assigned_points
     FROM sales s
     JOIN users u ON s.employ_assigned_id = u.id
     JOIN products p ON s.product_id = p.id
@@ -72,7 +72,7 @@ class ReporterService {
 
   async getPointsAssignByUser(emailuser) {
     const query = `SELECT s.sale_date, s.quarter_id, s.week_file, s.employ_assigned_id, u.email, s.invoice_number,
-    s.product_id, p.description,s.sale_type, s.sales_amount, s.assigned_points
+    s.product_id, p.name_product as description,s.sale_type, s.sales_amount, s.assigned_points
     FROM sales s
     JOIN users u ON s.employ_assigned_id = u.id
     JOIN products p ON s.product_id = p.id
@@ -473,7 +473,7 @@ ORDER BY COALESCE(sales.total_sales_amount, 0) DESC, ranking ASC;`;
 
     console.log(saleType, saleTypeQuery);
 
-    const query = `select pos.description as pos, p.description as product, concat(pe.names, ' ', pe.last_name) names_employee, q."name", sa.week_file as week, sa.year_file, sa.sale_type from sales sa join points_of_sales pos on pos.id = sa.pos_id join products p on p.id = sa.product_id join quarters q on q.id = sa.quarter_id join people pe on pe.user_id = employ_assigned_id left join error_sales_process esp on esp.id = sa.error_id where ${querySection}`;
+    const query = `select pos.description as pos, p.name_product as product, concat(pe.names, ' ', pe.last_name) names_employee, q."name", sa.week_file as week, sa.year_file, sa.sale_type from sales sa join points_of_sales pos on pos.id = sa.pos_id join products p on p.id = sa.product_id join quarters q on q.id = sa.quarter_id join people pe on pe.user_id = employ_assigned_id left join error_sales_process esp on esp.id = sa.error_id where ${querySection}`;
 
     console.log(query);
     try {
