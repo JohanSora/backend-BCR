@@ -87,6 +87,19 @@ class ReporterService {
       throw boom.notFound('No longer data to show ', error);
     }
   }
+  async getGoalByUser(emailuser) {
+    const query = `
+    select net_quota from metas_usuario where email = '${emailuser}';
+    `;
+    try {
+
+      const result = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+      return result;
+
+    } catch (error) {
+      throw boom.notFound('No longer data to show ', error);
+    }
+  }
 
 
   async getSalesByWeekAndStype() {
